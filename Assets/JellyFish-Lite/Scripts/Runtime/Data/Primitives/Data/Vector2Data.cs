@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿// Created by Kearan Petersen : https://www.blumalice.wordpress.com | https://www.linkedin.com/in/kearan-petersen/
+
+using UnityEngine;
 
 namespace Data.Primitive
 {

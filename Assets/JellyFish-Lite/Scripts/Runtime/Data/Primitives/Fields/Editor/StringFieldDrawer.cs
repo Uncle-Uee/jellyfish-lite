@@ -1,4 +1,6 @@
-﻿#if UNITY_EDITOR
+﻿// Adapted From Ryan Hipples https://github.com/roboryantron/Unite2017 Repository
+
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 
