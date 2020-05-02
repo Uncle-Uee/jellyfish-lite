@@ -2,7 +2,7 @@
 
 namespace Data.Primitive
 {
-    [CreateAssetMenu(menuName = "Vanilla/Data/Primitives/String")]
+    [CreateAssetMenu(menuName = "JellyFish/Data/Primitives/String")]
     public class StringData : PrimitiveData
     {
         /// <summary>
