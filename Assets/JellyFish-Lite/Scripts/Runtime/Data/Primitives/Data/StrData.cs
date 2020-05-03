@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-namespace Data.Primitive
+namespace JellyFish.Data.Primitive
 {
     [CreateAssetMenu(menuName = "JellyFish/Data/Primitives/String")]
     public class StringData : PrimitiveData
