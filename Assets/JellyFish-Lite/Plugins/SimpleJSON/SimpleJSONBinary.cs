@@ -11,6 +11,10 @@
  * You can use the define "SimpleJSON_ExcludeBinary" to selectively disable
  * this extension without the need to remove the file from the project.
  * 
+ * If you want to use compression when saving to file / stream / B64 you have to include
+ * SharpZipLib ( http://www.icsharpcode.net/opensource/sharpziplib/ ) in your project and
+ * define "USE_SharpZipLib" at the top of the file
+ * 
  * 
  * The MIT License (MIT)
  * 
@@ -36,20 +40,20 @@
  * 
  * * * * */
 using System;
- 
+
 namespace SimpleJSON
 {
 #if !SimpleJSON_ExcludeBinary
     public abstract partial class JSONNode
     {
         public abstract void SerializeBinary(System.IO.BinaryWriter aWriter);
- 
+
         public void SaveToBinaryStream(System.IO.Stream aData)
         {
             var W = new System.IO.BinaryWriter(aData);
             SerializeBinary(W);
         }
- 
+
 #if USE_SharpZipLib
 		public void SaveToCompressedStream(System.IO.Stream aData)
 		{
@@ -85,18 +89,18 @@ namespace SimpleJSON
         {
             throw new Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
         }
- 
+
         public void SaveToCompressedFile(string aFileName)
         {
             throw new Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
         }
- 
+
         public string SaveToCompressedBase64()
         {
             throw new Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
         }
 #endif
- 
+
         public void SaveToBinaryFile(string aFileName)
         {
             System.IO.Directory.CreateDirectory((new System.IO.FileInfo(aFileName)).Directory.FullName);
@@ -105,7 +109,7 @@ namespace SimpleJSON
                 SaveToBinaryStream(F);
             }
         }
- 
+
         public string SaveToBinaryBase64()
         {
             using (var stream = new System.IO.MemoryStream())
@@ -115,7 +119,7 @@ namespace SimpleJSON
                 return System.Convert.ToBase64String(stream.ToArray());
             }
         }
- 
+
         public static JSONNode DeserializeBinary(System.IO.BinaryReader aReader)
         {
             JSONNodeType type = (JSONNodeType)aReader.ReadByte();
@@ -163,12 +167,12 @@ namespace SimpleJSON
                     }
             }
         }
- 
+
 #if USE_SharpZipLib
 		public static JSONNode LoadFromCompressedStream(System.IO.Stream aData)
 		{
 			var zin = new ICSharpCode.SharpZipLib.BZip2.BZip2InputStream(aData);
-			return LoadFromStream(zin);
+			return LoadFromBinaryStream(zin);
 		}
 		public static JSONNode LoadFromCompressedFile(string aFileName)
 		{
@@ -189,18 +193,18 @@ namespace SimpleJSON
         {
             throw new Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
         }
- 
+
         public static JSONNode LoadFromCompressedStream(System.IO.Stream aData)
         {
             throw new Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
         }
- 
+
         public static JSONNode LoadFromCompressedBase64(string aBase64)
         {
             throw new Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
         }
 #endif
- 
+
         public static JSONNode LoadFromBinaryStream(System.IO.Stream aData)
         {
             using (var R = new System.IO.BinaryReader(aData))
@@ -208,7 +212,7 @@ namespace SimpleJSON
                 return DeserializeBinary(R);
             }
         }
- 
+
         public static JSONNode LoadFromBinaryFile(string aFileName)
         {
             using (var F = System.IO.File.OpenRead(aFileName))
@@ -216,7 +220,7 @@ namespace SimpleJSON
                 return LoadFromBinaryStream(F);
             }
         }
- 
+
         public static JSONNode LoadFromBinaryBase64(string aBase64)
         {
             var tmp = System.Convert.FromBase64String(aBase64);
@@ -225,7 +229,7 @@ namespace SimpleJSON
             return LoadFromBinaryStream(stream);
         }
     }
- 
+
     public partial class JSONArray : JSONNode
     {
         public override void SerializeBinary(System.IO.BinaryWriter aWriter)
@@ -238,7 +242,7 @@ namespace SimpleJSON
             }
         }
     }
- 
+
     public partial class JSONObject : JSONNode
     {
         public override void SerializeBinary(System.IO.BinaryWriter aWriter)
@@ -252,7 +256,7 @@ namespace SimpleJSON
             }
         }
     }
- 
+
     public partial class JSONString : JSONNode
     {
         public override void SerializeBinary(System.IO.BinaryWriter aWriter)
@@ -261,7 +265,7 @@ namespace SimpleJSON
             aWriter.Write(m_Data);
         }
     }
- 
+
     public partial class JSONNumber : JSONNode
     {
         public override void SerializeBinary(System.IO.BinaryWriter aWriter)
@@ -270,7 +274,7 @@ namespace SimpleJSON
             aWriter.Write(m_Data);
         }
     }
- 
+
     public partial class JSONBool : JSONNode
     {
         public override void SerializeBinary(System.IO.BinaryWriter aWriter)
@@ -290,7 +294,7 @@ namespace SimpleJSON
     {
         public override void SerializeBinary(System.IO.BinaryWriter aWriter)
         {
- 
+
         }
     }
 #endif

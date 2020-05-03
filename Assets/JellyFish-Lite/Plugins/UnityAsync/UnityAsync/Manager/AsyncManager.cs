@@ -45,13 +45,13 @@ namespace UnityAsync
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Initialize()
         {
-            unityThreadId = Thread.CurrentThread.ManagedThreadId;
+            unityThreadId    = Thread.CurrentThread.ManagedThreadId;
             UnitySyncContext = SynchronizationContext.Current;
 
             BackgroundSyncContext = new SynchronizationContext(); // TODO: confirm this produces desired behaviour
 
-            updates = new ContinuationProcessorGroup();
-            lateUpdates = new ContinuationProcessorGroup();
+            updates      = new ContinuationProcessorGroup();
+            lateUpdates  = new ContinuationProcessorGroup();
             fixedUpdates = new ContinuationProcessorGroup();
 
             Instance = new GameObject("Async Manager").AddComponent<AsyncManager>();
@@ -94,8 +94,7 @@ namespace UnityAsync
         /// <summary>
         /// Start a coroutine from any context without requiring a MonoBehaviour.
         /// </summary>
-        public new static Coroutine StartCoroutine(IEnumerator coroutine) =>
-            ((MonoBehaviour) Instance).StartCoroutine(coroutine);
+        public new static Coroutine StartCoroutine(IEnumerator coroutine) => ((MonoBehaviour) Instance).StartCoroutine(coroutine);
 
         void Update()
         {
@@ -104,7 +103,7 @@ namespace UnityAsync
             if (CurrentFrameCount <= 1)
                 return;
 
-            CurrentTime = Time.time;
+            CurrentTime         = Time.time;
             CurrentUnscaledTime = Time.unscaledTime;
 
             updates.Process();

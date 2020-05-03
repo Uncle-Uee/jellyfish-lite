@@ -36,11 +36,11 @@
  * SOFTWARE.
  * 
  * * * * */
- 
+
 #endregion License and information
- 
+
 using UnityEngine;
- 
+
 namespace SimpleJSON
 {
     public enum JSONContainerType { Array, Object }
@@ -55,7 +55,7 @@ namespace SimpleJSON
                 return new JSONArray();
             return new JSONObject();
         }
- 
+
         #region implicit conversion operators
         public static implicit operator JSONNode(Vector2 aVec)
 		{
@@ -93,7 +93,7 @@ namespace SimpleJSON
             n.WriteRectOffset(aRect);
             return n;
         }
- 
+
         public static implicit operator Vector2(JSONNode aNode)
         {
             return aNode.ReadVector2();
@@ -119,7 +119,7 @@ namespace SimpleJSON
             return aNode.ReadRectOffset();
         }
         #endregion implicit conversion operators
- 
+
         #region Vector2
         public Vector2 ReadVector2(Vector2 aDefault)
         {
@@ -137,7 +137,7 @@ namespace SimpleJSON
             }
             return Vector2.zero;
         }
- 
+
         public Vector2 ReadVector2()
         {
             return ReadVector2(Vector2.zero);
@@ -159,7 +159,7 @@ namespace SimpleJSON
             return this;
         }
         #endregion Vector2
- 
+
         #region Vector3
         public Vector3 ReadVector3(Vector3 aDefault)
         {
@@ -198,7 +198,7 @@ namespace SimpleJSON
             return this;
         }
         #endregion Vector3
- 
+
         #region Vector4
         public Vector4 ReadVector4(Vector4 aDefault)
         {
@@ -233,7 +233,7 @@ namespace SimpleJSON
             return this;
         }
         #endregion Vector4
- 
+
         #region Quaternion
         public Quaternion ReadQuaternion(Quaternion aDefault)
         {
@@ -268,7 +268,7 @@ namespace SimpleJSON
             return this;
         }
         #endregion Quaternion
- 
+
         #region Rect
         public Rect ReadRect(Rect aDefault)
         {
@@ -303,7 +303,7 @@ namespace SimpleJSON
             return this;
         }
         #endregion Rect
- 
+
         #region RectOffset
         public RectOffset ReadRectOffset(RectOffset aDefault)
         {
@@ -338,7 +338,7 @@ namespace SimpleJSON
             return this;
         }
         #endregion RectOffset
- 
+
         #region Matrix4x4
         public Matrix4x4 ReadMatrix()
         {
