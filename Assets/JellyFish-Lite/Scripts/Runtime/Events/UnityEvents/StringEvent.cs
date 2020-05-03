@@ -4,7 +4,7 @@ using UnityEngine.Events;
 namespace JellyFish.Events.UnityEvents
 {
     [Serializable]
-    public class StringEvent : UnityEvent
+    public class StringEvent : UnityEvent<string>
     {
     }
 }
