@@ -5,7 +5,7 @@ using UnityEngine;
 namespace JellyFish.Data.Primitive
 {
     [CreateAssetMenu(menuName = "JellyFish/Data/Primitives/String")]
-    public class StringData : PrimitiveData
+    public class StrData : PrimitiveData
     {
         /// <summary>
         ///     Determines whether the true asset value should retain
@@ -101,7 +101,7 @@ namespace JellyFish.Data.Primitive
         ///     Attempts to set the value of this data to the supplied value.
         /// </summary>
         /// <param name="value"></param>
-        public void SetValue(StringData value)
+        public void SetValue(StrData value)
         {
             Value = value.Value;
         }
@@ -155,7 +155,7 @@ namespace JellyFish.Data.Primitive
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public bool Equal(StringData value)
+        public bool Equal(StrData value)
         {
             return Value == value.Value;
         }
@@ -165,7 +165,7 @@ namespace JellyFish.Data.Primitive
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public bool NotEqual(StringData value)
+        public bool NotEqual(StrData value)
         {
             return Value != value.Value;
         }

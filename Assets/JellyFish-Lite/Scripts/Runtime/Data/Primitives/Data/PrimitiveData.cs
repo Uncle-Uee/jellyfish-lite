@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-namespace Data.Primitive
+namespace JellyFish.Data.Primitive
 {
     public class PrimitiveData : ScriptableObject
     {

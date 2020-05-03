@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace JellyFish.Internal.Utilities
 {
-    [CreateAssetMenu(menuName = "Vanilla/Utilities/Camera/Camera Reference")]
+    [CreateAssetMenu(menuName = "JellyFish/Utilities/Camera/Camera Reference")]
     public class CameraReference : ScriptableObject
     {
         /// <summary>

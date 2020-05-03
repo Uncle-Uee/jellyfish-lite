@@ -7,13 +7,13 @@ using UnityEngine;
 namespace JellyFish.Data.Primitive
 {
     [Serializable]
-    public class StringField : DataField
+    public class StrField : DataField
     {
-        /// <summary>
-        ///     Determines whether this field references volatile or non-volatile data.
-        /// </summary>
-        [HideInInspector]
-        public bool UseConstant = true;
+        // /// <summary>
+        // ///     Determines whether this field references volatile or non-volatile data.
+        // /// </summary>
+        // [HideInInspector]
+        // public bool UseConstant = true;
 
         /// <summary>
         ///     The explicitly inferred type for the ConstantValue property.
@@ -25,7 +25,7 @@ namespace JellyFish.Data.Primitive
         ///     The explicitly inferred type for the Variable property.
         /// </summary>
         [HideInInspector]
-        public StringData VariableType;
+        public StrData VariableType;
 
         /// <summary>
         ///     The value of this field.
@@ -68,7 +68,7 @@ namespace JellyFish.Data.Primitive
         /// <summary>
         ///     The non-volatile data for this field.
         /// </summary>
-        public StringData Variable
+        public StrData Variable
         {
             get => VariableType;
             set => VariableType = value;
@@ -82,11 +82,11 @@ namespace JellyFish.Data.Primitive
         private bool _displayValueChangedEvent = false;
 #pragma warning restore 0414
 
-        public StringField()
+        public StrField()
         {
         }
 
-        public StringField(string value)
+        public StrField(string value)
         {
             Value = value;
         }
@@ -102,7 +102,7 @@ namespace JellyFish.Data.Primitive
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static implicit operator string(StringField data)
+        public static implicit operator string(StrField data)
         {
             return data.Value;
         }

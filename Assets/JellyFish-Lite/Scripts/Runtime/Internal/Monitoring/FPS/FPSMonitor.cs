@@ -5,7 +5,7 @@
 
 using System.Collections;
 using System.Globalization;
-using Data.Primitive;
+using JellyFish.Data.Primitive;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace

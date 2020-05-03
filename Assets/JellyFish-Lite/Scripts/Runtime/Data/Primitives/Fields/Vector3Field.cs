@@ -1,18 +1,20 @@
 ﻿// Created by Kearan Petersen : https://www.blumalice.wordpress.com | https://www.linkedin.com/in/kearan-petersen/
 
 using System;
+using JellyFish.Data.Primitives;
 using UnityEngine;
 
-namespace Data.Primitive
+namespace JellyFish.Data.Primitive
 {
     [Serializable]
-    public class Vector3Field
+    public class Vector3Field : DataField
     {
-        /// <summary>
-        ///     Determines whether this field references volatile or non-volatile data.
-        /// </summary>
-        [HideInInspector]
-        public bool UseConstant = true;
+        // /// <summary>
+        // ///     Determines whether this field references volatile or non-volatile data.
+        // /// </summary>
+        // [HideInInspector]
+        // public bool UseConstant = true;
+
         /// <summary>
         ///     The explicitly inferred type for the ConstantValue property.
         /// </summary>
@@ -71,6 +73,14 @@ namespace Data.Primitive
             get => VariableType;
             set => VariableType = value;
         }
+        
+        /// <summary>
+        /// Indicates whether the value changed event should be displayed.
+        /// </summary>
+#pragma warning disable 0414
+        [SerializeField, HideInInspector]
+        private bool _displayValueChangedEvent = false;
+#pragma warning restore 0414
 
         public Vector3Field()
         {
@@ -101,7 +111,7 @@ namespace Data.Primitive
         ///     Gets the variable data.
         /// </summary>
         /// <returns></returns>
-        public PrimitiveData GetVariable()
+        public override PrimitiveData GetVariable()
         {
             return Variable;
         }

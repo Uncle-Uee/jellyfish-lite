@@ -4,9 +4,9 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace Data.Primitive.Editor
+namespace JellyFish.Data.Primitive.Editor
 {
-    [CustomPropertyDrawer(typeof(Vector2Field))]
+    // [CustomPropertyDrawer(typeof(Vector2Field))]
     public class Vector2FieldDrawer : PropertyDrawer
     {
         /// <summary>

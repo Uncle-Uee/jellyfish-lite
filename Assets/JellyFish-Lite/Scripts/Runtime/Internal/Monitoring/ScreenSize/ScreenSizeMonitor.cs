@@ -3,7 +3,7 @@
  * LinkedIn : https://www.linkedin.com/in/ubaidullah-effendi-emjedi-202494183/
  */
 
-using Data.Primitive;
+using JellyFish.Data.Primitive;
 using JellyFish.Internal.Utilities;
 using UnityEngine;
 

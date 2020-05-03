@@ -4,9 +4,9 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace Data.Primitive.Editor
+namespace JellyFish.Data.Primitive.Editor
 {
-    [CustomPropertyDrawer(typeof(FloatField))]
+    // [CustomPropertyDrawer(typeof(FloatField))]
     public class FloatFieldDrawer : PropertyDrawer
     {
         /// <summary>
