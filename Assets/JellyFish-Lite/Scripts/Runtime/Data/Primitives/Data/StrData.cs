@@ -67,8 +67,6 @@ namespace JellyFish.Data.Primitive
                 if(!AssetValue.Equals(value))
                 {
                     AssetValue = value;
-                    
-                    OnDataChanged.Invoke(GetValue());
                 }
 #endif
             }

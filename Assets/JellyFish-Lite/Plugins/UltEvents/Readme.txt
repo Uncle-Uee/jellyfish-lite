@@ -15,6 +15,6 @@ private UltEvents.UltEvent _MyEvent;
 
 ////////////////////////////////////////////////////////////
 
-The full documentation is available at https://kybernetikgames.github.io/ultevents
+The full documentation is available at https://kybernetik.com.au/ultevents
 
 ////////////////////////////////////////////////////////////

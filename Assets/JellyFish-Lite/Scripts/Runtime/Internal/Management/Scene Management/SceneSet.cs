@@ -120,32 +120,6 @@ namespace JellyFish.Internal.Management
             return false;
         }
 
-        [MenuItem("Assets/SOFlow/Create Scene Set", true)]
-        public static bool CreateSceneSetFromSceneValidation()
-        {
-            return Selection.activeObject is SceneAsset;
-        }
-
-        [MenuItem("Assets/SOFlow/Create Scene Set %#S")]
-        public static void CreateSceneSetFromScene()
-        {
-            SceneSet newSceneSet = CreateInstance<SceneSet>();
-
-            SceneField newSceneField = new SceneField
-                                       {
-                                           SceneAsset = Selection.activeObject, SceneName = Selection.activeObject.name
-                                       };
-
-            newSceneSet.SetScenes.Add(newSceneField);
-
-            AssetDatabase.CreateAsset(newSceneSet,
-                                      AssetDatabase.GetAssetPath(Selection.activeObject)
-                                                   .Replace(".unity", " Scene Set.asset"));
-
-            AssetDatabase.Refresh();
-
-            Selection.activeObject = newSceneSet;
-        }
 #endif
     }
 }
