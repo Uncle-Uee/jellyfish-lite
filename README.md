@@ -19,8 +19,11 @@ Right Click Feature:
 4. Extract at current location or anywhere else on your machine.
 5. Done!
 
-![Extract From Source](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/sprite-extractor-from-source.gif)
-![Extract From Meta](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/sprite-extractor-from-meta.gif)
+From Source:
+![](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/sprite-extractor-from-source.gif)
+
+From Meta:
+![](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/sprite-extractor-from-meta.gif)
 
 SpriteExtractor Window
 1. Select JellyFish from the Menubar
