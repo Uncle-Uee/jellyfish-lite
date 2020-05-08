@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace JellyFish.Data.Events
 {
-    [CreateAssetMenu(menuName = "JellyFish/Events/Game Event")]
+    [CreateAssetMenu(menuName = "JellyFish/Events/Game Event", order = 20)]
     public class GameEvent : ScriptableObject
     {
         /// <summary>

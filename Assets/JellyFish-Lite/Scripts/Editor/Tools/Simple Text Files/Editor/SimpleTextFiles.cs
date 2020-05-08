@@ -55,7 +55,7 @@ namespace JellyFish.Editor.Tools.TextFiles
         /// <summary>
         /// Create Text File.
         /// </summary>
-        [MenuItem("Assets/Create/JellyFish/Text File/Text Asset", priority = 10)]
+        [MenuItem("Assets/Create/JellyFish/Text File/Text Asset", priority = 40)]
         public static void CreateTextFile()
         {
             CreateFilePanel("Text File", "text-file", "txt");
@@ -65,7 +65,7 @@ namespace JellyFish.Editor.Tools.TextFiles
         /// <summary>
         /// Create Json File.
         /// </summary>
-        [MenuItem("Assets/Create/JellyFish/Text File/Json File", priority = 10)]
+        [MenuItem("Assets/Create/JellyFish/Text File/Json File", priority = 40)]
         public static void CreateJsonFile()
         {
             CreateFilePanel("Json File", "json-file", "json");
