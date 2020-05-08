@@ -19,6 +19,9 @@ Right Click Feature:
 4. Extract at current location or anywhere else on your machine.
 5. Done!
 
+![Extract From Source](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/sprite-extractor-from-source.gif)
+![Extract From Meta](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/sprite-extractor-from-meta.gif)
+
 SpriteExtractor Window
 1. Select JellyFish from the Menubar
 2. Select Sprite Extractor
@@ -26,10 +29,14 @@ SpriteExtractor Window
 4. Click Extract
 5. Done!
 
+![Sprite Extractor Window](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/sprite-extractor-window.gif)
+
 ### Gif Extractor
 
 The Gif Extractor simply allows you to extract the frames of a Gif Image. <br>
 Just like the Sprite Extractors Right Click, the Gif Extract follows a Similar pattern.
+
+![Gif Extractor](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/sprite-extractor.gif)
 
 ### Project Setup Tool
 The Project Setup Tool is a tool that allows you to serialize any number of Folders by saving the path to each folder selected into a json file with a custom extension *.pdjson. <br>
