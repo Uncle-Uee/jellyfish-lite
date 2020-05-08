@@ -33,10 +33,10 @@ namespace UltEvents.Benchmarks
             // Sleep to make this frame show up easily in the Unity Profiler.
             Thread.Sleep(100);
 
-            var start = EditorApplication.timeSinceStartup;
+            double start = EditorApplication.timeSinceStartup;
 
             // Include the costs of loading and instantiating the prefab as well as the actual event invocation.
-            var prefab = Resources.Load<GameObject>(_PrefabPath);
+            GameObject prefab = Resources.Load<GameObject>(_PrefabPath);
             Instantiate(prefab);
 
             Debug.Log(EditorApplication.timeSinceStartup - start);

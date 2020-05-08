@@ -19,7 +19,7 @@ namespace UltEvents.Benchmarks
 
         private void Awake()
         {
-            var start = EditorApplication.timeSinceStartup;
+            double start = EditorApplication.timeSinceStartup;
 
             Test();
 

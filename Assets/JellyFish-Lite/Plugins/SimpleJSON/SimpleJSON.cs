@@ -227,8 +227,8 @@ namespace SimpleJSON
         {
             get
             {
-                foreach (var C in Children)
-                    foreach (var D in C.DeepChildren)
+                foreach (JSONNode C in Children)
+                    foreach (JSONNode D in C.DeepChildren)
                         yield return D;
             }
         }
@@ -448,7 +448,7 @@ namespace SimpleJSON
         }
         internal static string Escape(string aText)
         {
-            var sb = EscapeBuilder;
+            StringBuilder sb = EscapeBuilder;
             sb.Length = 0;
             if (sb.Capacity < aText.Length + aText.Length / 10)
                 sb.Capacity = aText.Length + aText.Length / 10;
@@ -754,9 +754,9 @@ namespace SimpleJSON
 
         public override JSONNode Clone()
         {
-            var node = new JSONArray();
+            JSONArray node = new JSONArray();
             node.m_List.Capacity = m_List.Capacity;
-            foreach(var n in m_List)
+            foreach(JSONNode n in m_List)
             {
                 if (n != null)
                     node.Add(n.Clone());
@@ -889,7 +889,7 @@ namespace SimpleJSON
         {
             if (aIndex < 0 || aIndex >= m_Dict.Count)
                 return null;
-            var item = m_Dict.ElementAt(aIndex);
+            KeyValuePair<string, JSONNode> item = m_Dict.ElementAt(aIndex);
             m_Dict.Remove(item.Key);
             return item.Value;
         }
@@ -898,7 +898,7 @@ namespace SimpleJSON
         {
             try
             {
-                var item = m_Dict.Where(k => k.Value == aNode).First();
+                KeyValuePair<string, JSONNode> item = m_Dict.Where(k => k.Value == aNode).First();
                 m_Dict.Remove(item.Key);
                 return aNode;
             }
@@ -910,8 +910,8 @@ namespace SimpleJSON
 
         public override JSONNode Clone()
         {
-            var node = new JSONObject();
-            foreach (var n in m_Dict)
+            JSONObject node = new JSONObject();
+            foreach (KeyValuePair<string, JSONNode> n in m_Dict)
             {
                 node.Add(n.Key, n.Value.Clone());
             }
@@ -946,7 +946,7 @@ namespace SimpleJSON
             bool first = true;
             if (inline)
                 aMode = JSONTextMode.Compact;
-            foreach (var k in m_Dict)
+            foreach (KeyValuePair<string, JSONNode> k in m_Dict)
             {
                 if (!first)
                     aSB.Append(',');

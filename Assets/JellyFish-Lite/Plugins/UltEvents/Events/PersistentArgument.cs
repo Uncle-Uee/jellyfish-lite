@@ -351,7 +351,7 @@ namespace UltEvents
             set
             {
                 AssertType(PersistentArgumentType.Quaternion);
-                var euler = value.eulerAngles;
+                Vector3 euler = value.eulerAngles;
                 _X = euler.x;
                 _Y = euler.y;
                 _Z = euler.z;
@@ -687,7 +687,7 @@ namespace UltEvents
         public PersistentArgument Clone()
         {
 #pragma warning disable IDE0017 // Simplify object initialization
-            var clone = new PersistentArgument();
+            PersistentArgument clone = new PersistentArgument();
 #pragma warning restore IDE0017 // Simplify object initialization
 
             clone._Type = _Type;

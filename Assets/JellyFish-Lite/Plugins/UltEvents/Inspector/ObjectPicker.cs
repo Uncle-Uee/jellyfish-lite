@@ -24,7 +24,7 @@ namespace UltEvents.Editor
         public static T Draw<T>(Rect area, T selected, Func<List<T>> getOptions, int suggestions, Func<T, GUIContent> getLabel, Func<T> getDragAndDrop,
             GUIStyle style)
         {
-            var id = CheckCommand(ref selected);
+            int id = CheckCommand(ref selected);
 
             if (GUI.Button(area, getLabel(selected), style))
                 ObjectPickerWindow.Show(id, selected, getOptions(), suggestions, getLabel);
@@ -46,7 +46,7 @@ namespace UltEvents.Editor
         public static T DrawLayout<T>(T selected, Func<List<T>> getOptions, int suggestions, Func<T, GUIContent> getLabel, Func<T> getDragAndDrop,
             GUIStyle style, params GUILayoutOption[] layoutOptions)
         {
-            var id = CheckCommand(ref selected);
+            int id = CheckCommand(ref selected);
 
             if (GUILayout.Button(getLabel(selected), style, layoutOptions))
                 ObjectPickerWindow.Show(id, selected, getOptions(), suggestions, getLabel);
@@ -123,7 +123,7 @@ namespace UltEvents.Editor
         /// <summary>Draws a field which lets you pick a <see cref="Type"></see> from a list and returns the selected <see cref="Type.AssemblyQualifiedName"/>.</summary>
         public static string DrawTypeField(Rect area, string selectedTypeName, Func<List<Type>> getOptions, int suggestions, GUIStyle style)
         {
-            var selected = Type.GetType(selectedTypeName);
+            Type selected = Type.GetType(selectedTypeName);
 
             selected = Draw(area, selected, getOptions, suggestions,
                getLabel: type => new GUIContent(type != null ? type.GetNameCS() : "No Type Selected"),
@@ -147,7 +147,7 @@ namespace UltEvents.Editor
         {
             for (int i = options.Count - 1; i >= suggestions; i--)
             {
-                var obj = options[i];
+                T obj = options[i];
                 for (int j = 0; j < suggestions; j++)
                 {
                     if (obj == options[j])
@@ -163,7 +163,7 @@ namespace UltEvents.Editor
 
         private static int CheckCommand<T>(ref T selected)
         {
-            var id = GUIUtility.GetControlID(FocusType.Passive);
+            int id = GUIUtility.GetControlID(FocusType.Passive);
             ObjectPickerWindow.TryGetPickedObject(id, ref selected);
             return id;
         }
@@ -172,10 +172,10 @@ namespace UltEvents.Editor
 
         private static void CheckDragAndDrop<T>(Rect area, ref T selected, Func<List<T>> getOptions, Func<T> getDragAndDrop)
         {
-            var currentEvent = Event.current;
+            Event currentEvent = Event.current;
             if (DragAndDrop.objectReferences.Length == 1 && area.Contains(currentEvent.mousePosition))
             {
-                var drop = getDragAndDrop();
+                T drop = getDragAndDrop();
 
                 // If the dragged object is a valid type, continue.
                 if (!getOptions().Contains(drop))
@@ -272,7 +272,7 @@ namespace UltEvents.Editor
             _FieldID = fieldID;
             _HasPickedObject = false;
 
-            var window = CreateInstance<ObjectPickerWindow>();
+            ObjectPickerWindow window = CreateInstance<ObjectPickerWindow>();
             window.titleContent = new GUIContent("Pick a " + typeof(T).GetNameCS());
             window.minSize = new Vector2(112, 100);
 
@@ -358,13 +358,13 @@ namespace UltEvents.Editor
 
             UpdateLabelWidthCalculation();
 
-            var area = new Rect(0, 0, position.width, position.height);
+            Rect area = new Rect(0, 0, position.width, position.height);
 
             DrawSearchBar(ref area);
 
             area.yMax = position.height;
 
-            var viewRect = CalculateViewRect(area.height);
+            Rect viewRect = CalculateViewRect(area.height);
 
             // Selection List.
             _ScrollPosition = GUI.BeginScrollView(area, _ScrollPosition, viewRect);
@@ -391,12 +391,12 @@ namespace UltEvents.Editor
         {
             if (_LabelWidthCalculationProgress < Labels.Count)
             {
-                var calculationCount = 0;
+                int calculationCount = 0;
                 do
                 {
-                    var label = Labels[_LabelWidthCalculationProgress];
+                    GUIContent label = Labels[_LabelWidthCalculationProgress];
 
-                    var width = InternalGUI.ButtonStyle.CalcSize(label).x;
+                    float width = InternalGUI.ButtonStyle.CalcSize(label).x;
                     if (_MaxLabelWidth < width)
                         _MaxLabelWidth = width;
                 }
@@ -410,7 +410,7 @@ namespace UltEvents.Editor
 
         private bool CheckInput()
         {
-            var currentEvent = Event.current;
+            Event currentEvent = Event.current;
             if (currentEvent.type == EventType.KeyUp)
             {
                 switch (currentEvent.keyCode)
@@ -449,7 +449,7 @@ namespace UltEvents.Editor
 
                 GUI.SetNextControlName("SearchFilter");
                 EditorGUI.BeginChangeCheck();
-                var searchText = GUI.TextField(area, _SearchText, InternalGUI.SearchBarStyle);
+                string searchText = GUI.TextField(area, _SearchText, InternalGUI.SearchBarStyle);
                 if (EditorGUI.EndChangeCheck())
                     OnSearchTextChanged(searchText);
                 EditorGUI.FocusTextInControl("SearchFilter");
@@ -502,7 +502,7 @@ namespace UltEvents.Editor
 
                 for (int i = 0; i < Labels.Count; i++)
                 {
-                    var label = Labels[i];
+                    GUIContent label = Labels[i];
                     if (IsVisibleInSearch(text, label.text))
                     {
                         SearchedLabels.Add(label);
@@ -526,7 +526,7 @@ namespace UltEvents.Editor
 
         private Rect CalculateViewRect(float height)
         {
-            var area = new Rect();
+            Rect area = new Rect();
 
             if (HasSearchText)
             {
@@ -556,8 +556,8 @@ namespace UltEvents.Editor
 
         private void DetermineVisibleRange(out int firstVisibleField, out int lastVisibleField)
         {
-            var top = _ScrollPosition.y;
-            var bottom = top + position.height - InternalGUI.SearchBarHeight;
+            float top = _ScrollPosition.y;
+            float bottom = top + position.height - InternalGUI.SearchBarHeight;
             if (_Suggestions > 0)
             {
                 top -= InternalGUI.HeaddingStyle.fixedHeight * 2;
@@ -621,9 +621,9 @@ namespace UltEvents.Editor
 
         private void DrawOption(Rect area, List<GUIContent> labels, IList objects, int index)
         {
-            var obj = objects[index];
-            var wasOn = obj == _SelectedObject;
-            var isOn = GUI.Toggle(area, wasOn, labels[index], wasOn ? InternalGUI.SelectedButtonStyle : InternalGUI.ButtonStyle);
+            object obj = objects[index];
+            bool wasOn = obj == _SelectedObject;
+            bool isOn = GUI.Toggle(area, wasOn, labels[index], wasOn ? InternalGUI.SelectedButtonStyle : InternalGUI.ButtonStyle);
             if (isOn != wasOn)
             {
                 if (wasOn)
@@ -649,12 +649,12 @@ namespace UltEvents.Editor
 
         private void OffsetSelectedIndex(int offset)
         {
-            var objects = HasSearchText ? SearchedObjects : _Objects;
+            IList objects = HasSearchText ? SearchedObjects : _Objects;
 
             if (objects.Count == 0)
                 return;
 
-            var index = objects.IndexOf(_SelectedObject);
+            int index = objects.IndexOf(_SelectedObject);
             if (index >= 0)
                 _SelectedObject = objects[Mathf.Clamp(index + offset, 0, objects.Count)];
             else

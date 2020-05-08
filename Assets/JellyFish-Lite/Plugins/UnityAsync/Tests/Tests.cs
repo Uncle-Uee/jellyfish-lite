@@ -161,7 +161,7 @@ public class Tests : MonoBehaviour
 
 		float t = Time.time;
 		
-		var task = Task.Delay(1000);
+		Task task = Task.Delay(1000);
 		
 		Debug.Log("TaskYieldTest: Should print out approx. \"1\".");
 
@@ -172,7 +172,7 @@ public class Tests : MonoBehaviour
 
 	async void ConfigureAwaitTest1()
 	{
-		var go = new GameObject("Owner");
+		GameObject go = new GameObject("Owner");
 
 		async void DestroyOwner()
 		{
@@ -214,7 +214,7 @@ public class Tests : MonoBehaviour
 	{
 		float t = Time.time;
 		
-		var tokenSource = new CancellationTokenSource();
+		CancellationTokenSource tokenSource = new CancellationTokenSource();
 		tokenSource.CancelAfter(1000);
 		
 		Debug.Log("ConfigureAwaitTest3: Should print out \"Cancelled\" in 1 second.");

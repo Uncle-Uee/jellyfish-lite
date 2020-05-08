@@ -144,7 +144,7 @@ namespace UltEvents
         {
             if (method != null)
             {
-                var e = new UltEvent<T0, T1, T2>();
+                UltEvent<T0, T1, T2> e = new UltEvent<T0, T1, T2>();
                 e += method;
                 return e;
             }

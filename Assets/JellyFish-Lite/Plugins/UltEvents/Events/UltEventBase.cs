@@ -1,6 +1,7 @@
 ﻿// UltEvents // Copyright 2019 Kybernetik //
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
@@ -153,7 +154,7 @@ namespace UltEvents
             if (_PersistentCalls == null)
                 _PersistentCalls = new List<PersistentCall>(4);
 
-            var call = new PersistentCall(method);
+            PersistentCall call = new PersistentCall(method);
             call.EventReference = this;
             _PersistentCalls.Add(call);
             return call;
@@ -169,7 +170,7 @@ namespace UltEvents
 
             for (int i = 0; i < _PersistentCalls.Count; i++)
             {
-                var call = _PersistentCalls[i];
+                PersistentCall call = _PersistentCalls[i];
                 if (call.GetMethodSafe() == method.Method && ReferenceEquals(call.Target, method.Target))
                 {
                     _PersistentCalls.RemoveAt(i);
@@ -218,7 +219,7 @@ namespace UltEvents
                         _PersistentCalls[i].InvocationIndex = currentInvocationIndex;
                         _PersistentCalls[i].EventReference = this;
                         
-                        var result = _PersistentCalls[i].Invoke();
+                        object result = _PersistentCalls[i].Invoke();
 
                         if(!LinkedValueDictionary.ContainsKey(currentInvocationIndex))
                         {
@@ -298,12 +299,12 @@ namespace UltEvents
         {
             get
             {
-                var type = GetType();
+                Type type = GetType();
 
                 ParameterInfo[] parameters;
                 if (!EventTypeToParameters.TryGetValue(type, out parameters))
                 {
-                    var invokeMethod = type.GetMethod("Invoke", ParameterTypes);
+                    MethodInfo invokeMethod = type.GetMethod("Invoke", ParameterTypes);
                     if (invokeMethod == null || invokeMethod.DeclaringType == typeof(UltEvent) ||
                         invokeMethod.DeclaringType.Name.StartsWith(Names.UltEvent.Class + "`"))
                     {
@@ -330,7 +331,7 @@ namespace UltEvents
         {
             get
             {
-                var type = GetType();
+                Type type = GetType();
 
                 string parameters;
                 if (!EventTypeToParameterString.TryGetValue(type, out parameters))
@@ -341,9 +342,9 @@ namespace UltEvents
                     }
                     else
                     {
-                        var invokeMethodParameters = Parameters;
+                        ParameterInfo[] invokeMethodParameters = Parameters;
 
-                        var text = new StringBuilder();
+                        StringBuilder text = new StringBuilder();
 
                         text.Append(" (");
                         for (int i = 0; i < ParameterTypes.Length; i++)
@@ -418,7 +419,7 @@ namespace UltEvents
 
                 for (int i = 0; i < target._PersistentCalls.Count; i++)
                 {
-                    var call = new PersistentCall();
+                    PersistentCall call = new PersistentCall();
                     call.CopyFrom(target._PersistentCalls[i]);
                     _PersistentCalls.Add(call);
                 }
@@ -436,7 +437,7 @@ namespace UltEvents
         /// <summary>Returns a description of this event.</summary>
         public override string ToString()
         {
-            var text = new StringBuilder();
+            StringBuilder text = new StringBuilder();
             ToString(text);
             return text.ToString();
         }
@@ -451,11 +452,11 @@ namespace UltEvents
 
             text.Append("\n    DynamicCalls=");
 #if UNITY_EDITOR
-            var invocationList = GetDynamicCallInvocationList();
+            Delegate[] invocationList = GetDynamicCallInvocationList();
 #else
             var invocationList = DynamicCallsBase != null ? DynamicCallsBase.GetInvocationList() : null;
 #endif
-            var enumerator = invocationList != null ? invocationList.GetEnumerator() : null;
+            IEnumerator enumerator = invocationList != null ? invocationList.GetEnumerator() : null;
             UltEventUtils.AppendDeepToString(text, enumerator, "\n    ");
         }
 

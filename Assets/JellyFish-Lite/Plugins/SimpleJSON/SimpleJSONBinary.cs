@@ -52,7 +52,7 @@ namespace SimpleJSON
 
         public void SaveToBinaryStream(Stream aData)
         {
-            var W = new BinaryWriter(aData);
+            BinaryWriter W = new BinaryWriter(aData);
             SerializeBinary(W);
         }
 
@@ -106,7 +106,7 @@ namespace SimpleJSON
         public void SaveToBinaryFile(string aFileName)
         {
             Directory.CreateDirectory((new FileInfo(aFileName)).Directory.FullName);
-            using (var F = File.OpenWrite(aFileName))
+            using (FileStream F = File.OpenWrite(aFileName))
             {
                 SaveToBinaryStream(F);
             }
@@ -114,7 +114,7 @@ namespace SimpleJSON
 
         public string SaveToBinaryBase64()
         {
-            using (var stream = new MemoryStream())
+            using (MemoryStream stream = new MemoryStream())
             {
                 SaveToBinaryStream(stream);
                 stream.Position = 0;
@@ -142,7 +142,7 @@ namespace SimpleJSON
                         for (int i = 0; i < count; i++)
                         {
                             string key = aReader.ReadString();
-                            var val = DeserializeBinary(aReader);
+                            JSONNode val = DeserializeBinary(aReader);
                             tmp.Add(key, val);
                         }
                         return tmp;
@@ -209,7 +209,7 @@ namespace SimpleJSON
 
         public static JSONNode LoadFromBinaryStream(Stream aData)
         {
-            using (var R = new BinaryReader(aData))
+            using (BinaryReader R = new BinaryReader(aData))
             {
                 return DeserializeBinary(R);
             }
@@ -217,7 +217,7 @@ namespace SimpleJSON
 
         public static JSONNode LoadFromBinaryFile(string aFileName)
         {
-            using (var F = File.OpenRead(aFileName))
+            using (FileStream F = File.OpenRead(aFileName))
             {
                 return LoadFromBinaryStream(F);
             }
@@ -225,8 +225,8 @@ namespace SimpleJSON
 
         public static JSONNode LoadFromBinaryBase64(string aBase64)
         {
-            var tmp = Convert.FromBase64String(aBase64);
-            var stream = new MemoryStream(tmp);
+            byte[] tmp = Convert.FromBase64String(aBase64);
+            MemoryStream stream = new MemoryStream(tmp);
             stream.Position = 0;
             return LoadFromBinaryStream(stream);
         }

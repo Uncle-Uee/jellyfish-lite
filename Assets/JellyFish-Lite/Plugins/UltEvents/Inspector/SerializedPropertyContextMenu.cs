@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace UltEvents.Editor
 {
@@ -21,7 +22,7 @@ namespace UltEvents.Editor
                 if (property.propertyType != SerializedPropertyType.Generic)
                     return;
 
-                var accessor = SerializedPropertyAccessor.GetAccessor(property);
+                SerializedPropertyAccessor accessor = SerializedPropertyAccessor.GetAccessor(property);
                 if (accessor == null)
                     return;
 
@@ -48,10 +49,10 @@ namespace UltEvents.Editor
             {
                 menu.AddItem(new GUIContent("Invoke Event"), false, () =>
                 {
-                    var events = SerializedPropertyAccessor.GetValues<UltEvent>(property);
+                    UltEvent[] events = SerializedPropertyAccessor.GetValues<UltEvent>(property);
                     for (int i = 0; i < events.Length; i++)
                     {
-                        var e = events[i];
+                        UltEvent e = events[i];
                         if (e != null)
                             e.Invoke();
                     }
@@ -72,8 +73,8 @@ namespace UltEvents.Editor
 
             menu.AddItem(new GUIContent("Log Description"), false, () =>
             {
-                var targets = property.serializedObject.targetObjects;
-                var events = SerializedPropertyAccessor.GetValues<UltEventBase>(property);
+                Object[] targets = property.serializedObject.targetObjects;
+                UltEventBase[] events = SerializedPropertyAccessor.GetValues<UltEventBase>(property);
 
                 for (int i = 0; i < events.Length; i++)
                     Debug.Log(events[i], targets[i]);
@@ -104,7 +105,7 @@ namespace UltEvents.Editor
             {
                 SerializedPropertyAccessor.ModifyValues<UltEventBase>(property, e =>
                 {
-                    var call = new PersistentCall();
+                    PersistentCall call = new PersistentCall();
                     Clipboard.PasteCall(call);
 
                     if (e._PersistentCalls == null)
@@ -163,7 +164,7 @@ namespace UltEvents.Editor
 
         private static void ForEachTarget(SerializedProperty property, Action<SerializedProperty> function)
         {
-            var targets = property.serializedObject.targetObjects;
+            Object[] targets = property.serializedObject.targetObjects;
 
             if (targets.Length == 1)
             {
@@ -172,10 +173,10 @@ namespace UltEvents.Editor
             }
             else
             {
-                var path = property.propertyPath;
+                string path = property.propertyPath;
                 for (int i = 0; i < targets.Length; i++)
                 {
-                    using (var serializedObject = new SerializedObject(targets[i]))
+                    using (SerializedObject serializedObject = new SerializedObject(targets[i]))
                     {
                         property = serializedObject.FindProperty(path);
                         function(property);

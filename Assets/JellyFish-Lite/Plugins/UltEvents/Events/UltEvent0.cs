@@ -144,7 +144,7 @@ namespace UltEvents
         {
             if (method != null)
             {
-                var e = new UltEvent();
+                UltEvent e = new UltEvent();
                 e += method;
                 return e;
             }

@@ -68,7 +68,7 @@ namespace UltEvents.Editor
                 case SerializedPropertyType.Gradient:
                 case SerializedPropertyType.Character:
                 default:
-                    var accessor = GetAccessor(property);
+                    SerializedPropertyAccessor accessor = GetAccessor(property);
                     //if (Event.current.type != EventType.Layout && Event.current.type != EventType.Repaint) Debug.Log(accessor);
                     if (accessor != null)
                         return accessor.GetValue(targetObject);
@@ -98,8 +98,8 @@ namespace UltEvents.Editor
         {
             try
             {
-                var targetObjects = property.serializedObject.targetObjects;
-                var values = new T[targetObjects.Length];
+                Object[] targetObjects = property.serializedObject.targetObjects;
+                T[] values = new T[targetObjects.Length];
                 for (int i = 0; i < values.Length; i++)
                 {
                     values[i] = (T)GetValue(property, targetObjects[i]);
@@ -161,7 +161,7 @@ namespace UltEvents.Editor
                 case SerializedPropertyType.Gradient:
                 case SerializedPropertyType.Character:
                 default:
-                    var accessor = GetAccessor(property);
+                    SerializedPropertyAccessor accessor = GetAccessor(property);
                     if (accessor != null)
                         accessor.SetValue(targetObject, value);
                     break;
@@ -212,10 +212,10 @@ namespace UltEvents.Editor
                 case SerializedPropertyType.Gradient:
                 case SerializedPropertyType.Character:
                 default:
-                    var accessor = GetAccessor(property);
+                    SerializedPropertyAccessor accessor = GetAccessor(property);
                     if (accessor != null)
                     {
-                        var targets = property.serializedObject.targetObjects;
+                        Object[] targets = property.serializedObject.targetObjects;
                         for (int i = 0; i < targets.Length; i++)
                         {
                             accessor.SetValue(targets[i], value);
@@ -237,7 +237,7 @@ namespace UltEvents.Editor
         {
             RecordUndo(property, undoName);
 
-            var values = GetValues<T>(property);
+            T[] values = GetValues<T>(property);
             for (int i = 0; i < values.Length; i++)
                 method(values[i]);
 
@@ -261,7 +261,7 @@ namespace UltEvents.Editor
         /// </summary>
         public static void OnPropertyChanged(SerializedProperty property)
         {
-            var targets = property.serializedObject.targetObjects;
+            Object[] targets = property.serializedObject.targetObjects;
 
             // If this change is made to a prefab, this makes sure that any instances in the scene will be updated.
             for (int i = 0; i < targets.Length; i++)
@@ -363,10 +363,10 @@ namespace UltEvents.Editor
         /// </summary>
         public static SerializedPropertyAccessor GetAccessor(SerializedProperty property)
         {
-            var propertyPath = property.propertyPath;
+            string propertyPath = property.propertyPath;
             object targetObject = property.serializedObject.targetObject;
 
-            var type = targetObject.GetType();
+            Type type = targetObject.GetType();
             return GetAccessor(propertyPath, ref type);
         }
 
@@ -384,16 +384,16 @@ namespace UltEvents.Editor
             SerializedPropertyAccessor accessor;
             if (!pathToAccessor.TryGetValue(propertyPath, out accessor))
             {
-                var nameStartIndex = propertyPath.LastIndexOf('.');
+                int nameStartIndex = propertyPath.LastIndexOf('.');
                 string elementName;
                 SerializedPropertyAccessor parent;
 
                 // Array.
                 if (nameStartIndex > 6 && nameStartIndex < propertyPath.Length - 7 && string.Compare(propertyPath, nameStartIndex - 6, ".Array.data[", 0, 12) == 0)
                 {
-                    var index = int.Parse(propertyPath.Substring(nameStartIndex + 6, propertyPath.Length - nameStartIndex - 7));
+                    int index = int.Parse(propertyPath.Substring(nameStartIndex + 6, propertyPath.Length - nameStartIndex - 7));
 
-                    var nameEndIndex = nameStartIndex - 6;
+                    int nameEndIndex = nameStartIndex - 6;
                     nameStartIndex = propertyPath.LastIndexOf('.', nameEndIndex - 1);
 
                     elementName = propertyPath.Substring(nameStartIndex + 1, nameEndIndex - nameStartIndex - 1);
@@ -428,7 +428,7 @@ namespace UltEvents.Editor
                         parent = null;
                     }
 
-                    var field = GetField(parent != null ? parent.FieldType : propertyType, elementName);
+                    FieldInfo field = GetField(parent != null ? parent.FieldType : propertyType, elementName);
 
                     if (field != null)
                         accessor = new SerializedPropertyAccessor(parent, field);
@@ -451,7 +451,7 @@ namespace UltEvents.Editor
         {
             while (true)
             {
-                var field = declaringType.GetField(name, UltEventUtils.InstanceBindings);
+                FieldInfo field = declaringType.GetField(name, UltEventUtils.InstanceBindings);
                 if (field != null)
                     return field;
 
@@ -569,11 +569,11 @@ namespace UltEvents.Editor
 
         public override object GetValue(object obj)
         {
-            var collection = base.GetValue(obj);
+            object collection = base.GetValue(obj);
             if (collection == null)
                 return null;
 
-            var list = collection as IList;
+            IList list = collection as IList;
             if (list != null)
             {
                 if (ElementIndex < list.Count)
@@ -581,7 +581,7 @@ namespace UltEvents.Editor
                 return null;
             }
 
-            var enumerator = ((IEnumerable)collection).GetEnumerator();
+            IEnumerator enumerator = ((IEnumerable)collection).GetEnumerator();
 
             for (int i = 0; i < ElementIndex; i++)
             {
@@ -596,11 +596,11 @@ namespace UltEvents.Editor
 
         public override void SetValue(object obj, object value)
         {
-            var collection = base.GetValue(obj);
+            object collection = base.GetValue(obj);
             if (collection == null)
                 return;
 
-            var list = collection as IList;
+            IList list = collection as IList;
             if (list != null)
             {
                 if (ElementIndex < list.Count)
