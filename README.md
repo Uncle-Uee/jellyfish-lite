@@ -10,29 +10,14 @@ I hope this SDK helps you the way it helps me.
 The Sprite Extractor is a Simple tool that Allows you to easily Extract Sub Sprites from a Spritesheet.
 It comes with a Right Click to use feature as well as a Sprite Extractor Window.
 
-Right Click Feature:
-1. Right Click on a Spritesheet
-2. Navigate to JellyFish/SpriteExtractor
-3. Choose between Source and Meta
-+ Meta Allows you to Extract a single or multiple Sub Sprites from the Spritesheet dropdown.
-+ Source Allows you to Extract all the Sub Sprites.
-4. Extract at current location or anywhere else on your machine.
-5. Done!
-
 From Source:
 ![](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/sprite-extractor-from-source.gif)
 
 From Meta:
 ![](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/sprite-extractor-from-meta.gif)
 
-SpriteExtractor Window
-1. Select JellyFish from the Menubar
-2. Select Sprite Extractor
-3. Drag and Drop your Sprite
-4. Click Extract
-5. Done!
-
-![Sprite Extractor Window](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/sprite-extractor-window.gif)
+From Sprite Extractor Window:
+![](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/sprite-extractor-window.gif)
 
 ### Gif Extractor
 
