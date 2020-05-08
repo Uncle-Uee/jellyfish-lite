@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace UltEvents.Editor
 {
@@ -27,10 +28,10 @@ namespace UltEvents.Editor
             if (DrawerState.Current.TryGetLinkable(out linkIndex, out linkType))
                 area.width -= SpecialModeToggleWidth;
 
-            var wideMode = EditorGUIUtility.wideMode;
+            bool wideMode = EditorGUIUtility.wideMode;
             EditorGUIUtility.wideMode = true;
 
-            var typeProperty = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Type);
+            SerializedProperty typeProperty = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Type);
             switch ((PersistentArgumentType)typeProperty.enumValueIndex)
             {
                 case PersistentArgumentType.None: DoErrorMessageGUI(area, argumentProperty, label, "Error: argument type not set"); break;
@@ -71,7 +72,7 @@ namespace UltEvents.Editor
 
             area.xMin += EditorGUIUtility.labelWidth;
 
-            var color = GUI.color;
+            Color color = GUI.color;
             GUI.color = Color.red;
             GUI.Label(area, message, EditorStyles.whiteLabel);
             GUI.color = color;
@@ -82,12 +83,12 @@ namespace UltEvents.Editor
 
         private static void DoBoolGUI(Rect area, SerializedProperty argumentProperty, GUIContent label)
         {
-            var i = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Int);
+            SerializedProperty i = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Int);
 
             label = EditorGUI.BeginProperty(area, label, i);
             EditorGUI.BeginChangeCheck();
 
-            var value = EditorGUI.Toggle(area, label, i.intValue != 0);
+            bool value = EditorGUI.Toggle(area, label, i.intValue != 0);
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -100,12 +101,12 @@ namespace UltEvents.Editor
 
         private static void DoStringGUI(Rect area, SerializedProperty argumentProperty, GUIContent label)
         {
-            var s = argumentProperty.FindPropertyRelative(Names.PersistentArgument.String);
+            SerializedProperty s = argumentProperty.FindPropertyRelative(Names.PersistentArgument.String);
 
             label = EditorGUI.BeginProperty(area, label, s);
             EditorGUI.BeginChangeCheck();
 
-            var value = EditorGUI.TextField(area, label, s.stringValue);
+            string value = EditorGUI.TextField(area, label, s.stringValue);
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -118,12 +119,12 @@ namespace UltEvents.Editor
 
         private static void DoIntGUI(Rect area, SerializedProperty argumentProperty, GUIContent label)
         {
-            var i = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Int);
+            SerializedProperty i = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Int);
 
             label = EditorGUI.BeginProperty(area, label, i);
             EditorGUI.BeginChangeCheck();
 
-            var value = EditorGUI.IntField(area, label, i.intValue);
+            int value = EditorGUI.IntField(area, label, i.intValue);
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -138,14 +139,14 @@ namespace UltEvents.Editor
 
         private static void DoEnumGUI(Rect area, SerializedProperty argumentProperty, GUIContent label)
         {
-            var enumType = SerializedPropertyAccessor.GetValue<PersistentArgument>(argumentProperty).SystemType;
+            Type enumType = SerializedPropertyAccessor.GetValue<PersistentArgument>(argumentProperty).SystemType;
             if (enumType == null)
             {
                 DoErrorMessageGUI(area, argumentProperty, label, "Error: enum type not set");
                 return;
             }
 
-            var i = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Int);
+            SerializedProperty i = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Int);
 
             label = EditorGUI.BeginProperty(area, label, argumentProperty);
             EditorGUI.BeginChangeCheck();
@@ -201,10 +202,10 @@ namespace UltEvents.Editor
                 _Values.Add(enumType, values);
             }
 
-            var maskValue = 0;
+            int maskValue = 0;
             for (int i = 0; i < values.Length; i++)
             {
-                var v = values[i];
+                int v = values[i];
                 if (v != 0)
                 {
                     if ((enumValue & v) == v)
@@ -217,10 +218,10 @@ namespace UltEvents.Editor
             }
 
             EditorGUI.BeginChangeCheck();
-            var newMaskVal = EditorGUI.MaskField(area, label, maskValue, names);
+            int newMaskVal = EditorGUI.MaskField(area, label, maskValue, names);
             if (EditorGUI.EndChangeCheck())
             {
-                var changes = maskValue ^ newMaskVal;
+                int changes = maskValue ^ newMaskVal;
 
                 for (int i = 0; i < values.Length; i++)
                 {
@@ -228,16 +229,14 @@ namespace UltEvents.Editor
                     {
                         if ((newMaskVal & (1 << i)) != 0)
                         {
-                            var v = values[i];
+                            int v = values[i];
                             if (v == 0)// special case: if "0" is set, just set the value to 0.
                             {
                                 enumValue = 0;
                                 break;
                             }
-                            else
-                            {
-                                enumValue |= v;
-                            }
+
+                            enumValue |= v;
                         }
                         else
                         {
@@ -256,12 +255,12 @@ namespace UltEvents.Editor
 
         private static void DoFloatGUI(Rect area, SerializedProperty argumentProperty, GUIContent label)
         {
-            var x = argumentProperty.FindPropertyRelative(Names.PersistentArgument.X);
+            SerializedProperty x = argumentProperty.FindPropertyRelative(Names.PersistentArgument.X);
 
             label = EditorGUI.BeginProperty(area, label, x);
             EditorGUI.BeginChangeCheck();
 
-            var value = EditorGUI.FloatField(area, label, x.floatValue);
+            float value = EditorGUI.FloatField(area, label, x.floatValue);
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -278,14 +277,14 @@ namespace UltEvents.Editor
         {
             if (_Vector2Labels == null)
             {
-                _Vector2Labels = new GUIContent[]
+                _Vector2Labels = new[]
                 {
                     new GUIContent("X"),
                     new GUIContent("Y"),
                 };
             }
 
-            var x = argumentProperty.FindPropertyRelative(Names.PersistentArgument.X);
+            SerializedProperty x = argumentProperty.FindPropertyRelative(Names.PersistentArgument.X);
 
             label = EditorGUI.BeginProperty(area, label, argumentProperty);
             EditorGUI.MultiPropertyField(area, _Vector2Labels, x, label);
@@ -300,7 +299,7 @@ namespace UltEvents.Editor
         {
             if (_Vector3Labels == null)
             {
-                _Vector3Labels = new GUIContent[]
+                _Vector3Labels = new[]
                 {
                     new GUIContent("X"),
                     new GUIContent("Y"),
@@ -308,7 +307,7 @@ namespace UltEvents.Editor
                 };
             }
 
-            var x = argumentProperty.FindPropertyRelative(Names.PersistentArgument.X);
+            SerializedProperty x = argumentProperty.FindPropertyRelative(Names.PersistentArgument.X);
 
             label = EditorGUI.BeginProperty(area, label, argumentProperty);
             EditorGUI.MultiPropertyField(area, _Vector3Labels, x, label);
@@ -323,7 +322,7 @@ namespace UltEvents.Editor
         {
             if (_Vector4Labels == null)
             {
-                _Vector4Labels = new GUIContent[]
+                _Vector4Labels = new[]
                 {
                     new GUIContent("X"),
                     new GUIContent("Y"),
@@ -332,7 +331,7 @@ namespace UltEvents.Editor
                 };
             }
 
-            var x = argumentProperty.FindPropertyRelative(Names.PersistentArgument.X);
+            SerializedProperty x = argumentProperty.FindPropertyRelative(Names.PersistentArgument.X);
 
             label = EditorGUI.BeginProperty(area, label, argumentProperty);
             EditorGUI.MultiPropertyField(area, _Vector4Labels, x, label);
@@ -349,9 +348,9 @@ namespace UltEvents.Editor
 
             if (EditorGUI.EndChangeCheck())
             {
-                var x = argumentProperty.FindPropertyRelative(Names.PersistentArgument.X);
-                var y = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Y);
-                var z = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Z);
+                SerializedProperty x = argumentProperty.FindPropertyRelative(Names.PersistentArgument.X);
+                SerializedProperty y = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Y);
+                SerializedProperty z = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Z);
 
                 x.floatValue %= 360;
                 y.floatValue %= 360;
@@ -363,15 +362,15 @@ namespace UltEvents.Editor
 
         private static void DoColorGUI(Rect area, SerializedProperty argumentProperty, GUIContent label)
         {
-            var x = argumentProperty.FindPropertyRelative(Names.PersistentArgument.X);
-            var y = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Y);
-            var z = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Z);
-            var w = argumentProperty.FindPropertyRelative(Names.PersistentArgument.W);
+            SerializedProperty x = argumentProperty.FindPropertyRelative(Names.PersistentArgument.X);
+            SerializedProperty y = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Y);
+            SerializedProperty z = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Z);
+            SerializedProperty w = argumentProperty.FindPropertyRelative(Names.PersistentArgument.W);
 
             label = EditorGUI.BeginProperty(area, label, argumentProperty);
             EditorGUI.BeginChangeCheck();
 
-            var value = EditorGUI.ColorField(area, label, new Color(x.floatValue, y.floatValue, z.floatValue, w.floatValue));
+            Color value = EditorGUI.ColorField(area, label, new Color(x.floatValue, y.floatValue, z.floatValue, w.floatValue));
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -387,18 +386,18 @@ namespace UltEvents.Editor
 
         private static void DoColor32GUI(Rect area, SerializedProperty argumentProperty, GUIContent label)
         {
-            var i = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Int);
+            SerializedProperty i = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Int);
 
             label = EditorGUI.BeginProperty(area, label, argumentProperty);
             EditorGUI.BeginChangeCheck();
 
-            var intValue = i.intValue;
-            var value = EditorGUI.ColorField(area, label,
-                new Color32((byte)(intValue), (byte)(intValue >> 8), (byte)(intValue >> 16), (byte)(intValue >> 24)));
+            int intValue = i.intValue;
+            Color value = EditorGUI.ColorField(area, label,
+                                               new Color32((byte)(intValue), (byte)(intValue >> 8), (byte)(intValue >> 16), (byte)(intValue >> 24)));
 
             if (EditorGUI.EndChangeCheck())
             {
-                var value32 = (Color32)value;
+                Color32 value32 = (Color32)value;
                 i.intValue = value32.r | (value32.g << 8) | (value32.b << 16) | (value32.a << 24);
             }
             EditorGUI.EndProperty();
@@ -412,7 +411,7 @@ namespace UltEvents.Editor
         {
             if (_RectLabels == null)
             {
-                _RectLabels = new GUIContent[]
+                _RectLabels = new[]
                 {
                     new GUIContent("X"),
                     new GUIContent("Y"),
@@ -421,7 +420,7 @@ namespace UltEvents.Editor
                 };
             }
 
-            var x = argumentProperty.FindPropertyRelative(Names.PersistentArgument.X);
+            SerializedProperty x = argumentProperty.FindPropertyRelative(Names.PersistentArgument.X);
 
             label = EditorGUI.BeginProperty(area, label, argumentProperty);
             EditorGUI.MultiPropertyField(area, _RectLabels, x, label);
@@ -432,14 +431,14 @@ namespace UltEvents.Editor
 
         private static void DoObjectGUI(Rect area, SerializedProperty argumentProperty, GUIContent label)
         {
-            var o = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Object);
+            SerializedProperty o = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Object);
 
             label = EditorGUI.BeginProperty(area, label, o);
             EditorGUI.BeginChangeCheck();
 
-            var type = SerializedPropertyAccessor.GetValue<PersistentArgument>(argumentProperty).SystemType ?? typeof(UnityEngine.Object);
+            Type type = SerializedPropertyAccessor.GetValue<PersistentArgument>(argumentProperty).SystemType ?? typeof(Object);
 
-            var value = EditorGUI.ObjectField(area, label, o.objectReferenceValue, type, true);
+            Object value = EditorGUI.ObjectField(area, label, o.objectReferenceValue, type, true);
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -452,7 +451,7 @@ namespace UltEvents.Editor
 
         private static void DoLinkedValueGUI(Rect area, SerializedProperty argumentProperty, GUIContent label)
         {
-            var color = GUI.color;
+            Color color = GUI.color;
 
             label = EditorGUI.BeginProperty(area, label, argumentProperty);
 
@@ -460,9 +459,9 @@ namespace UltEvents.Editor
 
             area.xMin += EditorGUIUtility.labelWidth;
 
-            var argument = SerializedPropertyAccessor.GetValue<PersistentArgument>(argumentProperty);
-            var callIndex = argument._Int;
-            var argumentType = argument.SystemType;
+            PersistentArgument argument = SerializedPropertyAccessor.GetValue<PersistentArgument>(argumentProperty);
+            int callIndex = argument._Int;
+            Type argumentType = argument.SystemType;
 
             if (argumentType == null)
             {
@@ -475,8 +474,8 @@ namespace UltEvents.Editor
                 {
                     case PersistentArgumentType.Parameter:
                         label.text = "Parameter " + callIndex;
-                        var parameterTypes = DrawerState.Current.Event.ParameterTypes;
-                        var parameters = DrawerState.Current.Event.Parameters;
+                        Type[] parameterTypes = DrawerState.Current.Event.ParameterTypes;
+                        ParameterInfo[] parameters = DrawerState.Current.Event.Parameters;
 
                         if (callIndex < 0 || callIndex >= parameterTypes.Length)
                         {
@@ -485,7 +484,7 @@ namespace UltEvents.Editor
                         }
                         else
                         {
-                            var parameterType = parameterTypes[callIndex];
+                            Type parameterType = parameterTypes[callIndex];
 
                             label.text += " (" + parameterType.GetNameCS(false);
 
@@ -504,7 +503,7 @@ namespace UltEvents.Editor
 
                     case PersistentArgumentType.ReturnValue:
                         label.text = "Return Value " + callIndex + ": ";
-                        var linkedMethod = DrawerState.Current.GetLinkedMethod(callIndex);
+                        MethodBase linkedMethod = DrawerState.Current.GetLinkedMethod(callIndex);
 
                         if (linkedMethod == null)
                         {
@@ -545,28 +544,28 @@ namespace UltEvents.Editor
 
         private static void ShowLinkMenu(Rect area, SerializedProperty argumentProperty, Type systemType, int linkIndex, PersistentArgumentType linkType)
         {
-            var typeProperty = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Type);
-            var intProperty = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Int);
+            SerializedProperty typeProperty = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Type);
+            SerializedProperty intProperty = argumentProperty.FindPropertyRelative(Names.PersistentArgument.Int);
 
-            var menu = new GenericMenu();
+            GenericMenu menu = new GenericMenu();
             menu.AddDisabledItem(new GUIContent("Link to " + systemType.GetNameCS()));
 
             // Parameters.
-            var parameters = DrawerState.Current.Event.Parameters;
+            ParameterInfo[] parameters = DrawerState.Current.Event.Parameters;
 
             for (int i = 0; i < DrawerState.Current.Event.ParameterTypes.Length; i++)
             {
-                var parameterType = DrawerState.Current.Event.ParameterTypes[i];
+                Type parameterType = DrawerState.Current.Event.ParameterTypes[i];
                 if (!systemType.IsAssignableFrom(parameterType))
                     continue;
 
-                var content = parameters == null ?
-                    new GUIContent(string.Concat("Parameter ", i.ToString(), " (", parameterType.GetNameCS(false), ")")) :
-                    new GUIContent(string.Concat("Parameter ", i.ToString(), " (", parameterType.GetNameCS(false), " ", parameters[i].Name, ")"));
+                GUIContent content = parameters == null ?
+                                         new GUIContent(string.Concat("Parameter ", i.ToString(), " (", parameterType.GetNameCS(false), ")")) :
+                                         new GUIContent(string.Concat("Parameter ", i.ToString(), " (", parameterType.GetNameCS(false), " ", parameters[i].Name, ")"));
 
-                var on = i == linkIndex && linkType == PersistentArgumentType.Parameter;
+                bool on = i == linkIndex && linkType == PersistentArgumentType.Parameter;
 
-                var index = i;
+                int index = i;
                 menu.AddItem(content, on, () =>
                 {
                     typeProperty.enumValueIndex = (int)PersistentArgumentType.Parameter;
@@ -578,15 +577,15 @@ namespace UltEvents.Editor
             // Returned Values.
             for (int i = 0; i < DrawerState.Current.PreviousCallCount; i++)
             {
-                var method = DrawerState.Current.GetPreviousCall(i).GetMethodSafe();
+                MethodBase method = DrawerState.Current.GetPreviousCall(i).GetMethodSafe();
                 if (method == null || !systemType.IsAssignableFrom(method.GetReturnType()))
                     continue;
 
-                var content = new GUIContent(string.Concat("Returned Value ", i.ToString(), " (", MethodSelectionMenu.GetMethodSignature(method, true), ")"));
+                GUIContent content = new GUIContent(string.Concat("Returned Value ", i.ToString(), " (", MethodSelectionMenu.GetMethodSignature(method, true), ")"));
 
-                var on = i == linkIndex && linkType == PersistentArgumentType.ReturnValue;
+                bool on = i == linkIndex && linkType == PersistentArgumentType.ReturnValue;
 
-                var index = i;
+                int index = i;
                 menu.AddItem(content, on, () =>
                 {
                     typeProperty.enumValueIndex = (int)PersistentArgumentType.ReturnValue;
@@ -620,15 +619,15 @@ namespace UltEvents.Editor
             area.x += area.width + 2;
             area.width = SpecialModeToggleWidth - 2;
 
-            var currentArgument = DrawerState.Current.call._PersistentArguments[DrawerState.Current.parameterIndex];
+            PersistentArgument currentArgument = DrawerState.Current.call._PersistentArguments[DrawerState.Current.parameterIndex];
 
-            var wasLink =
+            bool wasLink =
                 currentArgument.Type == PersistentArgumentType.Parameter ||
                 currentArgument.Type == PersistentArgumentType.ReturnValue;
 
             if (wasLink != GUI.Toggle(area, wasLink, _LinkToggleContent, _LinkToggleStyle))
             {
-                SerializedPropertyAccessor.ModifyValues<PersistentArgument>(argumentProperty, (argument) =>
+                SerializedPropertyAccessor.ModifyValues<PersistentArgument>(argumentProperty, argument =>
                 {
                     if (wasLink)
                     {
@@ -636,7 +635,7 @@ namespace UltEvents.Editor
 
                         argument.SystemType = argument.SystemType;
 
-                        var parameter = DrawerState.Current.CurrentParameter;
+                        ParameterInfo parameter = DrawerState.Current.CurrentParameter;
                         if ((parameter.Attributes & ParameterAttributes.HasDefault) == ParameterAttributes.HasDefault)
                             argument.Value = parameter.DefaultValue;
                     }
@@ -644,7 +643,7 @@ namespace UltEvents.Editor
                     {
                         // Link to the specified return value.
 
-                        var argumentType = argument.Type;
+                        PersistentArgumentType argumentType = argument.Type;
                         argument.Type = linkType;
                         argument._Int = linkIndex;
 

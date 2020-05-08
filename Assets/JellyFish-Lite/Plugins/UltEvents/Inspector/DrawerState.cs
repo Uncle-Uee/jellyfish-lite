@@ -3,11 +3,9 @@
 #if UNITY_EDITOR
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
-using UnityEngine;
 
 namespace UltEvents.Editor
 {
@@ -169,7 +167,7 @@ namespace UltEvents.Editor
 
             for (int i = 0; i < Event._PersistentCalls.Count; i++)
             {
-                var call = Event._PersistentCalls[i];
+                PersistentCall call = Event._PersistentCalls[i];
                 PersistentMethodCache.Add(call != null ? call.GetMethodSafe() : null);
             }
         }
@@ -185,26 +183,26 @@ namespace UltEvents.Editor
 
             for (int i = 0; i < Event._PersistentCalls.Count; i++)
             {
-                var call = Event._PersistentCalls[i];
+                PersistentCall call = Event._PersistentCalls[i];
                 if (call == null)
                     continue;
 
                 for (int j = 0; j < call._PersistentArguments.Length; j++)
                 {
-                    var argument = call._PersistentArguments[j];
+                    PersistentArgument argument = call._PersistentArguments[j];
                     if (argument == null || argument._Type != PersistentArgumentType.ReturnValue)
                         continue;
 
-                    var linkedMethod = PersistentMethodCache[argument.ReturnedValueIndex];
+                    MethodBase linkedMethod = PersistentMethodCache[argument.ReturnedValueIndex];
 
                     if (argument.ReturnedValueIndex < Event._PersistentCalls.Count)
                     {
-                        var linkedCall = Event._PersistentCalls[argument.ReturnedValueIndex];
+                        PersistentCall linkedCall = Event._PersistentCalls[argument.ReturnedValueIndex];
                         if (linkedMethod == (linkedCall != null ? linkedCall.GetMethodSafe() : null))
                             continue;
                     }
 
-                    var index = IndexOfMethod(linkedMethod);
+                    int index = IndexOfMethod(linkedMethod);
                     if (index >= 0)
                         argument.ReturnedValueIndex = index;
                 }
@@ -220,7 +218,7 @@ namespace UltEvents.Editor
         {
             for (int i = 0; i < Event._PersistentCalls.Count; i++)
             {
-                var call = Event._PersistentCalls[i];
+                PersistentCall call = Event._PersistentCalls[i];
                 if ((call != null ? call.GetMethodSafe() : null) == method)
                 {
                     return i;
@@ -237,8 +235,7 @@ namespace UltEvents.Editor
         {
             if (index >= 0 && index < PersistentMethodCache.Count)
                 return PersistentMethodCache[index];
-            else
-                return null;
+            return null;
         }
 
         /************************************************************************************************************************/
@@ -253,7 +250,7 @@ namespace UltEvents.Editor
             if (Event != null)
             {
                 // Parameters.
-                var parameterTypes = Event.ParameterTypes;
+                Type[] parameterTypes = Event.ParameterTypes;
                 for (int i = 0; i < parameterTypes.Length; i++)
                 {
                     if (type.IsAssignableFrom(parameterTypes[i]))
@@ -267,7 +264,7 @@ namespace UltEvents.Editor
                 // Return Values.
                 for (int i = 0; i < PreviousCalls.Count; i++)
                 {
-                    var method = PreviousCalls[i].GetMethodSafe();
+                    MethodBase method = PreviousCalls[i].GetMethodSafe();
                     if (method == null)
                         continue;
 
@@ -294,12 +291,10 @@ namespace UltEvents.Editor
             {
                 return TryGetLinkable(CurrentParameter.ParameterType, out linkIndex, out linkType);
             }
-            else
-            {
-                linkIndex = -1;
-                linkType = PersistentArgumentType.None;
-                return false;
-            }
+
+            linkIndex = -1;
+            linkType  = PersistentArgumentType.None;
+            return false;
         }
 
         /************************************************************************************************************************/
@@ -317,8 +312,7 @@ namespace UltEvents.Editor
         {
             if (index >= 0 && index < PreviousCalls.Count)
                 return PreviousCalls[index];
-            else
-                return null;
+            return null;
         }
 
         /************************************************************************************************************************/

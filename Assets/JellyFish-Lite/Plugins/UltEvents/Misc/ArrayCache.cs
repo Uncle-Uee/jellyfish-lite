@@ -25,11 +25,11 @@ namespace UltEvents
         {
             if (_Arrays == null || _Arrays.Length <= length + 1)
             {
-                var newSize = length < 16 ? 16 : Mathf.NextPowerOfTwo(length + 1);
+                int newSize = length < 16 ? 16 : Mathf.NextPowerOfTwo(length + 1);
                 Array.Resize(ref _Arrays, newSize);
             }
 
-            var array = _Arrays[length];
+            T[] array = _Arrays[length];
             if (array == null)
             {
                 array = new T[length];

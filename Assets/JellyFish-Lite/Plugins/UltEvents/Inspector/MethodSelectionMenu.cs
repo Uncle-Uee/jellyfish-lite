@@ -54,7 +54,7 @@ namespace UltEvents.Editor
             BoolPref.AddDisplayOptions(_Menu);
 
             Object[] targetObjects;
-            var targets = GetObjectReferences(CachedState.TargetProperty, out targetObjects);
+            Object[] targets = GetObjectReferences(CachedState.TargetProperty, out targetObjects);
 
             AddCoreItems(targets);
 
@@ -62,7 +62,7 @@ namespace UltEvents.Editor
             {
                 if (targets == null)
                 {
-                    var serializedMethodName = CachedState.MethodNameProperty.stringValue;
+                    string serializedMethodName = CachedState.MethodNameProperty.stringValue;
                     Type declaringType;
                     string methodName;
                     PersistentCall.GetMethodDetails(serializedMethodName, null, out declaringType, out methodName);
@@ -74,14 +74,12 @@ namespace UltEvents.Editor
 
                         goto ShowMenu;
                     }
-                    else// If we have no type either, pretend the inspected objects are the targets.
-                    {
-                        targets = targetObjects;
-                    }
+
+                    targets = targetObjects;
                 }
 
                 // Ensure that all targets share the same type.
-                var firstTarget = ValidateTargetsAndGetFirst(targets);
+                Object firstTarget = ValidateTargetsAndGetFirst(targets);
                 if (firstTarget == null)
                 {
                     targets = targetObjects;
@@ -108,7 +106,7 @@ namespace UltEvents.Editor
 
         private static BindingFlags GetBindingFlags()
         {
-            var bindings = BindingFlags.Public | BindingFlags.Instance;
+            BindingFlags bindings = BindingFlags.Public | BindingFlags.Instance;
 
             if (BoolPref.ShowNonPublicMethods)
                 bindings |= BindingFlags.NonPublic;
@@ -134,8 +132,8 @@ namespace UltEvents.Editor
                 else
                 {
                     // For a static method, remove the method name but keep the declaring type.
-                    var methodName = CachedState.MethodNameProperty.stringValue;
-                    var lastDot = methodName.LastIndexOf('.');
+                    string methodName = CachedState.MethodNameProperty.stringValue;
+                    int lastDot = methodName.LastIndexOf('.');
                     if (lastDot < 0)
                         CachedState.MethodNameProperty.stringValue = null;
                     else
@@ -149,7 +147,7 @@ namespace UltEvents.Editor
                 DrawerState.Current.Clear();
             });
 
-            var isStatic = _CurrentMethod != null && _CurrentMethod.IsStatic;
+            bool isStatic = _CurrentMethod != null && _CurrentMethod.IsStatic;
             if (targets != null && !isStatic)
             {
                 _Menu.AddItem(new GUIContent("Static Method"), isStatic, () =>
@@ -173,24 +171,21 @@ namespace UltEvents.Editor
 
             if (property.hasMultipleDifferentValues)
             {
-                var references = new Object[targetObjects.Length];
+                Object[] references = new Object[targetObjects.Length];
                 for (int i = 0; i < references.Length; i++)
                 {
-                    using (var serializedObject = new SerializedObject(targetObjects[i]))
+                    using (SerializedObject serializedObject = new SerializedObject(targetObjects[i]))
                     {
                         references[i] = serializedObject.FindProperty(property.propertyPath).objectReferenceValue;
                     }
                 }
                 return references;
             }
-            else
-            {
-                var target = property.objectReferenceValue;
-                if (target != null)
-                    return new Object[] { target };
-                else
-                    return null;
-            }
+
+            Object target = property.objectReferenceValue;
+            if (target != null)
+                return new[] { target };
+            return null;
 
         }
 
@@ -198,19 +193,19 @@ namespace UltEvents.Editor
 
         private static Object ValidateTargetsAndGetFirst(Object[] targets)
         {
-            var firstTarget = targets[0];
+            Object firstTarget = targets[0];
             if (firstTarget == null)
                 return null;
 
-            var targetType = firstTarget.GetType();
+            Type targetType = firstTarget.GetType();
 
             // Make sure all targets have the exact same type.
             // Unfortunately supporting inheritance would be more complicated.
 
-            var i = 1;
+            int i = 1;
             for (; i < targets.Length; i++)
             {
-                var obj = targets[i];
+                Object obj = targets[i];
                 if (obj == null || obj.GetType() != targetType)
                 {
                     return null;
@@ -222,9 +217,9 @@ namespace UltEvents.Editor
 
         /************************************************************************************************************************/
 
-        private static T[] GetRelatedObjects<T>(Object[] objects, Func<Object, T> getRelatedObject)
+        private static T[] GetRelatedObjects<T>(Object[] objects, System.Func<Object, T> getRelatedObject)
         {
-            var relatedObjects = new T[objects.Length];
+            T[] relatedObjects = new T[objects.Length];
 
             for (int i = 0; i < relatedObjects.Length; i++)
             {
@@ -242,11 +237,11 @@ namespace UltEvents.Editor
 
         private static void PopulateMenuWithStatics(Object[] targets, Type type)
         {
-            var firstTarget = targets[0];
-            var component = firstTarget as Component;
+            Object firstTarget = targets[0];
+            Component component = firstTarget as Component;
             if (!ReferenceEquals(component, null))
             {
-                var gameObjects = GetRelatedObjects(targets, (target) => (target as Component).gameObject);
+                GameObject[] gameObjects = GetRelatedObjects(targets, target => (target as Component).gameObject);
                 PopulateMenuForGameObject("", true, gameObjects);
             }
             else
@@ -256,7 +251,7 @@ namespace UltEvents.Editor
 
             _Menu.AddSeparator("");
 
-            var bindings = BindingFlags.Static | BindingFlags.Public;
+            BindingFlags bindings = BindingFlags.Static | BindingFlags.Public;
             if (BoolPref.ShowNonPublicMethods)
                 bindings |= BindingFlags.NonPublic;
 
@@ -267,9 +262,9 @@ namespace UltEvents.Editor
 
         private static void PopulateMenuForGameObject(string prefix, bool putGameObjectInSubMenu, Object[] targets)
         {
-            var header = new GUIContent(prefix + "Selected GameObject and its Components");
+            GUIContent header = new GUIContent(prefix + "Selected GameObject and its Components");
 
-            var gameObjectPrefix = prefix;
+            string gameObjectPrefix = prefix;
             if (putGameObjectInSubMenu)
             {
                 _Menu.AddDisabledItem(header);
@@ -284,7 +279,7 @@ namespace UltEvents.Editor
                 _Menu.AddDisabledItem(header);
             }
 
-            var gameObjects = GetRelatedObjects(targets, (target) => target as GameObject);
+            GameObject[] gameObjects = GetRelatedObjects(targets, target => target as GameObject);
             PopulateMenuForComponents(prefix, gameObjects);
         }
 
@@ -292,24 +287,24 @@ namespace UltEvents.Editor
 
         private static void PopulateMenuForComponents(string prefix, GameObject[] gameObjects)
         {
-            var firstGameObject = gameObjects[0];
-            var components = firstGameObject.GetComponents<Component>();
+            GameObject firstGameObject = gameObjects[0];
+            Component[] components = firstGameObject.GetComponents<Component>();
 
             for (int i = 0; i < components.Length; i++)
             {
-                var component = components[i];
+                Component component = components[i];
 
-                var targets = new Object[gameObjects.Length];
+                Object[] targets = new Object[gameObjects.Length];
                 targets[0] = component;
 
                 Type type;
-                var typeIndex = GetComponentTypeIndex(component, components, out type);
+                int typeIndex = GetComponentTypeIndex(component, components, out type);
 
                 int minTypeCount;
                 Component unused;
                 GetComponent(firstGameObject, type, typeIndex, out minTypeCount, out unused);
 
-                var j = 1;
+                int j = 1;
                 for (; j < gameObjects.Length; j++)
                 {
                     int typeCount;
@@ -324,7 +319,7 @@ namespace UltEvents.Editor
                         minTypeCount = typeCount;
                 }
 
-                var name = type.GetNameCS(BoolPref.ShowFullTypeNames) + " ->/";
+                string name = type.GetNameCS(BoolPref.ShowFullTypeNames) + " ->/";
 
                 if (minTypeCount > 1)
                     name = UltEventUtils.GetPlacementName(typeIndex) + " " + name;
@@ -339,14 +334,14 @@ namespace UltEvents.Editor
         {
             type = component.GetType();
 
-            var count = 0;
+            int count = 0;
 
             for (int i = 0; i < components.Length; i++)
             {
-                var c = components[i];
+                Component c = components[i];
                 if (c == component)
                     break;
-                else if (c.GetType() == type)
+                if (c.GetType() == type)
                     count++;
             }
 
@@ -358,10 +353,10 @@ namespace UltEvents.Editor
             numberOfComponentsOfType = 0;
             targetComponent = null;
 
-            var components = gameObject.GetComponents(type);
+            Component[] components = gameObject.GetComponents(type);
             for (int i = 0; i < components.Length; i++)
             {
-                var component = components[i];
+                Component component = components[i];
                 if (component.GetType() == type)
                 {
                     if (numberOfComponentsOfType == targetIndex)
@@ -376,7 +371,7 @@ namespace UltEvents.Editor
 
         private static void PopulateMenuForComponent(Object[] targets)
         {
-            var gameObjects = GetRelatedObjects(targets, (target) => (target as Component).gameObject);
+            GameObject[] gameObjects = GetRelatedObjects(targets, target => (target as Component).gameObject);
 
             PopulateMenuForGameObject("", true, gameObjects);
             _Menu.AddSeparator("");
@@ -404,21 +399,21 @@ namespace UltEvents.Editor
 
         private static void PopulateMenuWithMembers(Type type, BindingFlags bindings, string prefix, Object[] targets)
         {
-            var members = GetSortedMembers(type, bindings);
-            var previousDeclaringType = type;
+            List<MemberInfo> members = GetSortedMembers(type, bindings);
+            Type previousDeclaringType = type;
 
-            var firstSeparator = true;
-            var firstProperty = true;
-            var firstMethod = true;
-            var firstBaseType = true;
-            var nameMatchesNextMethod = false;
+            bool firstSeparator = true;
+            bool firstProperty = true;
+            bool firstMethod = true;
+            bool firstBaseType = true;
+            bool nameMatchesNextMethod = false;
 
-            var i = 0;
+            int i = 0;
             while (i < members.Count)
             {
                 ParameterInfo[] parameters;
                 MethodInfo getter;
-                var member = GetNextSupportedMember(members, ref i, out parameters, out getter);
+                MemberInfo member = GetNextSupportedMember(members, ref i, out parameters, out getter);
 
                 GotMember:
 
@@ -436,7 +431,7 @@ namespace UltEvents.Editor
                         else
                             _Menu.AddSeparator(prefix);
 
-                        var baseTypesOf = "Base Types of " + type.GetNameCS();
+                        string baseTypesOf = "Base Types of " + type.GetNameCS();
                         if (BoolPref.SubMenuForBaseTypes)
                         {
                             prefix += baseTypesOf + " ->/";
@@ -459,7 +454,7 @@ namespace UltEvents.Editor
                     }
                 }
 
-                var property = member as PropertyInfo;
+                PropertyInfo property = member as PropertyInfo;
                 if (property != null)
                 {
                     AppendGroupHeader(prefix, "Properties in ", member.DeclaringType, type, ref firstProperty, ref firstSeparator);
@@ -468,7 +463,7 @@ namespace UltEvents.Editor
                     continue;
                 }
 
-                var method = member as MethodBase;
+                MethodBase method = member as MethodBase;
                 if (method != null)
                 {
                     AppendGroupHeader(prefix, "Methods in ", member.DeclaringType, type, ref firstMethod, ref firstSeparator);
@@ -476,11 +471,11 @@ namespace UltEvents.Editor
                     // Check if the method name matched the previous or next method to group them.
                     if (BoolPref.GroupMethodOverloads)
                     {
-                        var nameMatchedPreviousMethod = nameMatchesNextMethod;
+                        bool nameMatchedPreviousMethod = nameMatchesNextMethod;
 
                         ParameterInfo[] nextParameters;
                         MethodInfo nextGetter;
-                        var nextMember = GetNextSupportedMember(members, ref i, out nextParameters, out nextGetter);
+                        MemberInfo nextMember = GetNextSupportedMember(members, ref i, out nextParameters, out nextGetter);
 
                         nameMatchesNextMethod = nextMember != null && method.Name == nextMember.Name;
 
@@ -495,10 +490,8 @@ namespace UltEvents.Editor
                                 getter = nextGetter;
                                 goto GotMember;
                             }
-                            else
-                            {
-                                return;
-                            }
+
+                            return;
                         }
                     }
 
@@ -553,7 +546,7 @@ namespace UltEvents.Editor
 
         private static void AddSelectPropertyItem(string prefix, Object[] targets, Type currentType, PropertyInfo property, MethodInfo getter)
         {
-            var defaultMethod = getter;
+            MethodInfo defaultMethod = getter;
 
             MethodInfo setter = null;
             if (IsSupported(property.PropertyType))
@@ -584,7 +577,7 @@ namespace UltEvents.Editor
             if (setter != null) LabelBuilder.Append("set; ");
             LabelBuilder.Append('}');
 
-            var label = LabelBuilder.ToString();
+            string label = LabelBuilder.ToString();
             AddSetCallItem(label, defaultMethod, targets);
         }
 
@@ -610,7 +603,7 @@ namespace UltEvents.Editor
             // Method Signature.
             LabelBuilder.Append(GetMethodSignature(method, parameters, true));
 
-            var label = LabelBuilder.ToString();
+            string label = LabelBuilder.ToString();
 
             AddSetCallItem(label, method, targets);
         }
@@ -622,14 +615,14 @@ namespace UltEvents.Editor
             _Menu.AddItem(
                 new GUIContent(label),
                 method == _CurrentMethod,
-                (userData) =>
+                userData =>
                 {
                     DrawerState.Current.CopyFrom(CachedState);
 
-                    var i = 0;
-                    SerializedPropertyAccessor.ModifyValues<PersistentCall>(CachedState.CallProperty, (call) =>
+                    int i = 0;
+                    SerializedPropertyAccessor.ModifyValues<PersistentCall>(CachedState.CallProperty, call =>
                     {
-                        var target = targets != null ? targets[i % targets.Length] : null;
+                        Object target = targets != null ? targets[i % targets.Length] : null;
                         call.SetMethod(method, target);
                         i++;
                     }, "Set Persistent Call");
@@ -669,15 +662,15 @@ namespace UltEvents.Editor
             List<MemberInfo> members;
             if (!memberCache.TryGetValue(type, out members))
             {
-                var properties = type.GetProperties(bindings);
-                var methods = type.GetMethods(bindings);
+                PropertyInfo[] properties = type.GetProperties(bindings);
+                MethodInfo[] methods = type.GetMethods(bindings);
 
                 // When gathering static members, also include instance constructors.
-                var constructors = ((bindings & BindingFlags.Static) == BindingFlags.Static) ?
-                    type.GetConstructors((bindings & ~BindingFlags.Static) | BindingFlags.Instance) :
-                    null;
+                ConstructorInfo[] constructors = ((bindings & BindingFlags.Static) == BindingFlags.Static) ?
+                                                     type.GetConstructors((bindings & ~BindingFlags.Static) | BindingFlags.Instance) :
+                                                     null;
 
-                var capacity = properties.Length + methods.Length;
+                int capacity = properties.Length + methods.Length;
                 if (constructors != null)
                     capacity += constructors.Length;
 
@@ -707,7 +700,7 @@ namespace UltEvents.Editor
         {
             if (BoolPref.SubMenuForEachBaseType)
             {
-                var result = CompareChildBeforeBase(a.DeclaringType, b.DeclaringType);
+                int result = CompareChildBeforeBase(a.DeclaringType, b.DeclaringType);
                 if (result != 0)
                     return result;
             }
@@ -857,12 +850,10 @@ namespace UltEvents.Editor
             {
                 return true;
             }
-            else
-            {
-                int linkIndex;
-                PersistentArgumentType linkType;
-                return DrawerState.Current.TryGetLinkable(type, out linkIndex, out linkType);
-            }
+
+            int                    linkIndex;
+            PersistentArgumentType linkType;
+            return DrawerState.Current.TryGetLinkable(type, out linkIndex, out linkType);
         }
 
         /// <summary>
@@ -885,15 +876,15 @@ namespace UltEvents.Editor
         {
             while (startIndex < members.Count)
             {
-                var member = members[startIndex];
-                var property = member as PropertyInfo;
+                MemberInfo member = members[startIndex];
+                PropertyInfo property = member as PropertyInfo;
                 if (property != null && IsSupported(property, out getter))
                 {
                     parameters = null;
                     return member;
                 }
 
-                var method = member as MethodBase;
+                MethodBase method = member as MethodBase;
                 if (method != null && IsSupported(method, out parameters))
                 {
                     getter = null;
@@ -927,7 +918,7 @@ namespace UltEvents.Editor
             if (method == null)
                 return null;
 
-            var signatureCache = includeParameterNames ? MethodSignaturesWithParameters : MethodSignaturesWithoutParameters;
+            Dictionary<MethodBase, string> signatureCache = includeParameterNames ? MethodSignaturesWithParameters : MethodSignaturesWithoutParameters;
 
             string signature;
             if (!signatureCache.TryGetValue(method, out signature))
@@ -943,7 +934,7 @@ namespace UltEvents.Editor
             if (method == null)
                 return null;
 
-            var signatureCache = includeParameterNames ? MethodSignaturesWithParameters : MethodSignaturesWithoutParameters;
+            Dictionary<MethodBase, string> signatureCache = includeParameterNames ? MethodSignaturesWithParameters : MethodSignaturesWithoutParameters;
 
             string signature;
             if (!signatureCache.TryGetValue(method, out signature))
@@ -961,7 +952,7 @@ namespace UltEvents.Editor
         {
             MethodSignatureBuilder.Length = 0;
 
-            var returnType = method.GetReturnType();
+            Type returnType = method.GetReturnType();
             MethodSignatureBuilder.Append(returnType.GetNameCS(false));
             MethodSignatureBuilder.Append(' ');
 
@@ -973,7 +964,7 @@ namespace UltEvents.Editor
                 if (i > 0)
                     MethodSignatureBuilder.Append(", ");
 
-                var parameter = parameters[i];
+                ParameterInfo parameter = parameters[i];
 
                 MethodSignatureBuilder.Append(parameter.ParameterType.GetNameCS(false));
                 if (includeParameterNames)
@@ -984,7 +975,7 @@ namespace UltEvents.Editor
             }
             MethodSignatureBuilder.Append(')');
 
-            var signature = MethodSignatureBuilder.ToString();
+            string signature = MethodSignatureBuilder.ToString();
             MethodSignatureBuilder.Length = 0;
             signatureCache.Add(method, signature);
 

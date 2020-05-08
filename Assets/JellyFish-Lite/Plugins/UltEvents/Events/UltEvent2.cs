@@ -1,6 +1,7 @@
 ﻿// UltEvents // Copyright 2019 Kybernetik //
 
 using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using Object = UnityEngine.Object;
@@ -27,7 +28,7 @@ namespace UltEvents
     /// <summary>
     /// A serializable event with 2 parameters which can be viewed and configured in the inspector.
     /// <para></para>
-    /// This is a more versatile and user friendly implementation than <see cref="UnityEvent{T0, T1}"/>.
+    /// This is a more versatile and user friendly implementation than <see cref="UnityEvent{T0,T1}"/>.
     /// </summary>
     [Serializable]
     public class UltEvent<T0, T1> : UltEventBase, IUltEvent<T0, T1>
@@ -99,7 +100,7 @@ namespace UltEvents
                 e = new UltEvent<T0, T1>();
 
 #if UNITY_EDITOR
-            if (!UnityEditor.EditorApplication.isPlaying && method.Target is Object)
+            if (!EditorApplication.isPlaying && method.Target is Object)
             {
                 e.PersistentCalls += method;
                 return e;
@@ -122,7 +123,7 @@ namespace UltEvents
                 return null;
 
 #if UNITY_EDITOR
-            if (!UnityEditor.EditorApplication.isPlaying && method.Target is Object)
+            if (!EditorApplication.isPlaying && method.Target is Object)
             {
                 e.PersistentCalls -= method;
                 return e;
@@ -143,11 +144,12 @@ namespace UltEvents
         {
             if (method != null)
             {
-                var e = new UltEvent<T0, T1>();
+                UltEvent<T0, T1> e = new UltEvent<T0, T1>();
                 e += method;
                 return e;
             }
-            else return null;
+
+            return null;
         }
 
         /************************************************************************************************************************/
@@ -175,7 +177,7 @@ namespace UltEvents
 #if UNITY_EDITOR
         /// <summary>[Editor-Only] The types of each of this event's parameters.</summary>
         public override Type[] ParameterTypes { get { return _ParameterTypes; } }
-        private static Type[] _ParameterTypes = new Type[] { typeof(T0), typeof(T1) };
+        private static Type[] _ParameterTypes = { typeof(T0), typeof(T1) };
 #endif
 
         /************************************************************************************************************************/
