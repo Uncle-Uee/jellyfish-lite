@@ -41,12 +41,12 @@ namespace JellyFish.Monitor.ScreenSize
         /// Only Calculate World Size Flag.
         /// </summary>
         [Header("Settings")]
-        public bool OnlyCalculateWorldSize = false;
+        public bool OnlyCalculateWorldSize;
 
         /// <summary>
         /// Only Calculate Screen Size Flag.
         /// </summary>
-        public bool OnlyCalculateScreenSize = false;
+        public bool OnlyCalculateScreenSize;
 
         /// <summary>
         /// Previous Screen Size.

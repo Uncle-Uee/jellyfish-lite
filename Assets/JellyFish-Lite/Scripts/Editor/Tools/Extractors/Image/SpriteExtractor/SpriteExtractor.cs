@@ -24,7 +24,7 @@ namespace JellyFish.Editor.Tools.Extractors
         #region VARIABLES
 
         private static string    _previousPath = "";
-        private static Texture2D _source       = null;
+        private static Texture2D _source;
 
         #endregion
 

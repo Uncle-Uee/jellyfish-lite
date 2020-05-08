@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using JellyFish.Data.Primitive;
 using UnityEngine;
 
-namespace JellyFish.ObjectPooling
+namespace SOFlow.ObjectPooling
 {
     public abstract class ObjectPoolBase : ScriptableObject
     {

@@ -127,7 +127,7 @@ namespace UnityAsync
 		{
 			if(exception != null)
 			{
-				var e = exception;
+				Exception e = exception;
 				exception = null;
 
 				throw e;

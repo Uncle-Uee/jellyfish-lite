@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace JellyFish.ObjectPooling
+namespace SOFlow.ObjectPooling
 {
     [CreateAssetMenu(menuName = "JellyFish/Object Pooling/Pool Object List Reference")]
     public class PoolObjectListReference : ScriptableObject

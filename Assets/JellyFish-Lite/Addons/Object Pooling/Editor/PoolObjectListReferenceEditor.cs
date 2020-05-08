@@ -1,13 +1,13 @@
 ﻿// Created by Kearan Petersen : https://www.blumalice.wordpress.com | https://www.linkedin.com/in/kearan-petersen/
 
 #if UNITY_EDITOR
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
-namespace JellyFish.ObjectPooling
+namespace SOFlow.ObjectPooling
 {
     [CustomEditor(typeof(PoolObjectListReference))]
-    public class PoolObjectListReferenceEditor : UnityEditor.Editor
+    public class PoolObjectListReferenceEditor : Editor
     {
         /// <summary>
         /// The PoolObjectListReference target.

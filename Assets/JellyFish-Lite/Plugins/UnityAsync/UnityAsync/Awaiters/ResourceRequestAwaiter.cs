@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace UnityAsync.Awaiters
 {
@@ -13,7 +14,7 @@ namespace UnityAsync.Awaiters
 			this.request = request;
 		}
  
-		public UnityEngine.Object GetResult() => request.asset;
+		public Object GetResult() => request.asset;
 		public bool IsCompleted => request.isDone;
 		public void OnCompleted(Action action) => request.completed += _ => action();
 	}

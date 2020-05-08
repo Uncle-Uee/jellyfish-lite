@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-namespace JellyFish.ObjectPooling
+namespace SOFlow.ObjectPooling
 {
     public interface IPoolObject<T> : IPoolObjectRoot
     {

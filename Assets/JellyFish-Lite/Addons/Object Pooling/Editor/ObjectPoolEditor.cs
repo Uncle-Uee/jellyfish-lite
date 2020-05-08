@@ -5,10 +5,10 @@ using System.Collections;
 using System.Reflection;
 using UnityEditor;
 
-namespace JellyFish.ObjectPooling
+namespace SOFlow.ObjectPooling
 {
     [CustomEditor(typeof(ObjectPoolBase), true)]
-    public class ObjectPoolEditor : UnityEditor.Editor
+    public class ObjectPoolEditor : Editor
     {
         /// <summary>
         ///     The ObjectPool target.

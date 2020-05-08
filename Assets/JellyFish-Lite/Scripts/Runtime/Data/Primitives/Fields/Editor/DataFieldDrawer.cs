@@ -1,14 +1,13 @@
 ﻿// Created by Kearan Petersen : https://www.blumalice.wordpress.com | https://www.linkedin.com/in/kearan-petersen/
 
 #if UNITY_EDITOR
-using Object = UnityEngine.Object;
 using System;
 using System.Reflection;
 using JellyFish.Data.Primitive;
 using JellyFish.Data.Primitives;
 using UnityEditor;
 using UnityEngine;
-using Selection = UnityEditor.Selection;
+using Object = UnityEngine.Object;
 
 namespace SOFlow.Data.Primitives.Editor
 {
@@ -17,19 +16,19 @@ namespace SOFlow.Data.Primitives.Editor
     {
         private bool _isConstant;
         private bool _displayValueChangedEvent;
-        private bool _invokeChangeEvent = false;
+        private bool _invokeChangeEvent;
 
         private float _positionWidth;
         private float _buttonWidth = 20f;
         private float _lineHeight;
 
-        private GUIContent _labelContent = null;
+        private GUIContent _labelContent;
 
         private Rect _currentPosition;
-        private Rect _mouseDragArea = new Rect();
-        private Rect _buttonsRect   = new Rect();
+        private Rect _mouseDragArea;
+        private Rect _buttonsRect;
 
-        private DataField _dataValue = null;
+        private DataField _dataValue;
 
         GUIContent _rButtonContent = new GUIContent("R", "Asset Value Reference");
         GUIContent _vButtonContent = new GUIContent("V", "Instance Value Reference");

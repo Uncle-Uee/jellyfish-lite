@@ -4,8 +4,6 @@
  */
 
 using System;
-using UnityEngine;
-using Random = System.Random;
 
 /// <summary>
 /// Extend the Array Class.
