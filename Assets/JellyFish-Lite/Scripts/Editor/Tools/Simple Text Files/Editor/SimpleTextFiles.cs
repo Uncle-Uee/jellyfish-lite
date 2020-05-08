@@ -3,11 +3,11 @@
  * LinkedIn : https://www.linkedin.com/in/ubaidullah-effendi-emjedi-202494183/
  */
 
-#if UNITY_EDITOR
 using System.IO;
-using JellyFish.Editor.Utilities;
-using UnityEditor;
 using UnityEngine;
+using JellyFish.Editor.Utilities;
+#if UNITY_EDITOR
+using UnityEditor;
 
 namespace JellyFish.Editor.Tools.TextFiles
 {
@@ -55,7 +55,7 @@ namespace JellyFish.Editor.Tools.TextFiles
         /// <summary>
         /// Create Text File.
         /// </summary>
-        [MenuItem("Assets/Create/JellyFish/Text File/Text Asset", priority = 10)]
+        [MenuItem("Assets/Create/JellyFish/Text File/Text Asset", priority = 40)]
         public static void CreateTextFile()
         {
             CreateFilePanel("Text File", "text-file", "txt");
@@ -65,7 +65,7 @@ namespace JellyFish.Editor.Tools.TextFiles
         /// <summary>
         /// Create Json File.
         /// </summary>
-        [MenuItem("Assets/Create/JellyFish/Text File/Json File", priority = 10)]
+        [MenuItem("Assets/Create/JellyFish/Text File/Json File", priority = 40)]
         public static void CreateJsonFile()
         {
             CreateFilePanel("Json File", "json-file", "json");

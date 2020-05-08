@@ -15,7 +15,7 @@ using UnityEditor.SceneManagement;
 
 namespace JellyFish.Internal.Management
 {
-    [CreateAssetMenu(menuName = "JellyFish/Scene Management/Scene Set")]
+    [CreateAssetMenu(menuName = "JellyFish/Scene Management/Scene Set", order = 40)]
     public class SceneSet : ScriptableObject
     {
         /// <summary>

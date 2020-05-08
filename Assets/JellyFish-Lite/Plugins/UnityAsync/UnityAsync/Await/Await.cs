@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace UnityAsync
 {
-	public static class Await
+	public static partial class Await
 	{
 		static readonly AwaitInstructionAwaiter<WaitForFrames> nextUpdate = new AwaitInstructionAwaiter<WaitForFrames>(new WaitForFrames(1));
 		static readonly AwaitInstructionAwaiter<WaitForFrames> nextLateUpdate = new AwaitInstructionAwaiter<WaitForFrames>(new WaitForFrames(1), FrameScheduler.LateUpdate);

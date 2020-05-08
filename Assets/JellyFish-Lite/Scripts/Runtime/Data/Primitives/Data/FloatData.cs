@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace JellyFish.Data.Primitive
 {
-    [CreateAssetMenu(menuName = "JellyFish/Data/Primitives/Float")]
+    [CreateAssetMenu(menuName = "JellyFish/Data/Primitives/Float", order = 10)]
     public class FloatData : PrimitiveData
     {
         /// <summary>

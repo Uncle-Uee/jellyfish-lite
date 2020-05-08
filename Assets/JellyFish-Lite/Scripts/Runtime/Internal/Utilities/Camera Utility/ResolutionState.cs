@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 namespace JellyFish.Internal.Utilities
 {
-    [CreateAssetMenu(menuName = "JellyFish/Utilities/Camera/Resolution State")]
+    [CreateAssetMenu(menuName = "JellyFish/Utilities/Camera/Resolution State", order = 30)]
     public class ResolutionState : ScriptableObject
     {
         /// <summary>
