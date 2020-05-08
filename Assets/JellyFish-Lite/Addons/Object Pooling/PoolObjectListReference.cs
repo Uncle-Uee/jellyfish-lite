@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SOFlow.ObjectPooling
 {
-    [CreateAssetMenu(menuName = "JellyFish/Object Pooling/Pool Object List Reference")]
+    [CreateAssetMenu(menuName = "JellyFish/Object Pooling/Pool Object List Reference", order = 40)]
     public class PoolObjectListReference : ScriptableObject
     {
         /// <summary>

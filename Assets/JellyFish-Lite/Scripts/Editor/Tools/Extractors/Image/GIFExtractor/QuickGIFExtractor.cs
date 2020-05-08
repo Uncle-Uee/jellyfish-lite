@@ -3,11 +3,12 @@
  */
 
 #if UNITY_EDITOR
+using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using UnityEditor;
 using UnityEngine;
+
 
 namespace JellyFish.Editor.Tools.Extractors
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using System.Threading;
 using UnityEngine;
+using System.Threading;
 
 namespace UnityAsync
 {

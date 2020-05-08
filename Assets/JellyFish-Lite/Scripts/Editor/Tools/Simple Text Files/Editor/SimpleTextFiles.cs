@@ -3,11 +3,11 @@
  * LinkedIn : https://www.linkedin.com/in/ubaidullah-effendi-emjedi-202494183/
  */
 
-#if UNITY_EDITOR
 using System.IO;
-using JellyFish.Editor.Utilities;
-using UnityEditor;
 using UnityEngine;
+using JellyFish.Editor.Utilities;
+#if UNITY_EDITOR
+using UnityEditor;
 
 namespace JellyFish.Editor.Tools.TextFiles
 {

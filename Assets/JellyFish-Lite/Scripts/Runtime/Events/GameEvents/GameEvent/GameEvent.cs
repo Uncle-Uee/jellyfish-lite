@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace JellyFish.Data.Events
 {

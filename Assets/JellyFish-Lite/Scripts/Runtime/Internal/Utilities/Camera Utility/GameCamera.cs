@@ -30,7 +30,7 @@ namespace JellyFish.Internal.Utilities
         /// <summary>
         /// Do not Destroy Instance.
         /// </summary>
-        public bool DontDestroy;
+        public bool DontDestroy = false;
 
         /// <summary>
         ///     Registers the game camera.

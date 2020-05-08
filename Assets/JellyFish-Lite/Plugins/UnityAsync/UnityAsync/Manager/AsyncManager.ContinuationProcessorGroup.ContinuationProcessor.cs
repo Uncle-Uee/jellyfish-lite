@@ -33,13 +33,13 @@ namespace UnityAsync
 					futureCount = 0;
 					
 					// swap queues
-					T[] tmp = currentQueue;
+					var tmp = currentQueue;
 					currentQueue = futureQueue;
 					futureQueue = tmp;
 
 					for(; currentIndex < currentCount; ++currentIndex)
 					{
-						ref T c = ref currentQueue[currentIndex];
+						ref var c = ref currentQueue[currentIndex];
 
 						if(!c.Evaluate())
 						{
