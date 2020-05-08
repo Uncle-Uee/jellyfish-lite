@@ -3,8 +3,9 @@
 #if UNITY_EDITOR
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using System.Reflection;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -49,12 +50,14 @@ namespace UltEvents.Editor
             {
                 return EditorGUIUtility.singleLineHeight;
             }
+            else
+            {
+                DrawerState.Current.BeginEvent(property);
+                CachePersistentCallList(property);
+                DrawerState.Current.EndEvent();
 
-            DrawerState.Current.BeginEvent(property);
-            CachePersistentCallList(property);
-            DrawerState.Current.EndEvent();
-
-            return _CurrentCallList.GetHeight() - 1;
+                return _CurrentCallList.GetHeight() - 1;
+            }
         }
 
         /************************************************************************************************************************/
@@ -63,7 +66,7 @@ namespace UltEvents.Editor
         {
             if (index >= 0 && index < _CurrentCallCount)
             {
-                float height = EditorGUI.GetPropertyHeight(_CurrentCallList.serializedProperty.GetArrayElementAtIndex(index));
+                var height = EditorGUI.GetPropertyHeight(_CurrentCallList.serializedProperty.GetArrayElementAtIndex(index));
                 height += Border * 2 + Padding;
 
                 if (index == _CurrentCallCount - 1)
@@ -71,8 +74,7 @@ namespace UltEvents.Editor
 
                 return height;
             }
-
-            return 0;
+            else return 0;
         }
 
         /************************************************************************************************************************/
@@ -87,7 +89,7 @@ namespace UltEvents.Editor
             area = EditorGUI.IndentedRect(area);
             area.y -= 1;
 
-            int indentLevel = EditorGUI.indentLevel;
+            var indentLevel = EditorGUI.indentLevel;
             EditorGUI.indentLevel = 0;
 
             CachePersistentCallList(property);
@@ -125,7 +127,7 @@ namespace UltEvents.Editor
 
         private void CachePersistentCallList(SerializedProperty eventProperty)
         {
-            string path = eventProperty.propertyPath;
+            var path = eventProperty.propertyPath;
             if (!PropertyPathToList.TryGetValue(path, out _CurrentCallList))
             {
                 eventProperty = eventProperty.FindPropertyRelative(Names.UltEvent.PersistentCalls);
@@ -189,10 +191,10 @@ namespace UltEvents.Editor
                 AddButtonWidth = 16,
                 AddButtonPadding = 2;
 
-            GUIStyle labelStyle = DrawerState.Current.EventProperty.prefabOverride ? EditorStyles.boldLabel : GUI.skin.label;
+            var labelStyle = DrawerState.Current.EventProperty.prefabOverride ? EditorStyles.boldLabel : GUI.skin.label;
 
             CountLabel.text = _CurrentCallCount.ToString();
-            float countLabelWidth = EditorStyles.boldLabel.CalcSize(CountLabel).x;
+            var countLabelWidth = EditorStyles.boldLabel.CalcSize(CountLabel).x;
 
             area.width -= AddButtonWidth + AddButtonPadding + countLabelWidth;
             GUI.Label(area, EventLabel, labelStyle);
@@ -286,7 +288,7 @@ namespace UltEvents.Editor
                     _SeparatorLineStyle.stretchWidth = true;
                 }
 
-                Color oldColor = GUI.color;
+                var oldColor = GUI.color;
                 GUI.color = SeparatorLineColor;
                 _SeparatorLineStyle.Draw(area, false, false, false, false);
                 GUI.color = oldColor;
@@ -298,7 +300,7 @@ namespace UltEvents.Editor
         private void DoPersistentCallGUI(Rect area, int index, bool isActive, bool isFocused)
         {
             DrawerState.Current.callIndex = index;
-            SerializedProperty callProperty = _CurrentCallList.serializedProperty.GetArrayElementAtIndex(index);
+            var callProperty = _CurrentCallList.serializedProperty.GetArrayElementAtIndex(index);
 
             area.x += Border;
             area.y += Border;
@@ -348,7 +350,7 @@ namespace UltEvents.Editor
                 AddRemoveWidth = 16,
                 RightSideOffset = 5;
 
-            float width = area.width;
+            var width = area.width;
             area.xMin -= 1;
 
             // Background.
@@ -378,17 +380,17 @@ namespace UltEvents.Editor
             else if (DrawerState.Current.Event != null)
             {
                 area.xMin += 16;
-                float labelWidth = area.width;
+                var labelWidth = area.width;
                 area.xMax = EditorGUIUtility.labelWidth + IndentSize;
 
                 GUI.Label(area, "Dynamic Listeners");
 
                 // Dynamic Listener Foldout.
 
-                int dynamicListenerCount = DrawerState.Current.Event.GetDynamicCallInvocationListCount();
+                var dynamicListenerCount = DrawerState.Current.Event.GetDynamicCallInvocationListCount();
                 if (dynamicListenerCount > 0)
                 {
-                    bool isExpanded = EditorGUI.Foldout(area, _CurrentCallList.serializedProperty.isExpanded, GUIContent.none, true);
+                    var isExpanded = EditorGUI.Foldout(area, _CurrentCallList.serializedProperty.isExpanded, GUIContent.none, true);
                     _CurrentCallList.serializedProperty.isExpanded = isExpanded;
                     if (isExpanded && DrawerState.Current.Event.HasAnyDynamicCalls())
                     {
@@ -430,12 +432,12 @@ namespace UltEvents.Editor
             x += IndentSize;
             width -= IndentSize * 2;
 
-            Rect area = new Rect(x, y, width, EditorGUIUtility.singleLineHeight);
+            var area = new Rect(x, y, width, EditorGUIUtility.singleLineHeight);
 
-            Delegate[] calls = targetEvent.GetDynamicCallInvocationList();
+            var calls = targetEvent.GetDynamicCallInvocationList();
             for (int i = 0; i < calls.Length; i++)
             {
-                Delegate call = calls[i];
+                var call = calls[i];
                 DoDelegateGUI(area, call);
                 area.y += area.height;
             }
@@ -448,10 +450,10 @@ namespace UltEvents.Editor
         /// </summary>
         public static void DoDelegateGUI(Rect area, Delegate del)
         {
-            float width = area.width;
+            var width = area.width;
 
             area.xMax = EditorGUIUtility.labelWidth + 15;
-            Object obj = del.Target as Object;
+            var obj = del.Target as Object;
             if (!ReferenceEquals(obj, null))
             {
                 // If the target is a Unity Object, draw it in an Object Field so the user can click to ping the object.
@@ -461,7 +463,7 @@ namespace UltEvents.Editor
                     EditorGUI.ObjectField(area, obj, typeof(Object), true);
                 }
             }
-            else if (del.Method.DeclaringType.IsDefined(typeof(CompilerGeneratedAttribute), true))
+            else if (del.Method.DeclaringType.IsDefined(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), true))
             {
                 // Anonymous Methods draw only their method name.
 
@@ -495,7 +497,7 @@ namespace UltEvents.Editor
 
         private void AddNewCall(ReorderableList list, Object target)
         {
-            int index = list.index;
+            var index = list.index;
             if (index >= 0 && index < _CurrentCallCount)
             {
                 index++;
@@ -510,7 +512,7 @@ namespace UltEvents.Editor
 
             list.serializedProperty.serializedObject.ApplyModifiedProperties();
 
-            SerializedProperty callProperty = list.serializedProperty.GetArrayElementAtIndex(index);
+            var callProperty = list.serializedProperty.GetArrayElementAtIndex(index);
             DrawerState.Current.BeginCall(callProperty);
             PersistentCallDrawer.SetTarget(target);
             DrawerState.Current.EndCall();
@@ -520,7 +522,7 @@ namespace UltEvents.Editor
 
         private static void RemoveCall(ReorderableList list, int index)
         {
-            SerializedProperty property = list.serializedProperty;
+            var property = list.serializedProperty;
             property.DeleteArrayElementAtIndex(index);
 
             if (list.index >= property.arraySize - 1)
@@ -531,8 +533,8 @@ namespace UltEvents.Editor
 
         private void DelayedRemoveCall(int index)
         {
-            ReorderableList list = _CurrentCallList;
-            DrawerState state = new DrawerState();
+            var list = _CurrentCallList;
+            var state = new DrawerState();
             state.CopyFrom(DrawerState.Current);
 
             EditorApplication.delayCall += () =>
@@ -559,7 +561,7 @@ namespace UltEvents.Editor
 
         private void CheckInput(int index)
         {
-            Event currentEvent = Event.current;
+            var currentEvent = Event.current;
             if (currentEvent.type == EventType.KeyUp)
             {
                 switch (currentEvent.keyCode)
@@ -580,7 +582,7 @@ namespace UltEvents.Editor
                     case KeyCode.C:
                         if (currentEvent.control)
                         {
-                            SerializedProperty property = _CurrentCallList.serializedProperty.GetArrayElementAtIndex(index);
+                            var property = _CurrentCallList.serializedProperty.GetArrayElementAtIndex(index);
                             Clipboard.CopyCall(property);
                             currentEvent.Use();
                         }
@@ -589,7 +591,7 @@ namespace UltEvents.Editor
                     case KeyCode.V:
                         if (currentEvent.control)
                         {
-                            SerializedProperty property = _CurrentCallList.serializedProperty;
+                            var property = _CurrentCallList.serializedProperty;
                             if (currentEvent.shift)
                             {
                                 index++;
@@ -626,13 +628,16 @@ namespace UltEvents.Editor
                     break;
 
                 case EventType.DragPerform:
-                    foreach (Object drop in DragAndDrop.objectReferences)
+                    foreach (var drop in DragAndDrop.objectReferences)
                     {
                         AddNewCall(_CurrentCallList, drop);
                     }
                     DrawerState.Current.EventProperty.isExpanded = true;
                     DragAndDrop.AcceptDrag();
                     GUI.changed = true;
+                    break;
+
+                default:
                     break;
             }
         }

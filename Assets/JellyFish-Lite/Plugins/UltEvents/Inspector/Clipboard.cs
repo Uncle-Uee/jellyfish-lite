@@ -4,6 +4,7 @@
 
 using System;
 using UnityEditor;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace UltEvents.Editor
@@ -25,7 +26,7 @@ namespace UltEvents.Editor
         /// <summary>Stores the details of the specified event.</summary>
         public static void CopyEvent(UltEventBase e)
         {
-            Type eventType = e.GetType();
+            var eventType = e.GetType();
 
             if (_Event == null || _Event.GetType() != eventType)
                 _Event = (UltEventBase)Activator.CreateInstance(eventType);
@@ -36,14 +37,14 @@ namespace UltEvents.Editor
         /// <summary>Stores the details of the event contained in the specified property.</summary>
         public static void CopyEvent(SerializedPropertyAccessor accessor, Object target)
         {
-            UltEventBase e = (UltEventBase)accessor.GetValue(target);
+            var e = (UltEventBase)accessor.GetValue(target);
             CopyEvent(e);
         }
 
         /// <summary>Stores the details of the event contained in the specified property.</summary>
         public static void CopyEvent(SerializedProperty property)
         {
-            SerializedPropertyAccessor accessor = SerializedPropertyAccessor.GetAccessor(property);
+            var accessor = SerializedPropertyAccessor.GetAccessor(property);
             if (accessor == null)
                 return;
 
@@ -79,14 +80,14 @@ namespace UltEvents.Editor
         /// <summary>Stores the details of the call contained in the specified property.</summary>
         public static void CopyCall(SerializedPropertyAccessor accessor, Object target)
         {
-            PersistentCall call = (PersistentCall)accessor.GetValue(target);
+            var call = (PersistentCall)accessor.GetValue(target);
             CopyCall(call);
         }
 
         /// <summary>Stores the details of the call contained in the specified property.</summary>
         public static void CopyCall(SerializedProperty property)
         {
-            SerializedPropertyAccessor accessor = SerializedPropertyAccessor.GetAccessor(property);
+            var accessor = SerializedPropertyAccessor.GetAccessor(property);
             if (accessor == null)
                 return;
 
@@ -104,14 +105,14 @@ namespace UltEvents.Editor
         /// <summary>Overwrites the call contained in the specified property with the copied details.</summary>
         public static void PasteCall(SerializedPropertyAccessor accessor, Object target)
         {
-            PersistentCall call = (PersistentCall)accessor.GetValue(target);
+            var call = (PersistentCall)accessor.GetValue(target);
             PasteCall(call);
         }
 
         /// <summary>Overwrites the call contained in the specified property with the copied details.</summary>
         public static void PasteCall(SerializedProperty property)
         {
-            SerializedPropertyAccessor.ModifyValues<PersistentCall>(property, call =>
+            SerializedPropertyAccessor.ModifyValues<PersistentCall>(property, (call) =>
             {
                 PasteCall(call);
             }, "Paste PersistentCall");

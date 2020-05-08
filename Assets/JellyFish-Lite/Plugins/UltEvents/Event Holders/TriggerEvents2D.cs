@@ -1,6 +1,5 @@
 ﻿// UltEvents // Copyright 2019 Kybernetik //
 
-using System;
 using UnityEngine;
 
 namespace UltEvents
@@ -8,7 +7,7 @@ namespace UltEvents
     /// <summary>
     /// An event that takes a single <see cref="Collider2D"/> parameter.
     /// </summary>
-    [Serializable]
+    [System.Serializable]
     public sealed class TriggerEvent2D : UltEvent<Collider2D> { }
 
     /************************************************************************************************************************/

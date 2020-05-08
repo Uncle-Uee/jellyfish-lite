@@ -4,7 +4,6 @@
 
 #if UNITY_EDITOR
 
-using System.Threading;
 using UnityEditor;
 using UnityEngine;
 
@@ -31,12 +30,12 @@ namespace UltEvents.Benchmarks
                 return;
 
             // Sleep to make this frame show up easily in the Unity Profiler.
-            Thread.Sleep(100);
+            System.Threading.Thread.Sleep(100);
 
-            double start = EditorApplication.timeSinceStartup;
+            var start = EditorApplication.timeSinceStartup;
 
             // Include the costs of loading and instantiating the prefab as well as the actual event invocation.
-            GameObject prefab = Resources.Load<GameObject>(_PrefabPath);
+            var prefab = Resources.Load<GameObject>(_PrefabPath);
             Instantiate(prefab);
 
             Debug.Log(EditorApplication.timeSinceStartup - start);

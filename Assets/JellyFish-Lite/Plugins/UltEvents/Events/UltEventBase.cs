@@ -1,9 +1,7 @@
 ﻿// UltEvents // Copyright 2019 Kybernetik //
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -66,7 +64,7 @@ namespace UltEvents
         /// <summary>
         /// Clears the cached invocation list of <see cref="DynamicCallsBase"/>.
         /// </summary>
-        [Conditional("UNITY_EDITOR")]
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
         protected void OnDynamicCallsChanged()
         {
 #if UNITY_EDITOR
@@ -99,7 +97,8 @@ namespace UltEvents
         {
             if (DynamicCallsBase == null)
                 return 0;
-            return GetDynamicCallInvocationList().Length;
+            else
+                return GetDynamicCallInvocationList().Length;
         }
 
         /************************************************************************************************************************/
@@ -154,7 +153,7 @@ namespace UltEvents
             if (_PersistentCalls == null)
                 _PersistentCalls = new List<PersistentCall>(4);
 
-            PersistentCall call = new PersistentCall(method);
+            var call = new PersistentCall(method);
             call.EventReference = this;
             _PersistentCalls.Add(call);
             return call;
@@ -170,7 +169,7 @@ namespace UltEvents
 
             for (int i = 0; i < _PersistentCalls.Count; i++)
             {
-                PersistentCall call = _PersistentCalls[i];
+                var call = _PersistentCalls[i];
                 if (call.GetMethodSafe() == method.Method && ReferenceEquals(call.Target, method.Target))
                 {
                     _PersistentCalls.RemoveAt(i);
@@ -219,7 +218,7 @@ namespace UltEvents
                         _PersistentCalls[i].InvocationIndex = currentInvocationIndex;
                         _PersistentCalls[i].EventReference = this;
                         
-                        object result = _PersistentCalls[i].Invoke();
+                        var result = _PersistentCalls[i].Invoke();
 
                         if(!LinkedValueDictionary.ContainsKey(currentInvocationIndex))
                         {
@@ -244,7 +243,7 @@ namespace UltEvents
 
         private Dictionary<int, List<object>> LinkedValueDictionary = new Dictionary<int, List<object>>();
         private Dictionary<int, int> ReturnValueIndices = new Dictionary<int, int>();
-        private int _invocationIndex;
+        private int _invocationIndex = 0;
 
         public void CacheParameter(object value)
         {
@@ -276,8 +275,10 @@ namespace UltEvents
             {
                 return LinkedValueDictionary[invocationIndex][index];
             }
-
-            return LinkedValueDictionary[invocationIndex][ReturnValueIndices[invocationIndex] + index];
+            else
+            {
+                return LinkedValueDictionary[invocationIndex][ReturnValueIndices[invocationIndex] + index];
+            }
         }
 
         /************************************************************************************************************************/
@@ -299,12 +300,12 @@ namespace UltEvents
         {
             get
             {
-                Type type = GetType();
+                var type = GetType();
 
                 ParameterInfo[] parameters;
                 if (!EventTypeToParameters.TryGetValue(type, out parameters))
                 {
-                    MethodInfo invokeMethod = type.GetMethod("Invoke", ParameterTypes);
+                    var invokeMethod = type.GetMethod("Invoke", ParameterTypes);
                     if (invokeMethod == null || invokeMethod.DeclaringType == typeof(UltEvent) ||
                         invokeMethod.DeclaringType.Name.StartsWith(Names.UltEvent.Class + "`"))
                     {
@@ -331,7 +332,7 @@ namespace UltEvents
         {
             get
             {
-                Type type = GetType();
+                var type = GetType();
 
                 string parameters;
                 if (!EventTypeToParameterString.TryGetValue(type, out parameters))
@@ -342,9 +343,9 @@ namespace UltEvents
                     }
                     else
                     {
-                        ParameterInfo[] invokeMethodParameters = Parameters;
+                        var invokeMethodParameters = Parameters;
 
-                        StringBuilder text = new StringBuilder();
+                        var text = new StringBuilder();
 
                         text.Append(" (");
                         for (int i = 0; i < ParameterTypes.Length; i++)
@@ -419,7 +420,7 @@ namespace UltEvents
 
                 for (int i = 0; i < target._PersistentCalls.Count; i++)
                 {
-                    PersistentCall call = new PersistentCall();
+                    var call = new PersistentCall();
                     call.CopyFrom(target._PersistentCalls[i]);
                     _PersistentCalls.Add(call);
                 }
@@ -437,7 +438,7 @@ namespace UltEvents
         /// <summary>Returns a description of this event.</summary>
         public override string ToString()
         {
-            StringBuilder text = new StringBuilder();
+            var text = new StringBuilder();
             ToString(text);
             return text.ToString();
         }
@@ -452,11 +453,11 @@ namespace UltEvents
 
             text.Append("\n    DynamicCalls=");
 #if UNITY_EDITOR
-            Delegate[] invocationList = GetDynamicCallInvocationList();
+            var invocationList = GetDynamicCallInvocationList();
 #else
             var invocationList = DynamicCallsBase != null ? DynamicCallsBase.GetInvocationList() : null;
 #endif
-            IEnumerator enumerator = invocationList != null ? invocationList.GetEnumerator() : null;
+            var enumerator = invocationList != null ? invocationList.GetEnumerator() : null;
             UltEventUtils.AppendDeepToString(text, enumerator, "\n    ");
         }
 

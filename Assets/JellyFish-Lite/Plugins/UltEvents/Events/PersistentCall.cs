@@ -41,9 +41,9 @@ namespace UltEvents
             get { return _MethodName; }
         }
 
-        public float MethodDelay;
+        public float MethodDelay = 0;
         public UltEventBase EventReference;
-        public int InvocationIndex;
+        public int InvocationIndex = 0;
 
         /************************************************************************************************************************/
 
@@ -74,8 +74,8 @@ namespace UltEvents
                     if (declaringType == null || string.IsNullOrEmpty(methodName))
                         return null;
 
-                    int argumentCount = _PersistentArguments.Length;
-                    Type[] parameters = ArrayCache<Type>.GetTempArray(argumentCount);
+                    var argumentCount = _PersistentArguments.Length;
+                    var parameters = ArrayCache<Type>.GetTempArray(argumentCount);
                     for (int i = 0; i < argumentCount; i++)
                     {
                         parameters[i] = _PersistentArguments[i].SystemType;
@@ -159,7 +159,7 @@ namespace UltEvents
                 }
                 else _MethodName = method.Name;
 
-                ParameterInfo[] parameters = method.GetParameters();
+                var parameters = method.GetParameters();
 
                 if (_PersistentArguments == null || _PersistentArguments.Length != parameters.Length)
                 {
@@ -168,8 +168,8 @@ namespace UltEvents
 
                 for (int i = 0; i < _PersistentArguments.Length; i++)
                 {
-                    ParameterInfo parameter = parameters[i];
-                    PersistentArgument persistentArgument = _PersistentArguments[i];
+                    var parameter = parameters[i];
+                    var persistentArgument = _PersistentArguments[i];
 
                     persistentArgument.SystemType = parameter.ParameterType;
 
@@ -203,7 +203,7 @@ namespace UltEvents
             }
             else
             {
-                Object target = method.Target as Object;
+                var target = method.Target as Object;
                 if (target != null)
                     SetMethod(method.Method, target);
                 else
@@ -227,15 +227,17 @@ namespace UltEvents
             {
                 return NoArguments;
             }
-
-            PersistentArgument[] array = new PersistentArgument[length];
-
-            for(int i = 0; i < length; i++)
+            else
             {
-                array[i] = new PersistentArgument();
-            }
+                var array = new PersistentArgument[length];
 
-            return array;
+                for(int i = 0; i < length; i++)
+                {
+                    array[i] = new PersistentArgument();
+                }
+
+                return array;
+            }
         }
 
         /************************************************************************************************************************/
@@ -349,7 +351,7 @@ namespace UltEvents
 
             if (target == null)
             {
-                int lastDot = serializedMethodName.LastIndexOf('.');
+                var lastDot = serializedMethodName.LastIndexOf('.');
                 if (lastDot < 0)
                 {
                     declaringType = null;
@@ -427,7 +429,7 @@ namespace UltEvents
         /// <summary>Returns a description of this call.</summary>
         public override string ToString()
         {
-            StringBuilder text = new StringBuilder();
+            var text = new StringBuilder();
             ToString(text);
             return text.ToString();
         }

@@ -1,10 +1,7 @@
 ﻿// UltEvents // Copyright 2019 Kybernetik //
 
 using System;
-using System.Diagnostics;
-using UltEvents.Editor;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 
 namespace UltEvents
@@ -351,7 +348,7 @@ namespace UltEvents
             set
             {
                 AssertType(PersistentArgumentType.Quaternion);
-                Vector3 euler = value.eulerAngles;
+                var euler = value.eulerAngles;
                 _X = euler.x;
                 _Y = euler.y;
                 _Z = euler.z;
@@ -432,7 +429,8 @@ namespace UltEvents
 
                 if (_Object == null)
                     return null;
-                return _Object;
+                else
+                    return _Object;
             }
             set
             {
@@ -573,7 +571,7 @@ namespace UltEvents
         #region Methods
         /************************************************************************************************************************/
 
-        [Conditional("UNITY_EDITOR")]
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
         private void AssertType(PersistentArgumentType type)
         {
             if (_Type != type)
@@ -643,42 +641,42 @@ namespace UltEvents
             assemblyQualifiedName = null;
 
             if (type == typeof(bool)) return PersistentArgumentType.Bool;
-            if (type      == typeof(string)) return PersistentArgumentType.String;
-            if (type      == typeof(int)) return PersistentArgumentType.Int;
-            if (type      == typeof(float)) return PersistentArgumentType.Float;
-            if (type      == typeof(Vector2)) return PersistentArgumentType.Vector2;
-            if (type      == typeof(Vector3)) return PersistentArgumentType.Vector3;
-            if (type      == typeof(Vector4)) return PersistentArgumentType.Vector4;
-            if (type      == typeof(Quaternion)) return PersistentArgumentType.Quaternion;
-            if (type      == typeof(Color)) return PersistentArgumentType.Color;
-            if (type      == typeof(Color32)) return PersistentArgumentType.Color32;
-            if (type == typeof(Rect)) return PersistentArgumentType.Rect;
-            if (type.IsEnum)
+            else if (type == typeof(string)) return PersistentArgumentType.String;
+            else if (type == typeof(int)) return PersistentArgumentType.Int;
+            else if (type == typeof(float)) return PersistentArgumentType.Float;
+            else if (type == typeof(Vector2)) return PersistentArgumentType.Vector2;
+            else if (type == typeof(Vector3)) return PersistentArgumentType.Vector3;
+            else if (type == typeof(Vector4)) return PersistentArgumentType.Vector4;
+            else if (type == typeof(Quaternion)) return PersistentArgumentType.Quaternion;
+            else if (type == typeof(Color)) return PersistentArgumentType.Color;
+            else if (type == typeof(Color32)) return PersistentArgumentType.Color32;
+            else if (type == typeof(Rect)) return PersistentArgumentType.Rect;
+            else if (type.IsEnum)
             {
                 if (System.Enum.GetUnderlyingType(type) == typeof(int))
                 {
                     assemblyQualifiedName = type.AssemblyQualifiedName;
                     return PersistentArgumentType.Enum;
                 }
-
-                return PersistentArgumentType.None;
+                else return PersistentArgumentType.None;
             }
-
-            if (type == typeof(Object) || type.IsSubclassOf(typeof(Object)))
+            else if (type == typeof(Object) || type.IsSubclassOf(typeof(Object)))
             {
                 assemblyQualifiedName = type.AssemblyQualifiedName;
                 return PersistentArgumentType.Object;
             }
-
-            assemblyQualifiedName = type.AssemblyQualifiedName;
+            else
+            {
+                assemblyQualifiedName = type.AssemblyQualifiedName;
 
 #if UNITY_EDITOR
-            PersistentArgumentType linkType;
-            if (DrawerState.Current.TryGetLinkable(type, out linkIndex, out linkType))
-                return linkType;
+                PersistentArgumentType linkType;
+                if (Editor.DrawerState.Current.TryGetLinkable(type, out linkIndex, out linkType))
+                    return linkType;
 #endif
 
-            return PersistentArgumentType.ReturnValue;
+                return PersistentArgumentType.ReturnValue;
+            }
         }
 
         /************************************************************************************************************************/
@@ -687,7 +685,7 @@ namespace UltEvents
         public PersistentArgument Clone()
         {
 #pragma warning disable IDE0017 // Simplify object initialization
-            PersistentArgument clone = new PersistentArgument();
+            var clone = new PersistentArgument();
 #pragma warning restore IDE0017 // Simplify object initialization
 
             clone._Type = _Type;
