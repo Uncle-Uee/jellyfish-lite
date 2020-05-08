@@ -10,22 +10,26 @@ I hope this SDK helps you the way it helps me.
 The Sprite Extractor is a Simple tool that Allows you to easily Extract Sub Sprites from a Spritesheet.
 It comes with a Right Click to use feature as well as a Sprite Extractor Window.
 
-From Source:
-![](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/sprite-extractor-from-source.gif)
+Right Click Feature:
+1. Right Click on a Spritesheet
+2. Navigate to JellyFish/SpriteExtractor
+3. Choose between Source and Meta
++ Meta Allows you to Extract a single or multiple Sub Sprites from the Spritesheet dropdown.
++ Source Allows you to Extract all the Sub Sprites.
+4. Extract at current location or anywhere else on your machine.
+5. Done!
 
-From Meta:
-![](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/sprite-extractor-from-meta.gif)
-
-From Sprite Extractor Window:
-![](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/sprite-extractor-window.gif)
+SpriteExtractor Window
+1. Select JellyFish from the Menubar
+2. Select Sprite Extractor
+3. Drag and Drop your Sprite
+4. Click Extract
+5. Done!
 
 ### Gif Extractor
 
 The Gif Extractor simply allows you to extract the frames of a Gif Image. <br>
 Just like the Sprite Extractors Right Click, the Gif Extract follows a Similar pattern.
-
-Gif Extractor:
-![](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/gif-extractor.gif)
 
 ### Project Setup Tool
 The Project Setup Tool is a tool that allows you to serialize any number of Folders by saving the path to each folder selected into a json file with a custom extension *.pdjson. <br>
@@ -34,10 +38,18 @@ The newly created *.pdjson file can now be brought into any new unity project yo
 I have created a default .pdjson file that can found in the Resources Folder. You can double click that file and see what folders where created and added to your project.
 
 How To Serialize:
-![](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/create-project-folders-file.gif)<br>
+1. Select your Projects Directories that you wish to Serialize
+2. Right Click
+3. Navigate to JellyFish/Project Directories/Serialize Folders
+4. Select where your *.pdjson file should be saved
+5. Done!
 
 How To Deserialize:
-![](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/create-project-folders.gif)<br>
+1. Start a new Unity Project.
+2. Bring in JellyFish Lite or the Project Setup Tool
+3. Bring in your *.pdjson file
+4. Double click and Create Folders
+5. Done.
 
 ### Text Creator
 The Text Creator allows your to create text and json files without the need to open any other external editor to creator one.
@@ -133,6 +145,9 @@ How to Create a Primitive Data Scriptable Object:
 #### Screen Monitor
 ### Camera Utilities
 ### Extensions
+
+# Documentation (GIFS)
+Please look at the Documentation Folder for some Practical Examples on how to use the tools and create some of the runtime Scriptable Objects and Components. 
 
 # Roadmap
 Add GIFs to README
