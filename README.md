@@ -24,7 +24,8 @@ From Sprite Extractor Window:
 The Gif Extractor simply allows you to extract the frames of a Gif Image. <br>
 Just like the Sprite Extractors Right Click, the Gif Extract follows a Similar pattern.
 
-![Gif Extractor](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/sprite-extractor.gif)
+Gif Extractor:
+![](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/gif-extractor.gif)
 
 ### Project Setup Tool
 The Project Setup Tool is a tool that allows you to serialize any number of Folders by saving the path to each folder selected into a json file with a custom extension *.pdjson. <br>
@@ -33,18 +34,10 @@ The newly created *.pdjson file can now be brought into any new unity project yo
 I have created a default .pdjson file that can found in the Resources Folder. You can double click that file and see what folders where created and added to your project.
 
 How To Serialize:
-1. Select your Projects Directories that you wish to Serialize
-2. Right Click
-3. Navigate to JellyFish/Project Directories/Serialize Folders
-4. Select where your *.pdjson file should be saved
-5. Done!
+![](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/create-project-folders-file.gif)<br>
 
 How To Deserialize:
-1. Start a new Unity Project.
-2. Bring in JellyFish Lite or the Project Setup Tool
-3. Bring in your *.pdjson file
-4. Double click and Create Folders
-5. Done.
+![](https://github.com/Uncle-Uee/jellyfish-lite/blob/master/Documentation~/create-project-folders.gif)<br>
 
 ### Text Creator
 The Text Creator allows your to create text and json files without the need to open any other external editor to creator one.
