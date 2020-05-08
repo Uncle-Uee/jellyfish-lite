@@ -79,7 +79,7 @@ namespace JellyFish.Data.Primitive
         /// </summary>
 #pragma warning disable 0414
         [SerializeField, HideInInspector]
-        private bool _displayValueChangedEvent;
+        private bool _displayValueChangedEvent = false;
 #pragma warning restore 0414
 
         public Vector2Field()

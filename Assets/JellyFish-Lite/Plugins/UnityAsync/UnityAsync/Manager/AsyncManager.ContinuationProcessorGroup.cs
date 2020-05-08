@@ -24,7 +24,7 @@ namespace UnityAsync
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public void Add<T>(in T cont) where T : IAwaitInstructionAwaiter
 			{
-				ContinuationProcessor<T> p = ContinuationProcessor<T>.instance;
+				var p = ContinuationProcessor<T>.instance;
 
 				if(p == null)
 				{

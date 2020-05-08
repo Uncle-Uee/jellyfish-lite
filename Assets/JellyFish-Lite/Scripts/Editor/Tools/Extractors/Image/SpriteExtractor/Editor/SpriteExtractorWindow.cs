@@ -70,12 +70,12 @@ namespace JellyFish.Editor.Tools.Extractors
         /// <summary>
         /// Width
         /// </summary>
-        private float _width;
+        private float _width = 0f;
 
         /// <summary>
         /// Height
         /// </summary>
-        private float _height;
+        private float _height = 0f;
 
         /// <summary>
         /// Cached Image Rect
