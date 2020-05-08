@@ -17,10 +17,30 @@ namespace JellyFish.Fading
         private SerializedProperty _unfadedColour;
         private SerializedProperty _fadedColour;
         private SerializedProperty _fadeCurve;
+        private SerializedProperty _unfadeCurve;
+        private SerializedProperty _onlyFade;
+        private SerializedProperty _fadeTime;
+        private SerializedProperty _unfadeTime;
+        private SerializedProperty _waitBetweenFades;
+        private SerializedProperty _onFadeStart;
+        private SerializedProperty _onFadeWait;
+        private SerializedProperty _onFadeComplete;
 
         private void OnEnable()
         {
             _target = (GenericFader) target;
+
+            _unfadedColour    = serializedObject.FindProperty(nameof(_target.UnfadedColour));
+            _fadedColour      = serializedObject.FindProperty(nameof(_target.FadedColour));
+            _fadeCurve        = serializedObject.FindProperty(nameof(_target.FadeCurve));
+            _unfadeCurve      = serializedObject.FindProperty(nameof(_target.UnfadeCurve));
+            _onlyFade         = serializedObject.FindProperty(nameof(_target.OnlyFade));
+            _fadeTime         = serializedObject.FindProperty(nameof(_target.FadeTime));
+            _unfadeTime       = serializedObject.FindProperty(nameof(_target.UnfadeTime));
+            _waitBetweenFades = serializedObject.FindProperty(nameof(_target.WaitBetweenFades));
+            _onFadeStart      = serializedObject.FindProperty(nameof(_target.OnFadeStart));
+            _onFadeWait       = serializedObject.FindProperty(nameof(_target.OnFadeWait));
+            _onFadeComplete   = serializedObject.FindProperty(nameof(_target.OnFadeComplete));
         }
 
         /// <inheritdoc />
@@ -34,34 +54,35 @@ namespace JellyFish.Fading
         /// </summary>
         private void DrawFaderInspector()
         {
-            _unfadedColour = serializedObject.FindProperty("UnfadedColour");
-            EditorGUILayout.PropertyField(_unfadedColour, new GUIContent("Unfaded Colour"));
+            EditorGUILayout.PropertyField(_unfadedColour);
+            EditorGUILayout.PropertyField(_fadedColour);
+            EditorGUILayout.PropertyField(_fadeCurve);
 
-            _fadedColour = serializedObject.FindProperty("FadedColour");
-            EditorGUILayout.PropertyField(_fadedColour, new GUIContent("Faded Colour"));
 
-            _fadeCurve = serializedObject.FindProperty("FadeCurve");
-            EditorGUILayout.PropertyField(_fadeCurve, new GUIContent("Fade Curve"));
-            // serializedObject.DrawProperty("UnfadedColour");
-            // serializedObject.DrawProperty("FadedColour");
-            // serializedObject.DrawProperty("FadeCurve");
+            if (!_target.OnlyFade)
+            {
+                EditorGUILayout.PropertyField(_unfadeCurve);
+            }
 
-            // if (!_target.OnlyFade) serializedObject.DrawProperty("UnfadeCurve");
+            EditorGUILayout.PropertyField(_onlyFade);
+            EditorGUILayout.PropertyField(_fadeTime);
 
-            // serializedObject.DrawProperty("OnlyFade");
-            // serializedObject.DrawProperty("FadeTime");
+            if (!_target.OnlyFade)
+            {
+                EditorGUILayout.PropertyField(_unfadeTime);
+                EditorGUILayout.PropertyField(_waitBetweenFades);
+            }
 
-            // if (!_target.OnlyFade)
-            // {
-            // serializedObject.DrawProperty("UnfadeTime");
-            // serializedObject.DrawProperty("WaitBetweenFades");
-            // }
+            EditorGUILayout.PropertyField(_onFadeStart);
 
-            // serializedObject.DrawProperty("OnFadeStart");
+            if (!_target.OnlyFade)
+            {
+                EditorGUILayout.PropertyField(_onFadeWait);
+            }
 
-            // if (!_target.OnlyFade) serializedObject.DrawProperty("OnFadeWait");
+            EditorGUILayout.PropertyField(_onFadeComplete);
 
-            // serializedObject.DrawProperty("OnFadeComplete");
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

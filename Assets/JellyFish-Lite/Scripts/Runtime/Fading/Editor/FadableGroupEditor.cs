@@ -14,9 +14,20 @@ namespace JellyFish.Fading
         /// </summary>
         private FadableGroup _target;
 
+        private SerializedProperty _alphaOnly;
+        private SerializedProperty _invertAlpha;
+        private SerializedProperty _invertPercentage;
+        private SerializedProperty _fadables;
+
+
         private void OnEnable()
         {
             _target = (FadableGroup) target;
+
+            _alphaOnly        = serializedObject.FindProperty(nameof(_target.AlphaOnly));
+            _invertAlpha      = serializedObject.FindProperty(nameof(_target.InvertAlpha));
+            _invertPercentage = serializedObject.FindProperty(nameof(_target.InvertPercentage));
+            _fadables         = serializedObject.FindProperty(nameof(_target.Fadables));
         }
 
         /// <inheritdoc />
@@ -24,6 +35,12 @@ namespace JellyFish.Fading
         {
             if (GUILayout.Button("Capture Child Fadables"))
                 _target.CaptureChildFadables();
+
+            EditorGUILayout.PropertyField(_alphaOnly);
+            EditorGUILayout.PropertyField(_invertAlpha);
+            EditorGUILayout.PropertyField(_invertPercentage);
+            EditorGUILayout.PropertyField(_fadables);
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

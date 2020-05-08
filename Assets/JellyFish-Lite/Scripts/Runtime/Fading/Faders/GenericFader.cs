@@ -32,17 +32,17 @@ namespace JellyFish.Fading
         /// <summary>
         ///     Event raised when the fading is completed.
         /// </summary>
-        public UltEvent OnFadeComplete;
+        public UltEvent OnFadeComplete = new UltEvent();
 
         /// <summary>
         ///     Event raised before the fade starts.
         /// </summary>
-        public UltEvent OnFadeStart;
+        public UltEvent OnFadeStart = new UltEvent();
 
         /// <summary>
         ///     Event raised when waiting between fades.
         /// </summary>
-        public UltEvent OnFadeWait;
+        public UltEvent OnFadeWait = new UltEvent();
 
         /// <summary>
         ///     Enable to only allow fading in.
