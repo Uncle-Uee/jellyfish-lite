@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace UltEvents.Editor
 {
@@ -22,7 +21,7 @@ namespace UltEvents.Editor
                 if (property.propertyType != SerializedPropertyType.Generic)
                     return;
 
-                SerializedPropertyAccessor accessor = SerializedPropertyAccessor.GetAccessor(property);
+                var accessor = SerializedPropertyAccessor.GetAccessor(property);
                 if (accessor == null)
                     return;
 
@@ -49,10 +48,10 @@ namespace UltEvents.Editor
             {
                 menu.AddItem(new GUIContent("Invoke Event"), false, () =>
                 {
-                    UltEvent[] events = SerializedPropertyAccessor.GetValues<UltEvent>(property);
+                    var events = SerializedPropertyAccessor.GetValues<UltEvent>(property);
                     for (int i = 0; i < events.Length; i++)
                     {
-                        UltEvent e = events[i];
+                        var e = events[i] as UltEvent;
                         if (e != null)
                             e.Invoke();
                     }
@@ -64,7 +63,7 @@ namespace UltEvents.Editor
 
             menu.AddItem(new GUIContent("Clear Event"), false, () =>
             {
-                SerializedPropertyAccessor.ModifyValues<UltEventBase>(property, e =>
+                SerializedPropertyAccessor.ModifyValues<UltEventBase>(property, (e) =>
                 {
                     if (e != null)
                         e.Clear();
@@ -73,8 +72,8 @@ namespace UltEvents.Editor
 
             menu.AddItem(new GUIContent("Log Description"), false, () =>
             {
-                Object[] targets = property.serializedObject.targetObjects;
-                UltEventBase[] events = SerializedPropertyAccessor.GetValues<UltEventBase>(property);
+                var targets = property.serializedObject.targetObjects;
+                var events = SerializedPropertyAccessor.GetValues<UltEventBase>(property);
 
                 for (int i = 0; i < events.Length; i++)
                     Debug.Log(events[i], targets[i]);
@@ -94,7 +93,7 @@ namespace UltEvents.Editor
             // Paste Event.
             AddMenuItem(menu, "Paste Event (Overwrite)", Clipboard.HasEvent, () =>
             {
-                SerializedPropertyAccessor.ModifyValues<UltEventBase>(property, e =>
+                SerializedPropertyAccessor.ModifyValues<UltEventBase>(property, (e) =>
                 {
                     Clipboard.Paste(e);
                 }, "Paste Event");
@@ -103,9 +102,9 @@ namespace UltEvents.Editor
             // Paste Listener.
             AddMenuItem(menu, "Paste Listener (New) %#V", Clipboard.HasCall, () =>
             {
-                SerializedPropertyAccessor.ModifyValues<UltEventBase>(property, e =>
+                SerializedPropertyAccessor.ModifyValues<UltEventBase>(property, (e) =>
                 {
-                    PersistentCall call = new PersistentCall();
+                    var call = new PersistentCall();
                     Clipboard.PasteCall(call);
 
                     if (e._PersistentCalls == null)
@@ -164,7 +163,7 @@ namespace UltEvents.Editor
 
         private static void ForEachTarget(SerializedProperty property, Action<SerializedProperty> function)
         {
-            Object[] targets = property.serializedObject.targetObjects;
+            var targets = property.serializedObject.targetObjects;
 
             if (targets.Length == 1)
             {
@@ -173,10 +172,10 @@ namespace UltEvents.Editor
             }
             else
             {
-                string path = property.propertyPath;
+                var path = property.propertyPath;
                 for (int i = 0; i < targets.Length; i++)
                 {
-                    using (SerializedObject serializedObject = new SerializedObject(targets[i]))
+                    using (var serializedObject = new SerializedObject(targets[i]))
                     {
                         property = serializedObject.FindProperty(path);
                         function(property);

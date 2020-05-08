@@ -1,7 +1,6 @@
 ﻿// UltEvents // Copyright 2019 Kybernetik //
 
 using System;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using Object = UnityEngine.Object;
@@ -100,7 +99,7 @@ namespace UltEvents
                 e = new UltEvent<T0>();
 
 #if UNITY_EDITOR
-            if (!EditorApplication.isPlaying && method.Target is Object)
+            if (!UnityEditor.EditorApplication.isPlaying && method.Target is Object)
             {
                 e.PersistentCalls += method;
                 return e;
@@ -123,7 +122,7 @@ namespace UltEvents
                 return null;
 
 #if UNITY_EDITOR
-            if (!EditorApplication.isPlaying && method.Target is Object)
+            if (!UnityEditor.EditorApplication.isPlaying && method.Target is Object)
             {
                 e.PersistentCalls -= method;
                 return e;
@@ -144,12 +143,11 @@ namespace UltEvents
         {
             if (method != null)
             {
-                UltEvent<T0> e = new UltEvent<T0>();
+                var e = new UltEvent<T0>();
                 e += method;
                 return e;
             }
-
-            return null;
+            else return null;
         }
 
         /************************************************************************************************************************/
@@ -177,7 +175,7 @@ namespace UltEvents
 #if UNITY_EDITOR
         /// <summary>[Editor-Only] The types of each of this event's parameters.</summary>
         public override Type[] ParameterTypes { get { return _ParameterTypes; } }
-        private static Type[] _ParameterTypes = { typeof(T0), };
+        private static Type[] _ParameterTypes = new Type[] { typeof(T0), };
 #endif
 
         /************************************************************************************************************************/

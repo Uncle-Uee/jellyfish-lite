@@ -139,19 +139,19 @@ namespace UltEvents
                 return "";
 
             // Check if we have already got the name for that type.
-            Dictionary<Type, string> names = fullName ? FullTypeNames : TypeNames;
+            var names = fullName ? FullTypeNames : TypeNames;
             string name;
             if (names.TryGetValue(type, out name))
                 return name;
 
-            StringBuilder text = new StringBuilder();
+            var text = new StringBuilder();
 
             if (type.IsArray)// Array = TypeName[].
             {
                 text.Append(type.GetElementType().GetNameCS(fullName));
 
                 text.Append('[');
-                int dimensions = type.GetArrayRank();
+                var dimensions = type.GetArrayRank();
                 while (dimensions-- > 1)
                     text.Append(",");
                 text.Append(']');
@@ -173,7 +173,7 @@ namespace UltEvents
                 goto Return;
             }
 
-            Type underlyingType = Nullable.GetUnderlyingType(type);
+            var underlyingType = Nullable.GetUnderlyingType(type);
             if (underlyingType != null)// Nullable = TypeName?.
             {
                 text.Append(underlyingType.GetNameCS(fullName));
@@ -190,13 +190,13 @@ namespace UltEvents
                 text.Append('.');
             }
 
-            int genericArguments = 0;
+            var genericArguments = 0;
 
             if (type.DeclaringType != null)// Account for Nested Types.
             {
                 // Count the nesting level.
-                int nesting = 1;
-                Type declaringType = type.DeclaringType;
+                var nesting = 1;
+                var declaringType = type.DeclaringType;
                 while (declaringType.DeclaringType != null)
                 {
                     declaringType = declaringType.DeclaringType;
@@ -238,17 +238,17 @@ namespace UltEvents
 
             if (type.IsGenericType)
             {
-                int backQuote = type.Name.IndexOf('`');
+                var backQuote = type.Name.IndexOf('`');
                 if (backQuote >= 0)
                 {
                     text.Length -= type.Name.Length - backQuote;
 
-                    Type[] genericArguments = type.GetGenericArguments();
+                    var genericArguments = type.GetGenericArguments();
                     if (skipGenericArguments < genericArguments.Length)
                     {
                         text.Append('<');
 
-                        Type firstArgument = genericArguments[skipGenericArguments];
+                        var firstArgument = genericArguments[skipGenericArguments];
                         skipGenericArguments++;
 
                         if (firstArgument.IsGenericParameter)
@@ -297,11 +297,11 @@ namespace UltEvents
             if (member == null)
                 return "null";
 
-            Type type = member as Type;
+            var type = member as Type;
             if (type != null)
                 return type.GetNameCS(fullName);
 
-            StringBuilder text = new StringBuilder();
+            var text = new StringBuilder();
 
             if (member.DeclaringType != null)
             {
@@ -331,7 +331,7 @@ namespace UltEvents
                 return text;
             }
 
-            Type type = member as Type;
+            var type = member as Type;
             if (type != null)
             {
                 text.Append(type.GetNameCS(fullName));
@@ -360,7 +360,8 @@ namespace UltEvents
         {
             if (collection == null)
                 return "null";
-            return collection.GetEnumerator().DeepToString(separator);
+            else
+                return collection.GetEnumerator().DeepToString(separator);
         }
 
         /// <summary>Returns a string containing the value of each element in 'collection' (each on a new line).</summary>
@@ -375,8 +376,8 @@ namespace UltEvents
         public static void AppendDeepToString(StringBuilder text, IEnumerator enumerator, string separator)
         {
             text.Append("[]");
-            int countIndex = text.Length - 1;
-            int count = 0;
+            var countIndex = text.Length - 1;
+            var count = 0;
 
             if (enumerator != null)
             {
@@ -398,7 +399,7 @@ namespace UltEvents
         /// <summary>Returns a string containing the value of each element in 'enumerator'.</summary>
         public static string DeepToString(this IEnumerator enumerator, string separator)
         {
-            StringBuilder text = new StringBuilder();
+            var text = new StringBuilder();
             AppendDeepToString(text, enumerator, separator);
             return text.ToString();
         }
@@ -453,9 +454,9 @@ namespace UltEvents
             if (string.IsNullOrEmpty(b))
                 return a.Length;
 
-            int n = a.Length;
-            int m = b.Length;
-            int[,] d = new int[n + 1, m + 1];
+            var n = a.Length;
+            var m = b.Length;
+            var d = new int[n + 1, m + 1];
 
             // initialise the top and right of the table to 0, 1, 2, ...
             for (int i = 0; i <= n; d[i, 0] = i++)
@@ -472,7 +473,7 @@ namespace UltEvents
             {
                 for (int j = 1; j <= m; j++)
                 {
-                    int cost = (b[j - 1] == a[i - 1]) ? 0 : 1;
+                    var cost = (b[j - 1] == a[i - 1]) ? 0 : 1;
 
                     d[i, j] = Mathf.Min(
                         Mathf.Min(d[i - 1, j] + 1, d[i, j - 1] + 1),
@@ -491,12 +492,12 @@ namespace UltEvents
         /// </summary>
         public static void StableInsertionSort<T>(IList<T> list, Comparison<T> comparison)
         {
-            int count = list.Count;
+            var count = list.Count;
             for (int j = 1; j < count; j++)
             {
-                T key = list[j];
+                var key = list[j];
 
-                int i = j - 1;
+                var i = j - 1;
                 for (; i >= 0 && comparison(list[i], key) > 0; i--)
                 {
                     list[i + 1] = list[i];
