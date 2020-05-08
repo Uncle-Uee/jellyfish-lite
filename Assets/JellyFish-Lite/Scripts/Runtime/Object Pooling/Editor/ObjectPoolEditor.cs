@@ -28,20 +28,20 @@ namespace JellyFish.ObjectPooling
 
             foreach (object objectSet in pool)
             {
-                EditorGUILayout.BeginHorizontal();
-
+                EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
                 EditorGUILayout.LabelField("ID");
-
                 EditorGUILayout.LabelField($"Pool Count - {_target.CurrentPoolSize}");
-
                 EditorGUILayout.EndHorizontal();
 
                 PropertyInfo key   = objectSet.GetType().GetProperty("Key");
                 PropertyInfo value = objectSet.GetType().GetProperty("Value");
 
                 PropertyInfo valueCount = value.GetValue(objectSet).GetType().GetProperty("Count");
+
+                EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
                 EditorGUILayout.LabelField(key.GetValue(objectSet).ToString());
                 EditorGUILayout.LabelField(valueCount.GetValue(value.GetValue(objectSet)).ToString());
+                EditorGUILayout.EndHorizontal();
             }
         }
     }

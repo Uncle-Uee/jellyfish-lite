@@ -24,9 +24,11 @@ namespace JellyFish.ObjectPooling
         {
             DrawDefaultInspector();
 
+            EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
             EditorGUILayout.LabelField("Total Pool Objects");
-
             EditorGUILayout.LabelField(_target.PoolObjectCount.ToString());
+            EditorGUILayout.EndHorizontal();
+
             foreach (IPoolObjectRoot poolObject in _target.PoolObjects)
             {
                 EditorGUILayout.ObjectField(poolObject.GetObjectInstance(), typeof(Object), false);
