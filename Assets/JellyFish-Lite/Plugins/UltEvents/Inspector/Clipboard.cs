@@ -4,7 +4,6 @@
 
 using System;
 using UnityEditor;
-using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace UltEvents.Editor
@@ -112,7 +111,7 @@ namespace UltEvents.Editor
         /// <summary>Overwrites the call contained in the specified property with the copied details.</summary>
         public static void PasteCall(SerializedProperty property)
         {
-            SerializedPropertyAccessor.ModifyValues<PersistentCall>(property, (call) =>
+            SerializedPropertyAccessor.ModifyValues<PersistentCall>(property, call =>
             {
                 PasteCall(call);
             }, "Paste PersistentCall");

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -64,7 +65,7 @@ namespace UltEvents
         /// <summary>
         /// Clears the cached invocation list of <see cref="DynamicCallsBase"/>.
         /// </summary>
-        [System.Diagnostics.Conditional("UNITY_EDITOR")]
+        [Conditional("UNITY_EDITOR")]
         protected void OnDynamicCallsChanged()
         {
 #if UNITY_EDITOR
@@ -97,8 +98,7 @@ namespace UltEvents
         {
             if (DynamicCallsBase == null)
                 return 0;
-            else
-                return GetDynamicCallInvocationList().Length;
+            return GetDynamicCallInvocationList().Length;
         }
 
         /************************************************************************************************************************/
@@ -243,7 +243,7 @@ namespace UltEvents
 
         private Dictionary<int, List<object>> LinkedValueDictionary = new Dictionary<int, List<object>>();
         private Dictionary<int, int> ReturnValueIndices = new Dictionary<int, int>();
-        private int _invocationIndex = 0;
+        private int _invocationIndex;
 
         public void CacheParameter(object value)
         {
@@ -275,10 +275,8 @@ namespace UltEvents
             {
                 return LinkedValueDictionary[invocationIndex][index];
             }
-            else
-            {
-                return LinkedValueDictionary[invocationIndex][ReturnValueIndices[invocationIndex] + index];
-            }
+
+            return LinkedValueDictionary[invocationIndex][ReturnValueIndices[invocationIndex] + index];
         }
 
         /************************************************************************************************************************/

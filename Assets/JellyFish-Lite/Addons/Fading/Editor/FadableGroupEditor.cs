@@ -4,10 +4,10 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace JellyFish.Fading
+namespace SOFlow.Fading
 {
     [CustomEditor(typeof(FadableGroup))]
-    public class FadableGroupEditor : UnityEditor.Editor
+    public class FadableGroupEditor : Editor
     {
         /// <summary>
         ///     The FadableGroup target.

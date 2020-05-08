@@ -1,10 +1,8 @@
 ﻿using System.Collections;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityAsync;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 using WaitForSeconds = UnityAsync.WaitForSeconds;
 using WaitForSecondsRealtime = UnityAsync.WaitForSecondsRealtime;
 using WaitUntil = UnityAsync.WaitUntil;

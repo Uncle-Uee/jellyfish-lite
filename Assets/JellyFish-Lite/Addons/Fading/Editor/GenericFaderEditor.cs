@@ -2,12 +2,11 @@
 
 #if UNITY_EDITOR
 using UnityEditor;
-using UnityEngine;
 
-namespace JellyFish.Fading
+namespace SOFlow.Fading
 {
     [CustomEditor(typeof(GenericFader))]
-    public class GenericFaderEditor : UnityEditor.Editor
+    public class GenericFaderEditor : Editor
     {
         /// <summary>
         ///     The GenericFader target.

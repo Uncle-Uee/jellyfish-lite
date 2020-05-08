@@ -1,6 +1,7 @@
 ﻿// UltEvents // Copyright 2019 Kybernetik //
 
 using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using Object = UnityEngine.Object;
@@ -27,7 +28,7 @@ namespace UltEvents
     /// <summary>
     /// A serializable event with 4 parameters which can be viewed and configured in the inspector.
     /// <para></para>
-    /// This is a more versatile and user friendly implementation than <see cref="UnityEvent{T0, T1, T2, T3}"/>.
+    /// This is a more versatile and user friendly implementation than <see cref="UnityEvent{T0,T1,T2,T3}"/>.
     /// </summary>
     [Serializable]
     public class UltEvent<T0, T1, T2, T3> : UltEventBase, IUltEvent<T0, T1, T2, T3>
@@ -99,7 +100,7 @@ namespace UltEvents
                 e = new UltEvent<T0, T1, T2, T3>();
 
 #if UNITY_EDITOR
-            if (!UnityEditor.EditorApplication.isPlaying && method.Target is Object)
+            if (!EditorApplication.isPlaying && method.Target is Object)
             {
                 e.PersistentCalls += method;
                 return e;
@@ -122,7 +123,7 @@ namespace UltEvents
                 return null;
 
 #if UNITY_EDITOR
-            if (!UnityEditor.EditorApplication.isPlaying && method.Target is Object)
+            if (!EditorApplication.isPlaying && method.Target is Object)
             {
                 e.PersistentCalls -= method;
                 return e;
@@ -147,7 +148,8 @@ namespace UltEvents
                 e += method;
                 return e;
             }
-            else return null;
+
+            return null;
         }
 
         /************************************************************************************************************************/
@@ -175,7 +177,7 @@ namespace UltEvents
 #if UNITY_EDITOR
         /// <summary>[Editor-Only] The types of each of this event's parameters.</summary>
         public override Type[] ParameterTypes { get { return _ParameterTypes; } }
-        private static Type[] _ParameterTypes = new Type[] { typeof(T0), typeof(T1), typeof(T2), typeof(T3) };
+        private static Type[] _ParameterTypes = { typeof(T0), typeof(T1), typeof(T2), typeof(T3) };
 #endif
 
         /************************************************************************************************************************/

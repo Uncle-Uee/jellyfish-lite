@@ -1,12 +1,12 @@
 ﻿// Created by Kearan Petersen : https://www.blumalice.wordpress.com | https://www.linkedin.com/in/kearan-petersen/
 
+
+using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-using UnityEngine;
-
-namespace JellyFish.Fading
+namespace SOFlow.Fading
 {
     public abstract class Fadable : MonoBehaviour
     {

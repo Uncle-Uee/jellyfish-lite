@@ -41,9 +41,9 @@ namespace UltEvents
             get { return _MethodName; }
         }
 
-        public float MethodDelay = 0;
+        public float MethodDelay;
         public UltEventBase EventReference;
-        public int InvocationIndex = 0;
+        public int InvocationIndex;
 
         /************************************************************************************************************************/
 
@@ -227,17 +227,15 @@ namespace UltEvents
             {
                 return NoArguments;
             }
-            else
+
+            var array = new PersistentArgument[length];
+
+            for(int i = 0; i < length; i++)
             {
-                var array = new PersistentArgument[length];
-
-                for(int i = 0; i < length; i++)
-                {
-                    array[i] = new PersistentArgument();
-                }
-
-                return array;
+                array[i] = new PersistentArgument();
             }
+
+            return array;
         }
 
         /************************************************************************************************************************/

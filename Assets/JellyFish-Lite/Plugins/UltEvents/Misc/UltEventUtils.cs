@@ -360,8 +360,7 @@ namespace UltEvents
         {
             if (collection == null)
                 return "null";
-            else
-                return collection.GetEnumerator().DeepToString(separator);
+            return collection.GetEnumerator().DeepToString(separator);
         }
 
         /// <summary>Returns a string containing the value of each element in 'collection' (each on a new line).</summary>

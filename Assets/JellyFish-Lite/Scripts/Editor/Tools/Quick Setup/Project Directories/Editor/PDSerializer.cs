@@ -83,7 +83,7 @@ namespace JellyFish.Editor.Tools.QuickSetup
                     {
                         settingsFile =
                             EditorUtility.SaveFilePanel("Save Project Directory Structure", Application.dataPath,
-                                                        $"project-directory-structure", "pdjson");
+                                                        "project-directory-structure", "pdjson");
                     }
 
                     string objectPath = AssetDatabase.GetAssetPath(_object);

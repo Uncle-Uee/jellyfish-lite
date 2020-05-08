@@ -3,9 +3,8 @@
 #if UNITY_EDITOR
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -50,14 +49,12 @@ namespace UltEvents.Editor
             {
                 return EditorGUIUtility.singleLineHeight;
             }
-            else
-            {
-                DrawerState.Current.BeginEvent(property);
-                CachePersistentCallList(property);
-                DrawerState.Current.EndEvent();
 
-                return _CurrentCallList.GetHeight() - 1;
-            }
+            DrawerState.Current.BeginEvent(property);
+            CachePersistentCallList(property);
+            DrawerState.Current.EndEvent();
+
+            return _CurrentCallList.GetHeight() - 1;
         }
 
         /************************************************************************************************************************/
@@ -74,7 +71,8 @@ namespace UltEvents.Editor
 
                 return height;
             }
-            else return 0;
+
+            return 0;
         }
 
         /************************************************************************************************************************/
@@ -463,7 +461,7 @@ namespace UltEvents.Editor
                     EditorGUI.ObjectField(area, obj, typeof(Object), true);
                 }
             }
-            else if (del.Method.DeclaringType.IsDefined(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), true))
+            else if (del.Method.DeclaringType.IsDefined(typeof(CompilerGeneratedAttribute), true))
             {
                 // Anonymous Methods draw only their method name.
 
@@ -635,9 +633,6 @@ namespace UltEvents.Editor
                     DrawerState.Current.EventProperty.isExpanded = true;
                     DragAndDrop.AcceptDrag();
                     GUI.changed = true;
-                    break;
-
-                default:
                     break;
             }
         }

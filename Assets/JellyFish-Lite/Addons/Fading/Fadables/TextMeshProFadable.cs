@@ -1,9 +1,10 @@
 ﻿// Created by Kearan Petersen : https://www.blumalice.wordpress.com | https://www.linkedin.com/in/kearan-petersen/
 
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 
-namespace JellyFish.Fading
+namespace SOFlow.Fading
 {
     public class TextMeshProFadable : Fadable
     {
@@ -28,10 +29,10 @@ namespace JellyFish.Fading
         /// <summary>
         ///     Adds a TextMesh Pro Fadable to the scene.
         /// </summary>
-        [UnityEditor.MenuItem("GameObject/SOFlow/Fading/Fadables/Add TextMesh Pro Fadable", false, 10)]
+        [MenuItem("GameObject/SOFlow/Fading/Fadables/Add TextMesh Pro Fadable", false, 10)]
         public static void AddComponentToScene()
         {
-            TMP_Text text = UnityEditor.Selection.activeGameObject?.GetComponent<TMP_Text>();
+            TMP_Text text = Selection.activeGameObject?.GetComponent<TMP_Text>();
 
             if(text != null)
             {
@@ -43,12 +44,12 @@ namespace JellyFish.Fading
 
             GameObject _gameObject = new GameObject("TextMesh Pro Fadable", typeof(TextMeshProFadable));
 
-            if(UnityEditor.Selection.activeTransform != null)
+            if(Selection.activeTransform != null)
             {
-                _gameObject.transform.SetParent(UnityEditor.Selection.activeTransform);
+                _gameObject.transform.SetParent(Selection.activeTransform);
             }
 
-            UnityEditor.Selection.activeGameObject = _gameObject;
+            Selection.activeGameObject = _gameObject;
         }
 #endif
     }

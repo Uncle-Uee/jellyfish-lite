@@ -1,9 +1,10 @@
 ﻿// Created by Kearan Petersen : https://www.blumalice.wordpress.com | https://www.linkedin.com/in/kearan-petersen/
 
 using JellyFish.Data.Primitive;
+using UnityEditor;
 using UnityEngine;
 
-namespace JellyFish.Fading
+namespace SOFlow.Fading
 {
     public class FloatDataFadable : Fadable
     {
@@ -33,17 +34,17 @@ namespace JellyFish.Fading
         /// <summary>
         ///     Adds a Float Data Fadable to the scene.
         /// </summary>
-        [UnityEditor.MenuItem("GameObject/SOFlow/Fading/Fadables/Add Float Data Fadable", false, 10)]
+        [MenuItem("GameObject/SOFlow/Fading/Fadables/Add Float Data Fadable", false, 10)]
         public static void AddComponentToScene()
         {
 	        GameObject _gameObject = new GameObject("Float Data Fadable", typeof(FloatDataFadable));
 
-	        if(UnityEditor.Selection.activeTransform != null)
+	        if(Selection.activeTransform != null)
 	        {
-		        _gameObject.transform.SetParent(UnityEditor.Selection.activeTransform);
+		        _gameObject.transform.SetParent(Selection.activeTransform);
 	        }
 
-	        UnityEditor.Selection.activeGameObject = _gameObject;
+	        Selection.activeGameObject = _gameObject;
         }
 #endif
     }

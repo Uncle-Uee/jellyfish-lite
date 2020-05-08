@@ -525,8 +525,7 @@ namespace UltEvents.Editor
         {
             if (Parent != null)
                 return Parent + "." + Field.Name;
-            else
-                return Field.Name;
+            return Field.Name;
         }
 
         /************************************************************************************************************************/
@@ -556,15 +555,14 @@ namespace UltEvents.Editor
             {
                 return fieldType.GetElementType();
             }
-            else if (fieldType.IsGenericType)
+
+            if (fieldType.IsGenericType)
             {
                 return fieldType.GetGenericArguments()[0];
             }
-            else
-            {
-                Debug.LogWarning(Names.SerializedPropertyArrayAccessor + ": unable to determine element type for " + fieldType);
-                return fieldType;
-            }
+
+            Debug.LogWarning(Names.SerializedPropertyArrayAccessor + ": unable to determine element type for " + fieldType);
+            return fieldType;
         }
 
         /************************************************************************************************************************/
@@ -580,8 +578,7 @@ namespace UltEvents.Editor
             {
                 if (ElementIndex < list.Count)
                     return list[ElementIndex];
-                else
-                    return null;
+                return null;
             }
 
             var enumerator = ((IEnumerable)collection).GetEnumerator();

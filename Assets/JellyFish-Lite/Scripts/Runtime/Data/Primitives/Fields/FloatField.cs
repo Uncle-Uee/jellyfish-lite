@@ -80,7 +80,7 @@ namespace JellyFish.Data.Primitive
         /// </summary>
 #pragma warning disable 0414
         [SerializeField, HideInInspector]
-        private bool _displayValueChangedEvent = false;
+        private bool _displayValueChangedEvent;
 #pragma warning restore 0414
 
         public FloatField()

@@ -33,6 +33,7 @@
  * SOFTWARE.
  * 
  * * * * */
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -72,14 +73,14 @@ namespace SimpleJSON
             public Enumerator(List<JSONNode>.Enumerator aArrayEnum)
             {
                 type = Type.Array;
-                m_Object = default(Dictionary<string, JSONNode>.Enumerator);
+                m_Object = default;
                 m_Array = aArrayEnum;
             }
             public Enumerator(Dictionary<string, JSONNode>.Enumerator aDictEnum)
             {
                 type = Type.Object;
                 m_Object = aDictEnum;
-                m_Array = default(List<JSONNode>.Enumerator);
+                m_Array = default;
             }
             public KeyValuePair<string, JSONNode> Current
             {
@@ -87,7 +88,7 @@ namespace SimpleJSON
                 {
                     if (type == Type.Array)
                         return new KeyValuePair<string, JSONNode>(string.Empty, m_Array.Current);
-                    else if (type == Type.Object)
+                    if (type == Type.Object)
                         return m_Object.Current;
                     return new KeyValuePair<string, JSONNode>(string.Empty, null);
                 }
@@ -96,7 +97,7 @@ namespace SimpleJSON
             {
                 if (type == Type.Array)
                     return m_Array.MoveNext();
-                else if (type == Type.Object)
+                if (type == Type.Object)
                     return m_Object.MoveNext();
                 return false;
             }
@@ -504,8 +505,7 @@ namespace SimpleJSON
             double val;
             if (double.TryParse(token, NumberStyles.Float, CultureInfo.InvariantCulture, out val))
                 return val;
-            else
-                return token;
+            return token;
         }
 
         public static JSONNode Parse(string aJSON)
@@ -642,7 +642,7 @@ namespace SimpleJSON
                                         string s = aJSON.Substring(i + 1, 4);
                                         Token.Append((char)int.Parse(
                                             s,
-                                            System.Globalization.NumberStyles.AllowHexSpecifier));
+                                            NumberStyles.AllowHexSpecifier));
                                         i += 4;
                                         break;
                                     }
@@ -684,7 +684,7 @@ namespace SimpleJSON
     public partial class JSONArray : JSONNode
     {
         private List<JSONNode> m_List = new List<JSONNode>();
-        private bool inline = false;
+        private bool inline;
         public override bool Inline
         {
             get { return inline; }
@@ -804,7 +804,7 @@ namespace SimpleJSON
     {
         private Dictionary<string, JSONNode> m_Dict = new Dictionary<string, JSONNode>();
 
-        private bool inline = false;
+        private bool inline;
         public override bool Inline
         {
             get { return inline; }
@@ -823,8 +823,7 @@ namespace SimpleJSON
             {
                 if (m_Dict.ContainsKey(aKey))
                     return m_Dict[aKey];
-                else
-                    return new JSONLazyCreator(this, aKey);
+                return new JSONLazyCreator(this, aKey);
             }
             set
             {
@@ -1192,7 +1191,7 @@ namespace SimpleJSON
 
         public override bool Equals(object obj)
         {
-            if (object.ReferenceEquals(this, obj))
+            if (ReferenceEquals(this, obj))
                 return true;
             return (obj is JSONNull);
         }
@@ -1210,8 +1209,8 @@ namespace SimpleJSON
 
     internal partial class JSONLazyCreator : JSONNode
     {
-        private JSONNode m_Node = null;
-        private string m_Key = null;
+        private JSONNode m_Node;
+        private string m_Key;
         public override JSONNodeType Tag { get { return JSONNodeType.None; } }
         public override Enumerator GetEnumerator() { return new Enumerator(); }
 
@@ -1263,7 +1262,7 @@ namespace SimpleJSON
         {
             if (b == null)
                 return true;
-            return System.Object.ReferenceEquals(a, b);
+            return ReferenceEquals(a, b);
         }
 
         public static bool operator !=(JSONLazyCreator a, object b)
@@ -1275,7 +1274,7 @@ namespace SimpleJSON
         {
             if (obj == null)
                 return true;
-            return System.Object.ReferenceEquals(this, obj);
+            return ReferenceEquals(this, obj);
         }
 
         public override int GetHashCode()

@@ -2,9 +2,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
-namespace JellyFish.Fading
+namespace SOFlow.Fading
 {
     public class FadableGroup : Fadable
     {
@@ -42,24 +43,24 @@ namespace JellyFish.Fading
         /// <summary>
         ///     Adds a Fadable Group to the scene.
         /// </summary>
-        [UnityEditor.MenuItem("GameObject/SOFlow/Fading/Fadables/Add Fadable Group", false, 10)]
+        [MenuItem("GameObject/SOFlow/Fading/Fadables/Add Fadable Group", false, 10)]
         public static void AddComponentToScene()
         {
-            if(UnityEditor.Selection.activeGameObject != null)
+            if(Selection.activeGameObject != null)
             {
-                UnityEditor.Selection.activeGameObject.AddComponent<FadableGroup>();
+                Selection.activeGameObject.AddComponent<FadableGroup>();
 
                 return;
             }
 
             GameObject _gameObject = new GameObject("Fadable Group", typeof(FadableGroup));
 
-            if(UnityEditor.Selection.activeTransform != null)
+            if(Selection.activeTransform != null)
             {
-                _gameObject.transform.SetParent(UnityEditor.Selection.activeTransform);
+                _gameObject.transform.SetParent(Selection.activeTransform);
             }
 
-            UnityEditor.Selection.activeGameObject = _gameObject;
+            Selection.activeGameObject = _gameObject;
         }
 #endif
     }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace UltEvents.Editor
 {
@@ -234,10 +235,8 @@ namespace UltEvents.Editor
                                 enumValue = 0;
                                 break;
                             }
-                            else
-                            {
-                                enumValue |= v;
-                            }
+
+                            enumValue |= v;
                         }
                         else
                         {
@@ -278,7 +277,7 @@ namespace UltEvents.Editor
         {
             if (_Vector2Labels == null)
             {
-                _Vector2Labels = new GUIContent[]
+                _Vector2Labels = new[]
                 {
                     new GUIContent("X"),
                     new GUIContent("Y"),
@@ -300,7 +299,7 @@ namespace UltEvents.Editor
         {
             if (_Vector3Labels == null)
             {
-                _Vector3Labels = new GUIContent[]
+                _Vector3Labels = new[]
                 {
                     new GUIContent("X"),
                     new GUIContent("Y"),
@@ -323,7 +322,7 @@ namespace UltEvents.Editor
         {
             if (_Vector4Labels == null)
             {
-                _Vector4Labels = new GUIContent[]
+                _Vector4Labels = new[]
                 {
                     new GUIContent("X"),
                     new GUIContent("Y"),
@@ -412,7 +411,7 @@ namespace UltEvents.Editor
         {
             if (_RectLabels == null)
             {
-                _RectLabels = new GUIContent[]
+                _RectLabels = new[]
                 {
                     new GUIContent("X"),
                     new GUIContent("Y"),
@@ -437,7 +436,7 @@ namespace UltEvents.Editor
             label = EditorGUI.BeginProperty(area, label, o);
             EditorGUI.BeginChangeCheck();
 
-            var type = SerializedPropertyAccessor.GetValue<PersistentArgument>(argumentProperty).SystemType ?? typeof(UnityEngine.Object);
+            var type = SerializedPropertyAccessor.GetValue<PersistentArgument>(argumentProperty).SystemType ?? typeof(Object);
 
             var value = EditorGUI.ObjectField(area, label, o.objectReferenceValue, type, true);
 
@@ -628,7 +627,7 @@ namespace UltEvents.Editor
 
             if (wasLink != GUI.Toggle(area, wasLink, _LinkToggleContent, _LinkToggleStyle))
             {
-                SerializedPropertyAccessor.ModifyValues<PersistentArgument>(argumentProperty, (argument) =>
+                SerializedPropertyAccessor.ModifyValues<PersistentArgument>(argumentProperty, argument =>
                 {
                     if (wasLink)
                     {

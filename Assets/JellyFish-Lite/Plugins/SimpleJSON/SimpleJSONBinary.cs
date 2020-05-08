@@ -39,18 +39,20 @@
  * SOFTWARE.
  * 
  * * * * */
+
 using System;
+using System.IO;
 
 namespace SimpleJSON
 {
 #if !SimpleJSON_ExcludeBinary
     public abstract partial class JSONNode
     {
-        public abstract void SerializeBinary(System.IO.BinaryWriter aWriter);
+        public abstract void SerializeBinary(BinaryWriter aWriter);
 
-        public void SaveToBinaryStream(System.IO.Stream aData)
+        public void SaveToBinaryStream(Stream aData)
         {
-            var W = new System.IO.BinaryWriter(aData);
+            var W = new BinaryWriter(aData);
             SerializeBinary(W);
         }
 
@@ -85,7 +87,7 @@ namespace SimpleJSON
 		}
  
 #else
-        public void SaveToCompressedStream(System.IO.Stream aData)
+        public void SaveToCompressedStream(Stream aData)
         {
             throw new Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
         }
@@ -103,8 +105,8 @@ namespace SimpleJSON
 
         public void SaveToBinaryFile(string aFileName)
         {
-            System.IO.Directory.CreateDirectory((new System.IO.FileInfo(aFileName)).Directory.FullName);
-            using (var F = System.IO.File.OpenWrite(aFileName))
+            Directory.CreateDirectory((new FileInfo(aFileName)).Directory.FullName);
+            using (var F = File.OpenWrite(aFileName))
             {
                 SaveToBinaryStream(F);
             }
@@ -112,15 +114,15 @@ namespace SimpleJSON
 
         public string SaveToBinaryBase64()
         {
-            using (var stream = new System.IO.MemoryStream())
+            using (var stream = new MemoryStream())
             {
                 SaveToBinaryStream(stream);
                 stream.Position = 0;
-                return System.Convert.ToBase64String(stream.ToArray());
+                return Convert.ToBase64String(stream.ToArray());
             }
         }
 
-        public static JSONNode DeserializeBinary(System.IO.BinaryReader aReader)
+        public static JSONNode DeserializeBinary(BinaryReader aReader)
         {
             JSONNodeType type = (JSONNodeType)aReader.ReadByte();
             switch (type)
@@ -194,7 +196,7 @@ namespace SimpleJSON
             throw new Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
         }
 
-        public static JSONNode LoadFromCompressedStream(System.IO.Stream aData)
+        public static JSONNode LoadFromCompressedStream(Stream aData)
         {
             throw new Exception("Can't use compressed functions. You need include the SharpZipLib and uncomment the define at the top of SimpleJSON");
         }
@@ -205,9 +207,9 @@ namespace SimpleJSON
         }
 #endif
 
-        public static JSONNode LoadFromBinaryStream(System.IO.Stream aData)
+        public static JSONNode LoadFromBinaryStream(Stream aData)
         {
-            using (var R = new System.IO.BinaryReader(aData))
+            using (var R = new BinaryReader(aData))
             {
                 return DeserializeBinary(R);
             }
@@ -215,7 +217,7 @@ namespace SimpleJSON
 
         public static JSONNode LoadFromBinaryFile(string aFileName)
         {
-            using (var F = System.IO.File.OpenRead(aFileName))
+            using (var F = File.OpenRead(aFileName))
             {
                 return LoadFromBinaryStream(F);
             }
@@ -223,8 +225,8 @@ namespace SimpleJSON
 
         public static JSONNode LoadFromBinaryBase64(string aBase64)
         {
-            var tmp = System.Convert.FromBase64String(aBase64);
-            var stream = new System.IO.MemoryStream(tmp);
+            var tmp = Convert.FromBase64String(aBase64);
+            var stream = new MemoryStream(tmp);
             stream.Position = 0;
             return LoadFromBinaryStream(stream);
         }
@@ -232,7 +234,7 @@ namespace SimpleJSON
 
     public partial class JSONArray : JSONNode
     {
-        public override void SerializeBinary(System.IO.BinaryWriter aWriter)
+        public override void SerializeBinary(BinaryWriter aWriter)
         {
             aWriter.Write((byte)JSONNodeType.Array);
             aWriter.Write(m_List.Count);
@@ -245,7 +247,7 @@ namespace SimpleJSON
 
     public partial class JSONObject : JSONNode
     {
-        public override void SerializeBinary(System.IO.BinaryWriter aWriter)
+        public override void SerializeBinary(BinaryWriter aWriter)
         {
             aWriter.Write((byte)JSONNodeType.Object);
             aWriter.Write(m_Dict.Count);
@@ -259,7 +261,7 @@ namespace SimpleJSON
 
     public partial class JSONString : JSONNode
     {
-        public override void SerializeBinary(System.IO.BinaryWriter aWriter)
+        public override void SerializeBinary(BinaryWriter aWriter)
         {
             aWriter.Write((byte)JSONNodeType.String);
             aWriter.Write(m_Data);
@@ -268,7 +270,7 @@ namespace SimpleJSON
 
     public partial class JSONNumber : JSONNode
     {
-        public override void SerializeBinary(System.IO.BinaryWriter aWriter)
+        public override void SerializeBinary(BinaryWriter aWriter)
         {
             aWriter.Write((byte)JSONNodeType.Number);
             aWriter.Write(m_Data);
@@ -277,7 +279,7 @@ namespace SimpleJSON
 
     public partial class JSONBool : JSONNode
     {
-        public override void SerializeBinary(System.IO.BinaryWriter aWriter)
+        public override void SerializeBinary(BinaryWriter aWriter)
         {
             aWriter.Write((byte)JSONNodeType.Boolean);
             aWriter.Write(m_Data);
@@ -285,14 +287,14 @@ namespace SimpleJSON
     }
     public partial class JSONNull : JSONNode
     {
-        public override void SerializeBinary(System.IO.BinaryWriter aWriter)
+        public override void SerializeBinary(BinaryWriter aWriter)
         {
             aWriter.Write((byte)JSONNodeType.NullValue);
         }
     }
     internal partial class JSONLazyCreator : JSONNode
     {
-        public override void SerializeBinary(System.IO.BinaryWriter aWriter)
+        public override void SerializeBinary(BinaryWriter aWriter)
         {
 
         }

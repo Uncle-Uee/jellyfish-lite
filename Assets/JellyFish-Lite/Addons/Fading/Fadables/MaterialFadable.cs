@@ -1,10 +1,10 @@
 ﻿// Created by Kearan Petersen : https://www.blumalice.wordpress.com | https://www.linkedin.com/in/kearan-petersen/
 
 using JellyFish.Data.Primitive;
-using SOFlow.Data.Primitives;
+using UnityEditor;
 using UnityEngine;
 
-namespace JellyFish.Fading
+namespace SOFlow.Fading
 {
     public class MaterialFadable : Fadable
     {
@@ -60,10 +60,10 @@ namespace JellyFish.Fading
         /// <summary>
         ///     Adds a Material Fadable to the scene.
         /// </summary>
-        [UnityEditor.MenuItem("GameObject/SOFlow/Fading/Fadables/Add Material Fadable", false, 10)]
+        [MenuItem("GameObject/SOFlow/Fading/Fadables/Add Material Fadable", false, 10)]
         public static void AddComponentToScene()
         {
-            Renderer _renderer = UnityEditor.Selection.activeGameObject?.GetComponent<Renderer>();
+            Renderer _renderer = Selection.activeGameObject?.GetComponent<Renderer>();
 
             if(_renderer != null)
             {
@@ -75,12 +75,12 @@ namespace JellyFish.Fading
 
             GameObject _gameObject = new GameObject("Material Fadable", typeof(MaterialFadable));
 
-            if(UnityEditor.Selection.activeTransform != null)
+            if(Selection.activeTransform != null)
             {
-                _gameObject.transform.SetParent(UnityEditor.Selection.activeTransform);
+                _gameObject.transform.SetParent(Selection.activeTransform);
             }
 
-            UnityEditor.Selection.activeGameObject = _gameObject;
+            Selection.activeGameObject = _gameObject;
         }
 #endif
     }

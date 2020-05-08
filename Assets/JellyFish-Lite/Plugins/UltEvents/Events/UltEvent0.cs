@@ -1,6 +1,7 @@
 ﻿// UltEvents // Copyright 2019 Kybernetik //
 
 using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using Object = UnityEngine.Object;
@@ -99,7 +100,7 @@ namespace UltEvents
                 e = new UltEvent();
 
 #if UNITY_EDITOR
-            if (!UnityEditor.EditorApplication.isPlaying && method.Target is Object)
+            if (!EditorApplication.isPlaying && method.Target is Object)
             {
                 e.PersistentCalls += method;
                 return e;
@@ -122,7 +123,7 @@ namespace UltEvents
                 return null;
 
 #if UNITY_EDITOR
-            if (!UnityEditor.EditorApplication.isPlaying && method.Target is Object)
+            if (!EditorApplication.isPlaying && method.Target is Object)
             {
                 e.PersistentCalls -= method;
                 return e;
@@ -147,7 +148,8 @@ namespace UltEvents
                 e += method;
                 return e;
             }
-            else return null;
+
+            return null;
         }
 
         /************************************************************************************************************************/

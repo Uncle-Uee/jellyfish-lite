@@ -51,7 +51,7 @@ namespace UltEvents.Editor
                     var events = SerializedPropertyAccessor.GetValues<UltEvent>(property);
                     for (int i = 0; i < events.Length; i++)
                     {
-                        var e = events[i] as UltEvent;
+                        var e = events[i];
                         if (e != null)
                             e.Invoke();
                     }
@@ -63,7 +63,7 @@ namespace UltEvents.Editor
 
             menu.AddItem(new GUIContent("Clear Event"), false, () =>
             {
-                SerializedPropertyAccessor.ModifyValues<UltEventBase>(property, (e) =>
+                SerializedPropertyAccessor.ModifyValues<UltEventBase>(property, e =>
                 {
                     if (e != null)
                         e.Clear();
@@ -93,7 +93,7 @@ namespace UltEvents.Editor
             // Paste Event.
             AddMenuItem(menu, "Paste Event (Overwrite)", Clipboard.HasEvent, () =>
             {
-                SerializedPropertyAccessor.ModifyValues<UltEventBase>(property, (e) =>
+                SerializedPropertyAccessor.ModifyValues<UltEventBase>(property, e =>
                 {
                     Clipboard.Paste(e);
                 }, "Paste Event");
@@ -102,7 +102,7 @@ namespace UltEvents.Editor
             // Paste Listener.
             AddMenuItem(menu, "Paste Listener (New) %#V", Clipboard.HasCall, () =>
             {
-                SerializedPropertyAccessor.ModifyValues<UltEventBase>(property, (e) =>
+                SerializedPropertyAccessor.ModifyValues<UltEventBase>(property, e =>
                 {
                     var call = new PersistentCall();
                     Clipboard.PasteCall(call);

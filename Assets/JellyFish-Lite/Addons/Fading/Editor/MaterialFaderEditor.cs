@@ -3,10 +3,10 @@
 #if UNITY_EDITOR
 using UnityEditor;
 
-namespace JellyFish.Fading
+namespace SOFlow.Fading
 {
     [CustomEditor(typeof(MaterialFadable))]
-    public class MaterialFadableEditor : UnityEditor.Editor
+    public class MaterialFadableEditor : Editor
     {
         /// <summary>
         ///     The MaterialFadable target.

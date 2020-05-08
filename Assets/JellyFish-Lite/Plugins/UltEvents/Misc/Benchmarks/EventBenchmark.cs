@@ -4,6 +4,7 @@
 
 #if UNITY_EDITOR
 
+using System.Threading;
 using UnityEditor;
 using UnityEngine;
 
@@ -30,7 +31,7 @@ namespace UltEvents.Benchmarks
                 return;
 
             // Sleep to make this frame show up easily in the Unity Profiler.
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
 
             var start = EditorApplication.timeSinceStartup;
 

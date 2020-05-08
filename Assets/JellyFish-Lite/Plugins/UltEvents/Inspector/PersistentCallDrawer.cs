@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -317,9 +316,6 @@ namespace UltEvents.Editor
                         }
                     }
                     break;
-
-                default:
-                    break;
             }
         }
 
@@ -534,7 +530,7 @@ namespace UltEvents.Editor
         public static void SetMethod(MethodInfo methodInfo)
         {
             SerializedPropertyAccessor.ModifyValues<PersistentCall>(DrawerState.Current.CallProperty,
-                (call) =>
+                call =>
                 {
                     if (call != null)
                         call.SetMethod(methodInfo, DrawerState.Current.TargetProperty.objectReferenceValue);

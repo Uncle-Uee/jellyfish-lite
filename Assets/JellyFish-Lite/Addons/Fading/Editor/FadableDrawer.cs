@@ -4,7 +4,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace JellyFish.Fading
+namespace SOFlow.Fading
 {
     [CustomPropertyDrawer(typeof(Fadable), true)]
     public class FadableDrawer : PropertyDrawer

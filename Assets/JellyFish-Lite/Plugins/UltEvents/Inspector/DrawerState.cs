@@ -3,11 +3,9 @@
 #if UNITY_EDITOR
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
-using UnityEngine;
 
 namespace UltEvents.Editor
 {
@@ -237,8 +235,7 @@ namespace UltEvents.Editor
         {
             if (index >= 0 && index < PersistentMethodCache.Count)
                 return PersistentMethodCache[index];
-            else
-                return null;
+            return null;
         }
 
         /************************************************************************************************************************/
@@ -294,12 +291,10 @@ namespace UltEvents.Editor
             {
                 return TryGetLinkable(CurrentParameter.ParameterType, out linkIndex, out linkType);
             }
-            else
-            {
-                linkIndex = -1;
-                linkType = PersistentArgumentType.None;
-                return false;
-            }
+
+            linkIndex = -1;
+            linkType  = PersistentArgumentType.None;
+            return false;
         }
 
         /************************************************************************************************************************/
@@ -317,8 +312,7 @@ namespace UltEvents.Editor
         {
             if (index >= 0 && index < PreviousCalls.Count)
                 return PreviousCalls[index];
-            else
-                return null;
+            return null;
         }
 
         /************************************************************************************************************************/

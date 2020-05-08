@@ -74,10 +74,8 @@ namespace UltEvents.Editor
 
                         goto ShowMenu;
                     }
-                    else// If we have no type either, pretend the inspected objects are the targets.
-                    {
-                        targets = targetObjects;
-                    }
+
+                    targets = targetObjects;
                 }
 
                 // Ensure that all targets share the same type.
@@ -183,14 +181,11 @@ namespace UltEvents.Editor
                 }
                 return references;
             }
-            else
-            {
-                var target = property.objectReferenceValue;
-                if (target != null)
-                    return new Object[] { target };
-                else
-                    return null;
-            }
+
+            var target = property.objectReferenceValue;
+            if (target != null)
+                return new[] { target };
+            return null;
 
         }
 
@@ -222,7 +217,7 @@ namespace UltEvents.Editor
 
         /************************************************************************************************************************/
 
-        private static T[] GetRelatedObjects<T>(Object[] objects, Func<Object, T> getRelatedObject)
+        private static T[] GetRelatedObjects<T>(Object[] objects, System.Func<Object, T> getRelatedObject)
         {
             var relatedObjects = new T[objects.Length];
 
@@ -246,7 +241,7 @@ namespace UltEvents.Editor
             var component = firstTarget as Component;
             if (!ReferenceEquals(component, null))
             {
-                var gameObjects = GetRelatedObjects(targets, (target) => (target as Component).gameObject);
+                var gameObjects = GetRelatedObjects(targets, target => (target as Component).gameObject);
                 PopulateMenuForGameObject("", true, gameObjects);
             }
             else
@@ -284,7 +279,7 @@ namespace UltEvents.Editor
                 _Menu.AddDisabledItem(header);
             }
 
-            var gameObjects = GetRelatedObjects(targets, (target) => target as GameObject);
+            var gameObjects = GetRelatedObjects(targets, target => target as GameObject);
             PopulateMenuForComponents(prefix, gameObjects);
         }
 
@@ -346,7 +341,7 @@ namespace UltEvents.Editor
                 var c = components[i];
                 if (c == component)
                     break;
-                else if (c.GetType() == type)
+                if (c.GetType() == type)
                     count++;
             }
 
@@ -376,7 +371,7 @@ namespace UltEvents.Editor
 
         private static void PopulateMenuForComponent(Object[] targets)
         {
-            var gameObjects = GetRelatedObjects(targets, (target) => (target as Component).gameObject);
+            var gameObjects = GetRelatedObjects(targets, target => (target as Component).gameObject);
 
             PopulateMenuForGameObject("", true, gameObjects);
             _Menu.AddSeparator("");
@@ -495,10 +490,8 @@ namespace UltEvents.Editor
                                 getter = nextGetter;
                                 goto GotMember;
                             }
-                            else
-                            {
-                                return;
-                            }
+
+                            return;
                         }
                     }
 
@@ -622,12 +615,12 @@ namespace UltEvents.Editor
             _Menu.AddItem(
                 new GUIContent(label),
                 method == _CurrentMethod,
-                (userData) =>
+                userData =>
                 {
                     DrawerState.Current.CopyFrom(CachedState);
 
                     var i = 0;
-                    SerializedPropertyAccessor.ModifyValues<PersistentCall>(CachedState.CallProperty, (call) =>
+                    SerializedPropertyAccessor.ModifyValues<PersistentCall>(CachedState.CallProperty, call =>
                     {
                         var target = targets != null ? targets[i % targets.Length] : null;
                         call.SetMethod(method, target);
@@ -857,12 +850,10 @@ namespace UltEvents.Editor
             {
                 return true;
             }
-            else
-            {
-                int linkIndex;
-                PersistentArgumentType linkType;
-                return DrawerState.Current.TryGetLinkable(type, out linkIndex, out linkType);
-            }
+
+            int                    linkIndex;
+            PersistentArgumentType linkType;
+            return DrawerState.Current.TryGetLinkable(type, out linkIndex, out linkType);
         }
 
         /// <summary>

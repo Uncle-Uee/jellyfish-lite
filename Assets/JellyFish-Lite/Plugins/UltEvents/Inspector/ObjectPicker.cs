@@ -7,8 +7,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Reflection;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace UltEvents.Editor
@@ -102,7 +102,7 @@ namespace UltEvents.Editor
         public static Type DrawTypeField(Rect area, Type selected, Func<List<Type>> getOptions, int suggestions, GUIStyle style)
         {
             return Draw(area, selected, getOptions, suggestions,
-                getLabel: (type) => new GUIContent(type != null ? type.GetNameCS() : "null"),
+                getLabel: type => new GUIContent(type != null ? type.GetNameCS() : "null"),
                 getDragAndDrop: () => DragAndDrop.objectReferences[0].GetType(),
                 style: style);
         }
@@ -113,7 +113,7 @@ namespace UltEvents.Editor
         public static Type DrawAssetTypeField(Rect area, Type selected, Func<List<Type>> getOptions, int suggestions, GUIStyle style)
         {
             return Draw(area, selected, getOptions, suggestions,
-                getLabel: (type) => new GUIContent(type != null ? type.GetNameCS() : "null", AssetPreview.GetMiniTypeThumbnail(type)),
+                getLabel: type => new GUIContent(type != null ? type.GetNameCS() : "null", AssetPreview.GetMiniTypeThumbnail(type)),
                 getDragAndDrop: () => DragAndDrop.objectReferences[0].GetType(),
                 style: style);
         }
@@ -126,7 +126,7 @@ namespace UltEvents.Editor
             var selected = Type.GetType(selectedTypeName);
 
             selected = Draw(area, selected, getOptions, suggestions,
-               getLabel: (type) => new GUIContent(type != null ? type.GetNameCS() : "No Type Selected"),
+               getLabel: type => new GUIContent(type != null ? type.GetNameCS() : "No Type Selected"),
                getDragAndDrop: () => DragAndDrop.objectReferences[0].GetType(),
                style: style);
 
@@ -328,7 +328,7 @@ namespace UltEvents.Editor
             _PickedObject = _SelectedObject;
             _HasPickedObject = true;
             Close();
-            UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+            InternalEditorUtility.RepaintAllViews();
         }
 
         /************************************************************************************************************************/
@@ -348,9 +348,6 @@ namespace UltEvents.Editor
                 case EventType.ExecuteCommand:
                 case EventType.ContextClick:
                     return;
-
-                default:
-                    break;
             }
 
             if (CheckInput())
@@ -433,9 +430,6 @@ namespace UltEvents.Editor
                     case KeyCode.DownArrow:
                         OffsetSelectedIndex(1);
                         return true;
-
-                    default:
-                        break;
                 }
             }
 

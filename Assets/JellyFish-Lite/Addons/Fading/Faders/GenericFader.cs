@@ -3,9 +3,10 @@
 using System.Collections.Generic;
 using UltEvents;
 using UnityAsync;
+using UnityEditor;
 using UnityEngine;
 
-namespace JellyFish.Fading
+namespace SOFlow.Fading
 {
     public class GenericFader : MonoBehaviour
     {
@@ -144,17 +145,17 @@ namespace JellyFish.Fading
         /// <summary>
         ///     Adds a Generic Fader to the scene.
         /// </summary>
-        [UnityEditor.MenuItem("GameObject/SOFlow/Fading/Faders/Add Generic Fader", false, 10)]
+        [MenuItem("GameObject/SOFlow/Fading/Faders/Add Generic Fader", false, 10)]
         public static void AddComponentToScene()
         {
             GameObject _gameObject = new GameObject("Generic Fader", typeof(GenericFader));
 
-            if (UnityEditor.Selection.activeTransform != null)
+            if (Selection.activeTransform != null)
             {
-                _gameObject.transform.SetParent(UnityEditor.Selection.activeTransform);
+                _gameObject.transform.SetParent(Selection.activeTransform);
             }
 
-            UnityEditor.Selection.activeGameObject = _gameObject;
+            Selection.activeGameObject = _gameObject;
         }
 #endif
     }
