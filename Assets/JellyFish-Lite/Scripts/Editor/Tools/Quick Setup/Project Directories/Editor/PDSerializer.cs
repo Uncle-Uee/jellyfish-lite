@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Created By: Ubaidullah Effendi-Emjedi
  * LinkedIn : https://www.linkedin.com/in/ubaidullah-effendi-emjedi-202494183/
  */
@@ -66,7 +66,7 @@ namespace JellyFish.Editor.Tools.QuickSetup
         /// <summary>
         /// Serialize Folder Layout to a Valid Project Setup Json File.
         /// </summary>
-        [MenuItem("Assets/JellyFish/QuickSetup/Project Directory/Serialize Folders", priority = 10)]
+        [MenuItem("Assets/JellyFish/Project Directory/Serialize Folders", priority = 20)]
         public static void Serialize()
         {
             try
@@ -74,7 +74,7 @@ namespace JellyFish.Editor.Tools.QuickSetup
                 // Allow Multiple Objects to be Selected.
                 Object[] objects = Selection.objects;
 
-                string settingsFile = "";
+                string             settingsFile       = "";
                 ProjectDirectories projectDirectories = new ProjectDirectories();
 
                 foreach (Object _object in objects)
@@ -83,7 +83,7 @@ namespace JellyFish.Editor.Tools.QuickSetup
                     {
                         settingsFile =
                             EditorUtility.SaveFilePanel("Save Project Directory Structure", Application.dataPath,
-                                                        $"project-directory-structure", "pdjson");
+                                                        "project-directory-structure", "pdjson");
                     }
 
                     string objectPath = AssetDatabase.GetAssetPath(_object);
@@ -120,7 +120,7 @@ namespace JellyFish.Editor.Tools.QuickSetup
         /// <summary>
         /// Deserialize Project Setup Settings File to a Valid Project Folder Layout.
         /// </summary>
-        [MenuItem("Assets/JellyFish/QuickSetup/Project Directory/Deserialize PDJson", priority = 10)]
+        [MenuItem("Assets/JellyFish/Project Directory/Deserialize PDJson", priority = 20)]
         public static void Deserialize()
         {
             try
@@ -154,17 +154,17 @@ namespace JellyFish.Editor.Tools.QuickSetup
         /// <param name="path"></param>
         private static void CreateDirectories(string path)
         {
-            string json = File.ReadAllText(path);
+            string             json               = File.ReadAllText(path);
             ProjectDirectories projectDirectories = JsonUtility.FromJson<ProjectDirectories>(json);
 
             projectDirectories.Directories.ForEach(directory =>
-            {
-                if (!Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                    Debug.Log($"Created Directory: {directory}");
-                }
-            });
+                                                   {
+                                                       if (!Directory.Exists(directory))
+                                                       {
+                                                           Directory.CreateDirectory(directory);
+                                                           Debug.Log($"Created Directory: {directory}");
+                                                       }
+                                                   });
             AssetDatabase.Refresh();
         }
 

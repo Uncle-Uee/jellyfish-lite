@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Runtime.CompilerServices;
-using UnityEngine;
+﻿using System.Collections;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityAsync.Awaiters;
-using Object = UnityEngine.Object;
+using UnityEngine;
 
 namespace UnityAsync
 {
