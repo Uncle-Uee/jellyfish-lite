@@ -126,7 +126,7 @@ namespace JellyFish.Internal.Management
             return Selection.activeObject is SceneAsset;
         }
 
-        [MenuItem("Assets/Scene Set/Create Scene Set %#S")]
+        [MenuItem("Assets/Scene Set/Create Scene Set")]
         public static void CreateSceneSetFromScene()
         {
             SceneSet newSceneSet = CreateInstance<SceneSet>();
