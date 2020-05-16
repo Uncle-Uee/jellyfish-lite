@@ -227,13 +227,13 @@ Bug Fixes!
 # Packages and Plugins
 ## GitHub
 1. [UnityAsync](https://github.com/muckSponge/UnityAsync)
+2. [SimpleJson](https://github.com/Bunny83/SimpleJSON)
 
 ## AssetStore Packages
 1. [UltEvents](https://assetstore.unity.com/packages/tools/gui/ultevents-111307?aid=1100l8ah5&utm_source=aff)
 
 ## Nuget Packages and Plugins
-1. [SimpleJSON](http://wiki.unity3d.com/index.php/SimpleJSON)
-2. [System.Drawing.Common](https://www.nuget.org/packages/System.Drawing.Common/)
+1. [System.Drawing.Common](https://www.nuget.org/packages/System.Drawing.Common/)
 
 # Attributions
 1. [Kearan Petersen](https://github.com/BLUDRAG) - Mentor and Nakama
