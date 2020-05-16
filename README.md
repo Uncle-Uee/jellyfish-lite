@@ -7,7 +7,7 @@ JellyFish-Lite comes in two flavors
 + JellyFish-Lite Core.<br>
 
 JellyFish-Lite is the complete package that contains all addons and plugins. <br>
-JellyFish-Lite Core is minimal package that only contains the core Scriptable Object Architecture Structure giving you the user the choose the option to extend its functionality with the available addons, additionally add your own or third plugins, tools or scripts to either package to make your own version of JellyFish-Lite. 
+JellyFish-Lite Core is minimal package that only contains the core Scriptable Object Architecture Structure giving you the user the choice to extend its functionality with the available addons or add your own or third party plugins, tools or scripts to either package to make your own version of JellyFish-Lite. 
 
 ![JellyFish Astronaut](https://w.wallhaven.cc/full/g8/wallhaven-g8dm6e.jpg)
 
@@ -159,6 +159,7 @@ How To:
 + Sprite Fader to an Object with a Sprite Renderer
 + Material Fader to an Object with a Material
 + Light Fader to an Object with a Light
++ UI Fader to an Object with a UI Component
 2. Create a Generic Fader Object to Manage the Fading or Unfading of the Object.
 + Drag and Drop the Object with the Fader Component to the Fader List.
 3. Call the Fade or Unfade Method from the Generic Fader to Perform the Required Action.
