@@ -2,6 +2,13 @@
 A Unity Scriptable Object Workflow SDK inspired by Ryan Hipple's Unite 2017 talk "Game Architecture with Scriptable Objects".  
 I hope this SDK helps you the way it helps me.
 
+JellyFish-Lite comes in two flavors
++ JellyFish-Lite and 
++ JellyFish-Lite Core.<br>
+
+JellyFish-Lite is the complete package that contains all addons and plugins. <br>
+JellyFish-Lite Core is minimal package that only contains the core Scriptable Object Architecture Structure giving you the user the choose the option to extend its functionality with the available addons, additionally add your own or third plugins, tools or scripts to either package to make your own version of JellyFish-Lite. 
+
 ![JellyFish Astronaut](https://w.wallhaven.cc/full/g8/wallhaven-g8dm6e.jpg)
 
 # Features
@@ -138,13 +145,75 @@ How to Create a Primitive Data Scriptable Object:
 + A Boolean Scriptable Object can only be Drag and Dropped on a BoolField or BoolData Field in the Inspector.
 
 ### Object Pool
+Object Pooling is a way to manage reduce Garbage Collection calls by instantiating "x" number of objects and caching references to them for use when required and disabling them thereafter.
+
+Object Pooling is useful when you are instantiating and destroying the same object multiple times, such as bullets. By creating an object pool of bullets you reduce garbage collection that could lead to performance drops on low end devices.
+
+Please Look at the Example Scene for a detail example of how to setup an Object Pool.
+
 ### Fader System
+Fader System allows your to fade or unfade a colour, sprite, material or a light using the "UnityAsync" plugin.
+
+How To:
+1. Add the Required Fader to the Object
++ Sprite Fader to an Object with a Sprite Renderer
++ Material Fader to an Object with a Material
++ Light Fader to an Object with a Light
+2. Create a Generic Fader Object to Manage the Fading or Unfading of the Object.
++ Drag and Drop the Object with the Fader Component to the Fader List.
+3. Call the Fade or Unfade Method from the Generic Fader to Perform the Required Action.
+
+Please view the Example Scene for a practical Example.
+
 ### Scene Sets
+Scene Set create Scriptable Object References that can be used to Load and Unload scenes (additively and asynchronously) by name. 
+
+How To: 
+1. Right Click on a Scene Object
+2. Navigate to Scene Set/Create Scene Set
+3. A new Scene Set object will be created of the selected scene.
+4. Reference a Scene Set in code to load or unload the referenced scene during runtime.
+
 ### Monitors
 #### FPS Monitor
+Monitor the FPS game or application.
+
+Add Component => FPSMonitor
+
 #### Screen Monitor
+Monitor changes in your games resolution or world size with ease. The exposed world height and width can be used to clamp within the game view or monitor objects left the view. 
+
+Add Component => ScreenSizeMonitor
+
+Requirements:
+1. Camera Reference Scriptable Object
+2. Resolution Reference Scriptable Object
+
+Additional:
+1. World Height and Width Primitive Float Scriptable Objects.<br>
+(Right Click: Create/JellyFish/Data/Primitives/Float)
+
 ### Camera Utilities
+The Camera Utility allows you to keep a reference to your games camera using a Camera Reference Scriptable Object.
+
+How To:
+1. Add a GameCamera Component to your Camera Object.
+2. Create a Camera Reference Scriptable Object and Add it to the GameCamera Component.<br>
+(Right Click: Create/JellyFish/Utilities/Camera)
+
+You can now pass around the "Camera Reference" to any object that may require a reference to the current active camera.
+
 ### Extensions
+Custom Extensions that I have made  or found over the years that add additional functionality to the types listed below.
+1. Array
+2. GameObject
+3. Layer Mask
+4. List
+5. String
+6. Texture
+7. Transform
+8. Type
+9. Vector2
 
 # Documentation (GIFS)
 Please look at the Documentation Folder for some Practical Examples on how to use the tools and create some of the runtime Scriptable Objects and Components. 
