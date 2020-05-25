@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/JellyFish-Lite/Addons/Fading/Fadables.meta
 guid: 67e5d9c8d32d8f0458f0da32cae28d0c
+=======
+guid: 81831b92a0a842b40bc31652c25de23f
+>>>>>>> addon-object-pool:Assets/JellyFish-Lite/_Examples/Object Pooling/Scripts.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

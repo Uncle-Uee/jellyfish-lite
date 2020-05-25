@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/JellyFish-Lite/Addons/Fading/Editor/FadableDrawer.cs.meta
 guid: dced8a3a7d4263649b78f10b2ef78c0c
+=======
+guid: d9771b6fbee230c409aa2aa04282ed90
+>>>>>>> addon-object-pool:Assets/JellyFish-Lite/_Examples/Object Pooling/Scripts/ObjectPool/ExampleObjectPool.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

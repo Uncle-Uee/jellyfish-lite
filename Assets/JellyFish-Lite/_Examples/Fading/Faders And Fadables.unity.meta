@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/JellyFish-Lite/_Examples/Fading/Faders And Fadables.unity.meta
 guid: b297bf62b30616549b518258572263b0
 DefaultImporter:
+=======
+guid: d0d5cd48129607f4eb21b7db820ea5ae
+PrefabImporter:
+>>>>>>> addon-object-pool:Assets/JellyFish-Lite/_Examples/Object Pooling/Example Pool Object Instance.prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

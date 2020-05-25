@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/JellyFish-Lite/Addons/Fading.meta
 guid: f90afc1fdd05a2946850a22e483ef677
+=======
+guid: d63512aef8a485d48bf6acfbf2036c49
+>>>>>>> addon-object-pool:Assets/JellyFish-Lite/_Examples.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

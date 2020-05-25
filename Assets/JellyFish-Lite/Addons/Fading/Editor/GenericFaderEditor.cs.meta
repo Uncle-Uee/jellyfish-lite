@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/JellyFish-Lite/Addons/Fading/Editor/GenericFaderEditor.cs.meta
 guid: 88045f9e1e5a06647a9fe9778d5dbaa8
+=======
+guid: 7b22400b87cfae94cb5f3e307bde12fd
+>>>>>>> addon-object-pool:Assets/JellyFish-Lite/_Examples/Object Pooling/Scripts/PoolObject/ExamplePoolObjectMover.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

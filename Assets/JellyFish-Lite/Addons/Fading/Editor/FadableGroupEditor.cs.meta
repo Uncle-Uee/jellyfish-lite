@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/JellyFish-Lite/Addons/Fading/Editor/FadableGroupEditor.cs.meta
 guid: d6fdb030eb32e7542b1f0c84a9b56a18
+=======
+guid: 1ed270bfc68d6f84bb5632ff2e633d2a
+>>>>>>> addon-object-pool:Assets/JellyFish-Lite/_Examples/Object Pooling/Scripts/PoolObject/ExamplePoolObject.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
