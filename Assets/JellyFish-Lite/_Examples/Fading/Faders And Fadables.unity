@@ -94,8 +94,9 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaDirect: 0.5
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
-    m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
+    m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -172,14 +173,13 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Fade Image
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -329,14 +329,13 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Fade And Unfade Image
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -463,10 +462,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e82aa6ac9686295409b4286d775d7cea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FadeTargets:
-  - {fileID: 1622475688}
-  UnfadedColour: {r: 1, g: 1, b: 1, a: 1}
-  FadedColour: {r: 1, g: 1, b: 1, a: 0}
   FadeCurve:
     serializedVersion: 2
     m_Curve:
@@ -491,6 +486,20 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  FadedColour: {r: 1, g: 1, b: 1, a: 0}
+  FadeTargets:
+  - {fileID: 1622475688}
+  FadeTime: 2
+  OnFadeComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFadeStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFadeWait:
+    m_PersistentCalls:
+      m_Calls: []
+  OnlyFade: 0
   UnfadeCurve:
     serializedVersion: 2
     m_Curve:
@@ -515,16 +524,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  OnlyFade: 0
-  FadeTime: 2
+  UnfadedColour: {r: 1, g: 1, b: 1, a: 1}
   UnfadeTime: 2
   WaitBetweenFades: 1
-  OnFadeStart:
-    _PersistentCalls: []
-  OnFadeWait:
-    _PersistentCalls: []
-  OnFadeComplete:
-    _PersistentCalls: []
 --- !u!4 &475649791
 Transform:
   m_ObjectHideFlags: 0
@@ -591,14 +593,13 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Unfade Image
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -827,7 +828,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1126727618}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -862,7 +863,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1903099652}
-        m_MethodName: Fade
+        m_MethodName: StartFade
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -872,8 +873,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!114 &1126727621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -883,17 +882,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1126727618}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
@@ -903,6 +901,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &1126727622
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -940,10 +939,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e82aa6ac9686295409b4286d775d7cea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FadeTargets:
-  - {fileID: 1622475688}
-  UnfadedColour: {r: 1, g: 1, b: 1, a: 1}
-  FadedColour: {r: 1, g: 1, b: 1, a: 0}
   FadeCurve:
     serializedVersion: 2
     m_Curve:
@@ -968,6 +963,20 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  FadedColour: {r: 1, g: 1, b: 1, a: 0}
+  FadeTargets:
+  - {fileID: 1622475688}
+  FadeTime: 2
+  OnFadeComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFadeStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFadeWait:
+    m_PersistentCalls:
+      m_Calls: []
+  OnlyFade: 1
   UnfadeCurve:
     serializedVersion: 2
     m_Curve:
@@ -992,16 +1001,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  OnlyFade: 1
-  FadeTime: 2
+  UnfadedColour: {r: 1, g: 1, b: 1, a: 1}
   UnfadeTime: 0
   WaitBetweenFades: 0
-  OnFadeStart:
-    _PersistentCalls: []
-  OnFadeWait:
-    _PersistentCalls: []
-  OnFadeComplete:
-    _PersistentCalls: []
 --- !u!4 &1193085363
 Transform:
   m_ObjectHideFlags: 0
@@ -1068,32 +1070,36 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 'Fadables are components that allow simple fading
 
-    of other components in conjunction with Faders.
+    of other components
+    in conjunction with Faders.
 
     Faders define how fading is performed.
 
 
-    The Generic Fader is an all-purpose Fader, made to
+    The
+    Generic Fader is an all-purpose Fader, made to
 
-    support a variety of fading scenarios. It can fade any
+    support a variety of fading
+    scenarios. It can fade any
 
     Fadable component.
 
 
-    Fadables define what components can be faded.
+    Fadables define what
+    components can be faded.
 
     To add support for new components, inherit from
 
-    the Fadable class.'
+    the
+    Fadable class.'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1238,17 +1244,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1622475684}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
@@ -1258,6 +1263,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &1622475687
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1278,9 +1284,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15a83fb65c78f33428160640c1159e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InvertPercentage: 0
   AlphaOnly: 1
   InvertAlpha: 0
+  InvertPercentage: 0
   UIElement: {fileID: 1622475687}
 --- !u!1 &1710994485
 GameObject:
@@ -1310,7 +1316,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1710994485}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreReversedGraphics: 1
@@ -1327,7 +1333,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1710994485}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_UiScaleMode: 0
@@ -1412,7 +1418,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1728458579}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalAxis: Horizontal
@@ -1431,7 +1437,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1728458579}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_FirstSelected: {fileID: 0}
@@ -1480,10 +1486,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e82aa6ac9686295409b4286d775d7cea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FadeTargets:
-  - {fileID: 1622475688}
-  UnfadedColour: {r: 1, g: 1, b: 1, a: 0}
-  FadedColour: {r: 1, g: 1, b: 1, a: 1}
   FadeCurve:
     serializedVersion: 2
     m_Curve:
@@ -1508,6 +1510,20 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  FadedColour: {r: 1, g: 1, b: 1, a: 1}
+  FadeTargets:
+  - {fileID: 1622475688}
+  FadeTime: 2
+  OnFadeComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFadeStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFadeWait:
+    m_PersistentCalls:
+      m_Calls: []
+  OnlyFade: 1
   UnfadeCurve:
     serializedVersion: 2
     m_Curve:
@@ -1532,16 +1548,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  OnlyFade: 1
-  FadeTime: 2
+  UnfadedColour: {r: 1, g: 1, b: 1, a: 0}
   UnfadeTime: 0
   WaitBetweenFades: 0
-  OnFadeStart:
-    _PersistentCalls: []
-  OnFadeWait:
-    _PersistentCalls: []
-  OnFadeComplete:
-    _PersistentCalls: []
 --- !u!4 &1903099653
 Transform:
   m_ObjectHideFlags: 0
@@ -1604,7 +1613,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1978990096}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -1639,7 +1648,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1193085362}
-        m_MethodName: Fade
+        m_MethodName: StartFade
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1649,8 +1658,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!114 &1978990099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1660,17 +1667,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1978990096}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
@@ -1680,6 +1686,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &1978990100
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1736,7 +1743,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2107435114}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -1771,7 +1778,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 475649790}
-        m_MethodName: Fade
+        m_MethodName: StartFade
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1781,8 +1788,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!114 &2107435117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1792,17 +1797,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2107435114}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
@@ -1812,6 +1816,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &2107435118
 CanvasRenderer:
   m_ObjectHideFlags: 0

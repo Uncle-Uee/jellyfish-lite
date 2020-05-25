@@ -1,10 +1,10 @@
 // Created by Kearan Petersen : https://www.blumalice.wordpress.com | https://www.linkedin.com/in/kearan-petersen/
 
+using System.Collections;
 using System.Collections.Generic;
-using UltEvents;
-using UnityAsync;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace SOFlow.Fading
 {
@@ -33,17 +33,17 @@ namespace SOFlow.Fading
         /// <summary>
         ///     Event raised when the fading is completed.
         /// </summary>
-        public UltEvent OnFadeComplete = new UltEvent();
+        public UnityEvent OnFadeComplete = new UnityEvent();
 
         /// <summary>
         ///     Event raised before the fade starts.
         /// </summary>
-        public UltEvent OnFadeStart = new UltEvent();
+        public UnityEvent OnFadeStart = new UnityEvent();
 
         /// <summary>
         ///     Event raised when waiting between fades.
         /// </summary>
-        public UltEvent OnFadeWait = new UltEvent();
+        public UnityEvent OnFadeWait = new UnityEvent();
 
         /// <summary>
         ///     Enable to only allow fading in.
@@ -76,9 +76,38 @@ namespace SOFlow.Fading
         public bool Fading { get; private set; }
 
         /// <summary>
+        /// Cached Wait For Seconds
+        /// </summary>
+        private WaitForSeconds _waitBetweenFrames;
+
+        #region UNITY METHODS
+
+        private void Awake()
+        {
+            _waitBetweenFrames = new WaitForSeconds(WaitBetweenFades);
+        }
+
+        #endregion
+
+
+        #region METHODS
+
+        public void StartFade()
+        {
+            StopCoroutine(nameof(Fade));
+            StartCoroutine(nameof(Fade));
+        }
+
+        public void StartUnfade()
+        {
+            StopCoroutine(nameof(Unfade));
+            StartCoroutine(nameof(Unfade));
+        }
+
+        /// <summary>
         ///     Initiates the fade.
         /// </summary>
-        public async void Fade()
+        public IEnumerator Fade()
         {
             if (!Fading && gameObject.activeInHierarchy)
             {
@@ -86,7 +115,7 @@ namespace SOFlow.Fading
                 Fading = true;
 
                 float startTime = Time.realtimeSinceStartup;
-                float endTime = startTime + FadeTime;
+                float endTime   = startTime + FadeTime;
 
                 while (Time.realtimeSinceStartup < endTime)
                 {
@@ -97,7 +126,7 @@ namespace SOFlow.Fading
                         fadable.OnUpdateColour(Color.Lerp(UnfadedColour, FadedColour, FadeCurve.Evaluate(percentage)),
                                                percentage);
 
-                    await Await.NextUpdate();
+                    yield return null;
                 }
 
                 foreach (Fadable fadable in FadeTargets) fadable.OnUpdateColour(FadedColour, 1f);
@@ -106,9 +135,10 @@ namespace SOFlow.Fading
                 {
                     OnFadeWait.Invoke();
 
-                    await Await.Seconds(WaitBetweenFades);
+                    yield return _waitBetweenFrames;
 
-                    Unfade();
+                    StopCoroutine(nameof(Unfade));
+                    StartCoroutine(nameof(Unfade));
                 }
                 else
                 {
@@ -118,10 +148,10 @@ namespace SOFlow.Fading
             }
         }
 
-        private async void Unfade()
+        private IEnumerator Unfade()
         {
             float startTime = Time.realtimeSinceStartup;
-            float endTime = startTime + UnfadeTime;
+            float endTime   = startTime + UnfadeTime;
 
             while (Time.realtimeSinceStartup < endTime)
             {
@@ -132,7 +162,7 @@ namespace SOFlow.Fading
                     fadable.OnUpdateColour(Color.Lerp(FadedColour, UnfadedColour, UnfadeCurve.Evaluate(percentage)),
                                            percentage);
 
-                await Await.NextUpdate();
+                yield return null;
             }
 
             foreach (Fadable fadable in FadeTargets) fadable.OnUpdateColour(UnfadedColour, 0f);
@@ -140,6 +170,9 @@ namespace SOFlow.Fading
             Fading = false;
             OnFadeComplete.Invoke();
         }
+
+        #endregion
+
 
 #if UNITY_EDITOR
         /// <summary>
