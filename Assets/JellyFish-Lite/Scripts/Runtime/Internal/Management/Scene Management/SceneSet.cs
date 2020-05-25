@@ -2,7 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using UnityAsync;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
@@ -47,7 +47,7 @@ namespace JellyFish.Internal.Management
                 }
         }
 
-        public async void LoadSceneSetAsync(bool additive, float artificialWait, Action<SceneField, int> onSceneLoaded)
+        public async void LoadSceneSetAsync(bool additive, int artificialWait, Action<SceneField, int> onSceneLoaded)
         {
             bool firstScene = !additive;
 
@@ -59,19 +59,19 @@ namespace JellyFish.Internal.Management
                 {
 #if UNITY_EDITOR
                     if (Application.isPlaying)
-                        await SceneManager.LoadSceneAsync(scene, firstScene ? LoadSceneMode.Single : LoadSceneMode.Additive);
+                        SceneManager.LoadSceneAsync(scene, firstScene ? LoadSceneMode.Single : LoadSceneMode.Additive);
                     else
                         EditorSceneManager.OpenScene(AssetDatabase.GetAssetPath(scene.SceneAsset),
                                                      firstScene ? OpenSceneMode.Single : OpenSceneMode.Additive);
 #else
-                    await SceneManager.LoadSceneAsync(scene, firstScene ? LoadSceneMode.Single : LoadSceneMode.Additive);
+                    SceneManager.LoadSceneAsync(scene, firstScene ? LoadSceneMode.Single : LoadSceneMode.Additive);
 #endif
                     firstScene = false;
                 }
 
                 onSceneLoaded.Invoke(scene, i + 1);
 
-                await Await.Seconds(artificialWait);
+                await Task.Delay(artificialWait);
             }
         }
 
@@ -90,7 +90,7 @@ namespace JellyFish.Internal.Management
                         EditorSceneManager
                             .CloseScene(SceneManager.GetSceneByPath(AssetDatabase.GetAssetPath(scene.SceneAsset)), true);
 #else
-                        SceneManager.UnloadSceneAsync(scene);
+                    SceneManager.UnloadSceneAsync(scene);
 #endif
                 }
         }
@@ -119,7 +119,7 @@ namespace JellyFish.Internal.Management
 
             return false;
         }
-        
+
         [MenuItem("Assets/Scene Set/Create Scene Set", true)]
         public static bool CreateSceneSetFromSceneValidation()
         {
