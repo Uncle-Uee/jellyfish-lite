@@ -2,7 +2,6 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -172,24 +171,5 @@ namespace SOFlow.Fading
         }
 
         #endregion
-
-
-#if UNITY_EDITOR
-        /// <summary>
-        ///     Adds a Generic Fader to the scene.
-        /// </summary>
-        [MenuItem("GameObject/SOFlow/Fading/Faders/Add Generic Fader", false, 10)]
-        public static void AddComponentToScene()
-        {
-            GameObject _gameObject = new GameObject("Generic Fader", typeof(GenericFader));
-
-            if (Selection.activeTransform != null)
-            {
-                _gameObject.transform.SetParent(Selection.activeTransform);
-            }
-
-            Selection.activeGameObject = _gameObject;
-        }
-#endif
     }
 }

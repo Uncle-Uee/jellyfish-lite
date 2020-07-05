@@ -20,8 +20,21 @@ namespace JellyFish.Monitor.FPS
         [Header("Status")]
         public BoolField ShowFPS;
 
+        /// <summary>
+        /// Fps Refresh Rate
+        /// </summary>
         [Header("FPS Properties")]
-        public float DelayInSeconds = 0.1f;
+        public float FpsRefreshRate = 0.1f;
+
+        /// <summary>
+        /// Fps Gui Text Colour
+        /// </summary>
+        public Color FpsTextColour = Color.white;
+
+        /// <summary>
+        /// GuiStyle for Text.
+        /// </summary>
+        private GUIStyle _textStyle = new GUIStyle();
 
         /// <summary>
         /// FPS Label.
@@ -52,6 +65,11 @@ namespace JellyFish.Monitor.FPS
 
         #region UNITY METHODS
 
+        private void OnEnable()
+        {
+            _textStyle.normal.textColor = FpsTextColour;
+        }
+
         private void LateUpdate()
         {
             if (!ShowFPS) return;
@@ -75,7 +93,7 @@ namespace JellyFish.Monitor.FPS
         private bool DelayTimer()
         {
             _timer += Time.deltaTime;
-            if (!(_timer >= DelayInSeconds)) return true;
+            if (!(_timer >= FpsRefreshRate)) return true;
             _timer = 0f;
             return false;
         }
@@ -101,7 +119,7 @@ namespace JellyFish.Monitor.FPS
 
         private void DrawFpsLabel()
         {
-            GUI.Label(Time.timeScale > 0 ? _playModeRect : _pausedModeRect, _fpsLabel);
+            GUI.Label(Time.timeScale > 0 ? _playModeRect : _pausedModeRect, _fpsLabel, _textStyle);
         }
 
         #endregion

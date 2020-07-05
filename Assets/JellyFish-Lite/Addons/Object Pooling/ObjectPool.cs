@@ -179,6 +179,64 @@ namespace SOFlow.ObjectPooling
 
             return _object;
         }
+        
+        /// <summary>
+        ///     Gets a Random object from the pool with the provided ID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="autoActivateid"></param>
+        /// <returns></returns>
+        public T GetRandomObjectFromPool(string id, bool autoActivate = true)
+        {
+            T       _object = default;
+            List<T> poolObjects;
+
+            if (Pool.TryGetValue(id, out poolObjects))
+            {
+                if (poolObjects.Count <= 0)
+                {
+                    List<T> generatedObjects = GenerateObjects(id);
+
+                    if (generatedObjects != null)
+                    {
+                        poolObjects.AddRange(generatedObjects);
+
+                        int index = Random.Range(0, poolObjects.Count - 1);
+                        _object = poolObjects[index];
+                        poolObjects.RemoveAt(index);
+                    }
+                }
+                else
+                {
+                    _object = poolObjects[0];
+                    poolObjects.RemoveAt(0);
+                }
+            }
+            else
+            {
+                List<T> newPoolObject = new List<T>();
+                Pool.Add(id, newPoolObject);
+
+                List<T> generatedObjects = GenerateObjects(id);
+
+                if (generatedObjects != null)
+                {
+                    newPoolObject.AddRange(generatedObjects);
+
+                    int index = Random.Range(0, newPoolObject.Count - 1);
+                    _object = newPoolObject[index];
+                    newPoolObject.RemoveAt(index);
+                }
+            }
+
+            if (autoActivate && _object != null)
+            {
+                _object.ActivateObject();
+                CurrentPoolSize--;
+            }
+
+            return _object;
+        }
 
         /// <summary>
         /// Gets a list of objects from the object pool with the given ID.

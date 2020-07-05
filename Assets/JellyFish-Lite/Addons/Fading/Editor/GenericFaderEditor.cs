@@ -13,6 +13,7 @@ namespace SOFlow.Fading
         /// </summary>
         private GenericFader _target;
 
+        private SerializedProperty _fadeTargets;
         private SerializedProperty _unfadedColour;
         private SerializedProperty _fadedColour;
         private SerializedProperty _fadeCurve;
@@ -29,6 +30,7 @@ namespace SOFlow.Fading
         {
             _target = (GenericFader) target;
 
+            _fadeTargets = serializedObject.FindProperty(nameof(_target.FadeTargets));
             _unfadedColour    = serializedObject.FindProperty(nameof(_target.UnfadedColour));
             _fadedColour      = serializedObject.FindProperty(nameof(_target.FadedColour));
             _fadeCurve        = serializedObject.FindProperty(nameof(_target.FadeCurve));
@@ -63,6 +65,7 @@ namespace SOFlow.Fading
                 EditorGUILayout.PropertyField(_unfadeCurve);
             }
 
+            EditorGUILayout.PropertyField(_fadeTargets);
             EditorGUILayout.PropertyField(_onlyFade);
             EditorGUILayout.PropertyField(_fadeTime);
 

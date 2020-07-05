@@ -1,7 +1,6 @@
 ﻿// Created by Kearan Petersen : https://www.blumalice.wordpress.com | https://www.linkedin.com/in/kearan-petersen/
 
 using JellyFish.Data.Primitive;
-using UnityEditor;
 using UnityEngine;
 
 namespace SOFlow.Fading
@@ -22,22 +21,22 @@ namespace SOFlow.Fading
         /// The target material to fade.
         /// </summary>
         public Material TargetMaterial;
-        
+
         /// <summary>
         /// Indicates whether the material colour property should be manually specified.
         /// </summary>
         public BoolField OverrideColourProperty = new BoolField(false);
-        
+
         /// <summary>
         /// The colour property to adjust.
         /// </summary>
-        public StrField ColourProperty =  new StrField("_Color");
-        
+        public StrField ColourProperty = new StrField("_Color");
+
         /// <inheritdoc />
         protected override Color GetColour()
         {
             Material materialReference = UseRenderer ? TargetRenderer.sharedMaterial : TargetMaterial;
-            
+
             return OverrideColourProperty ? materialReference.GetColor(ColourProperty) : materialReference.color;
         }
 
@@ -46,7 +45,7 @@ namespace SOFlow.Fading
         {
             Material materialReference = UseRenderer ? TargetRenderer.sharedMaterial : TargetMaterial;
 
-            if(OverrideColourProperty)
+            if (OverrideColourProperty)
             {
                 materialReference.SetColor(ColourProperty, colour);
             }
@@ -55,33 +54,5 @@ namespace SOFlow.Fading
                 materialReference.color = colour;
             }
         }
-
-#if UNITY_EDITOR
-        /// <summary>
-        ///     Adds a Material Fadable to the scene.
-        /// </summary>
-        [MenuItem("GameObject/SOFlow/Fading/Fadables/Add Material Fadable", false, 10)]
-        public static void AddComponentToScene()
-        {
-            Renderer _renderer = Selection.activeGameObject?.GetComponent<Renderer>();
-
-            if(_renderer != null)
-            {
-                MaterialFadable fadable = _renderer.gameObject.AddComponent<MaterialFadable>();
-                fadable.TargetRenderer = _renderer;
-
-                return;
-            }
-
-            GameObject _gameObject = new GameObject("Material Fadable", typeof(MaterialFadable));
-
-            if(Selection.activeTransform != null)
-            {
-                _gameObject.transform.SetParent(Selection.activeTransform);
-            }
-
-            Selection.activeGameObject = _gameObject;
-        }
-#endif
     }
 }
