@@ -8,54 +8,25 @@ namespace JellyFish.Internal.Utilities
     public class GameCamera : MonoBehaviour
     {
         /// <summary>
-        ///     Indicates whether the game camera has already been registered.
+        ///     The scene game camera reference.
         /// </summary>
-        private static bool _hasRegisteredGameCamera;
+        [Header("Game Camera")]
+        public Camera SceneCameraReference;
 
-        /// <summary>
-        ///     Indicates whether this is the primary game camera.
-        /// </summary>
-        private bool _primaryGameCamera;
 
         /// <summary>
         ///     The game camera reference.
         /// </summary>
+        [Header("Camera Reference")]
         public CameraReference GameCameraReference;
 
-        /// <summary>
-        ///     The scene game camera reference.
-        /// </summary>
-        public Camera SceneCameraReference;
-
-        /// <summary>
-        /// Do not Destroy Instance.
-        /// </summary>
-        public bool DontDestroy = false;
 
         /// <summary>
         ///     Registers the game camera.
         /// </summary>
-        public void Start()
+        public void Awake()
         {
-            if (!_hasRegisteredGameCamera)
-            {
-                GameCameraReference.Camera = SceneCameraReference;
-
-                if (DontDestroy)
-                {
-                    DontDestroyOnLoad(gameObject.ParentGameObject());
-                }
-
-                _hasRegisteredGameCamera = true;
-                _primaryGameCamera       = true;
-            }
-            else
-            {
-                if (!_primaryGameCamera && !DontDestroy)
-                {
-                    Destroy(gameObject);
-                }
-            }
+            GameCameraReference.Camera = SceneCameraReference;
         }
     }
 }

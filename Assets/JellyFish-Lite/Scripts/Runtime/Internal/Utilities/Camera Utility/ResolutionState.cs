@@ -14,9 +14,9 @@ namespace JellyFish.Internal.Utilities
         private Vector2 _currentScreenResolution;
 
         /// <summary>
-        /// The Current World Screen Size.
+        /// The Current World Size.
         /// </summary>
-        private Vector2 _currentWorldScreenSize;
+        private Vector2 _currentWorldSize;
 
         /// <summary>
         ///     The screen resolution the application was designed for.
@@ -46,8 +46,8 @@ namespace JellyFish.Internal.Utilities
         /// </summary>
         public Vector2 CurrentWorldScreenSize
         {
-            get => _currentWorldScreenSize;
-            set => _currentWorldScreenSize = value;
+            get => _currentWorldSize;
+            set => _currentWorldSize = value;
         }
 
         /// <summary>
@@ -57,8 +57,8 @@ namespace JellyFish.Internal.Utilities
         /// <returns></returns>
         public void BoundWithinScreen(ref Vector3 localPosition)
         {
-            float worldHeight = _currentWorldScreenSize.y;
-            float worldWidth  = _currentWorldScreenSize.x;
+            float worldHeight = _currentWorldSize.y;
+            float worldWidth  = _currentWorldSize.x;
 
             localPosition.y = Mathf.Clamp(localPosition.y, -worldHeight, worldHeight);
             localPosition.x = Mathf.Clamp(localPosition.x, -worldWidth, worldWidth);
