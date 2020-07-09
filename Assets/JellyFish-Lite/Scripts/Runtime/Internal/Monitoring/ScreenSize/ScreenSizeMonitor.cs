@@ -3,7 +3,8 @@
  * LinkedIn : https://www.linkedin.com/in/ubaidullah-effendi-emjedi-202494183/
  */
 
-using JellyFish.Data.Primitive;
+using System;
+using System.Collections;
 using JellyFish.Internal.Utilities;
 using UnityEngine;
 
@@ -13,6 +14,23 @@ namespace JellyFish.Monitor.ScreenSize
     public class ScreenSizeMonitor : MonoBehaviour
     {
         #region VARIABLES
+
+        /// <summary>
+        /// Monitor Screen Resolutions
+        /// </summary>
+        [Header("Status")]
+        public bool MonitorResolution = false;
+
+        /// <summary>
+        /// Only Calculate World Size Flag.
+        /// </summary>
+        [Header("Settings")]
+        public bool OnlyCalculateWorldSize = false;
+
+        /// <summary>
+        /// Only Calculate Screen Size Flag.
+        /// </summary>
+        public bool OnlyCalculateScreenSize = false;
 
         /// <summary>
         /// Game Camera Reference
@@ -27,26 +45,9 @@ namespace JellyFish.Monitor.ScreenSize
         public ResolutionState ResolutionState;
 
         /// <summary>
-        /// World Screen Height.
+        /// Current Screen Size
         /// </summary>
-        [Header("World Screen Dimensions")]
-        public FloatField WorldScreenHeight;
-
-        /// <summary>
-        /// World Screen Width.
-        /// </summary>
-        public FloatField WorldScreenWidth;
-
-        /// <summary>
-        /// Only Calculate World Size Flag.
-        /// </summary>
-        [Header("Settings")]
-        public bool OnlyCalculateWorldSize = false;
-
-        /// <summary>
-        /// Only Calculate Screen Size Flag.
-        /// </summary>
-        public bool OnlyCalculateScreenSize = false;
+        private Vector2Int _currentScreenSize;
 
         /// <summary>
         /// Previous Screen Size.
@@ -54,18 +55,41 @@ namespace JellyFish.Monitor.ScreenSize
         private Vector2Int _previousScreenSize;
 
         /// <summary>
-        /// Previous World Screen Size.
+        /// Current World Size
         /// </summary>
-        private Vector2 _previousWorldScreenSize;
+        private Vector2 _currentWorldSize;
+
+        /// <summary>
+        /// Previous World Size.
+        /// </summary>
+        private Vector2 _previousWorldSize;
+
+        /// <summary>
+        /// On Start Monitoring Event
+        /// </summary>
+        private static event Action OnStartMonitoring;
+
+        /// <summary>
+        /// On Stop Monitoring Event.
+        /// </summary>
+        private static event Action OnStopMonitoring;
 
         #endregion
 
         #region UNITY METHODS
 
-        private void LateUpdate()
+        private void OnEnable()
         {
-            CalculateScreenSizeAndWorldBounds(GameCamera.Camera.pixelRect, GameCamera.Camera.orthographicSize,
-                                              GameCamera.Camera.aspect);
+            StartMonitoring();
+            OnStartMonitoring += StartMonitoring;
+            OnStopMonitoring  += StopMonitoring;
+        }
+
+        private void OnDisable()
+        {
+            StopMonitoring();
+            OnStartMonitoring -= StartMonitoring;
+            OnStopMonitoring  -= StopMonitoring;
         }
 
         #endregion
@@ -73,9 +97,25 @@ namespace JellyFish.Monitor.ScreenSize
         #region SCREEN SIZE MONITOR METHODS
 
         /// <summary>
-        /// Calculate the World Size Simple.
+        /// Calculate the World and Screen Size.
         /// </summary>
-        public void CalculateScreenSizeAndWorldBounds(Rect cameraPixelRect, float orthographicSize, float aspect)
+        /// <param name="cameraPixelRect"></param>
+        /// <param name="orthographicSize"></param>
+        /// <param name="aspect"></param>
+        /// <returns></returns>
+        private IEnumerator ScreenSizeAndWorldBounds()
+        {
+            while (MonitorResolution)
+            {
+                CalculateScreenSizeAndWorldBounds(GameCamera.Camera.pixelRect, GameCamera.Camera.orthographicSize, GameCamera.Camera.aspect);
+                yield return null;
+            }
+        }
+
+        /// <summary>
+        /// Calculate the World and Screen Size.
+        /// </summary>
+        private void CalculateScreenSizeAndWorldBounds(Rect cameraPixelRect, float orthographicSize, float aspect)
         {
             if (OnlyCalculateWorldSize)
             {
@@ -84,7 +124,7 @@ namespace JellyFish.Monitor.ScreenSize
 
             if (OnlyCalculateScreenSize)
             {
-                CalculateScreenSize(cameraPixelRect);
+                CalculateScreenResolution(cameraPixelRect);
             }
         }
 
@@ -95,41 +135,31 @@ namespace JellyFish.Monitor.ScreenSize
         /// <param name="aspect"></param>
         private void CalculateWorldSize(float orthographicSize, float aspect)
         {
-            float worldHeight = orthographicSize;
-            float worldWidth  = worldHeight * aspect;
+            _currentWorldSize.y = orthographicSize;
+            _currentWorldSize.x = _currentWorldSize.y * aspect;
 
-            if (worldHeight != _previousWorldScreenSize.y || worldWidth != _previousWorldScreenSize.x)
-            {
-                WorldScreenHeight.Value = worldHeight;
-                WorldScreenWidth.Value  = worldWidth;
+            if (Mathf.Approximately(_currentWorldSize.x, _previousWorldSize.x) && Mathf.Approximately(_currentWorldSize.y, _previousWorldSize.y)) return;
 
-                _previousWorldScreenSize.y = WorldScreenHeight;
-                _previousWorldScreenSize.x = WorldScreenWidth;
-
-                ResolutionState.CurrentWorldScreenSize = _previousWorldScreenSize;
-
-                print("World Size Changed!");
-            }
+            _previousWorldSize.y                   = _currentWorldSize.y;
+            _previousWorldSize.x                   = _currentWorldSize.x;
+            ResolutionState.CurrentWorldScreenSize = _previousWorldSize;
+            print("World Size Changed!");
         }
 
         /// <summary>
         /// Calculate the Screen Resolution.
         /// </summary>
         /// <param name="cameraPixelRect"></param>
-        private void CalculateScreenSize(Rect cameraPixelRect)
+        private void CalculateScreenResolution(Rect cameraPixelRect)
         {
-            int screenHeight = (int) cameraPixelRect.height;
-            int screenWidth  = (int) cameraPixelRect.width;
+            _currentScreenSize.x = (int) cameraPixelRect.width;
+            _currentScreenSize.y = (int) cameraPixelRect.height;
 
-            if (screenWidth != _previousScreenSize.x && screenHeight != _previousScreenSize.y)
-            {
-                _previousScreenSize.x = screenWidth;
-                _previousScreenSize.y = screenHeight;
-
-                ResolutionState.CurrentScreenResolution = _previousScreenSize;
-
-                print("Screen Resolution Changed!");
-            }
+            if (_currentScreenSize.x == _previousScreenSize.x || _currentScreenSize.y == _previousScreenSize.y) return;
+            _previousScreenSize.x                   = _currentScreenSize.x;
+            _previousScreenSize.y                   = _currentScreenSize.y;
+            ResolutionState.CurrentScreenResolution = _previousScreenSize;
+            print("Screen Resolution Changed!");
         }
 
         /// <summary>
@@ -139,11 +169,40 @@ namespace JellyFish.Monitor.ScreenSize
         /// <returns></returns>
         public void BoundWithinScreen(ref Vector3 localPosition)
         {
-            float worldHeight = WorldScreenHeight;
-            float worldWidth  = WorldScreenWidth;
+            float worldWidth  = ResolutionState.CurrentWorldScreenSize.x;
+            float worldHeight = ResolutionState.CurrentWorldScreenSize.y;
 
             localPosition.y = Mathf.Clamp(localPosition.y, -worldHeight, worldHeight);
             localPosition.x = Mathf.Clamp(localPosition.x, -worldWidth, worldWidth);
+        }
+
+        private void StartMonitoring()
+        {
+            MonitorResolution = true;
+            StopCoroutine(ScreenSizeAndWorldBounds());
+            StartCoroutine(ScreenSizeAndWorldBounds());
+        }
+
+        private void StopMonitoring()
+        {
+            MonitorResolution = false;
+            StopCoroutine(ScreenSizeAndWorldBounds());
+        }
+
+        /// <summary>
+        /// Call Start Monitoring Coroutine
+        /// </summary>
+        public static void CallStartMonitoring()
+        {
+            OnStartMonitoring?.Invoke();
+        }
+
+        /// <summary>
+        /// Call Stop Monitoring Coroutine
+        /// </summary>
+        public static void CallStopMonitoring()
+        {
+            OnStopMonitoring?.Invoke();
         }
 
         #endregion
