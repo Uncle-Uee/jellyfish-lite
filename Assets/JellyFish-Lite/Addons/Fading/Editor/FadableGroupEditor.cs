@@ -40,7 +40,7 @@ namespace SOFlow.Fading
             EditorGUILayout.PropertyField(_invertAlpha);
             EditorGUILayout.PropertyField(_invertPercentage);
             EditorGUILayout.PropertyField(_fadables);
-            serializedObject.ApplyModifiedProperties();
+            if (GUI.changed) serializedObject.ApplyModifiedProperties();
         }
     }
 }
