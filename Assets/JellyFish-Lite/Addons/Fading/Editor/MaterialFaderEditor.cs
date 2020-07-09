@@ -2,6 +2,7 @@
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEngine;
 
 namespace SOFlow.Fading
 {
@@ -65,7 +66,7 @@ namespace SOFlow.Fading
                 EditorGUILayout.PropertyField(_colourProperty);
             }
 
-            serializedObject.ApplyModifiedProperties();
+            if (GUI.changed) serializedObject.ApplyModifiedProperties();
         }
     }
 }
