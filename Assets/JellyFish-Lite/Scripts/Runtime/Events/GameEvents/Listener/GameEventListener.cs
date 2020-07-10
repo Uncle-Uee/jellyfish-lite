@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace JellyFish.Data.Events
 {
-    public class UnityGameEventListener : MonoBehaviour, IEventListener
+    public class GameEventListener : MonoBehaviour, IEventListener
     {
         /// <summary>
         /// The delay before the event response is invoked.

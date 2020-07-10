@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace JellyFish.Data.Events
 {
-    public class UnityGameEventRaiser : MonoBehaviour
+    public class UnityEventRaiser : MonoBehaviour
     {
         /// <summary>
         ///     The game event to raise.
