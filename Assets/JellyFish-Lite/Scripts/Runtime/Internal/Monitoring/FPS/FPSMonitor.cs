@@ -3,11 +3,11 @@
  * LinkedIn : https://www.linkedin.com/in/ubaidullah-effendi-emjedi-202494183/
  */
 
+using System;
+using System.Collections;
 using System.Globalization;
-using JellyFish.Data.Primitive;
 using UnityEngine;
 
-// ReSharper disable once CheckNamespace
 namespace JellyFish.Monitor.FPS
 {
     public class FPSMonitor : MonoBehaviour
@@ -15,21 +15,24 @@ namespace JellyFish.Monitor.FPS
         #region VARIABLES
 
         /// <summary>
-        /// Show FPS Log.
+        /// Show FPS Flag
         /// </summary>
         [Header("Status")]
-        public BoolField ShowFPS;
+        public bool MonitorFPS;
+        public bool ShowButtons;
 
         /// <summary>
-        /// Fps Refresh Rate
+        /// Font Colour
         /// </summary>
-        [Header("FPS Properties")]
-        public float FpsRefreshRate = 0.1f;
+        [Header("Properties")]
+        public Color FontColour = Color.white;
 
         /// <summary>
-        /// Fps Gui Text Colour
+        /// Font Size
         /// </summary>
-        public Color FpsTextColour = Color.white;
+        [Range(16, 24)]
+        public int FontSize = 16;
+
 
         /// <summary>
         /// GuiStyle for Text.
@@ -47,79 +50,139 @@ namespace JellyFish.Monitor.FPS
         private float _fpsCounter;
 
         /// <summary>
-        /// Play Mode FPS Rect 
+        /// FPS Rect 
         /// </summary>
-        private Rect _playModeRect = new Rect(Screen.width, 4, 96, 24);
+        private Rect _fpsRect = new Rect(0, 4, 48, 32);
 
         /// <summary>
-        /// Pause Mode FPS Rect
+        /// Pause Button Rect
         /// </summary>
-        private Rect _pausedModeRect = new Rect(Screen.width, 4, 96, 24);
+        private readonly Rect _pauseButtonRect = new Rect(8, 8, 56, 20);
 
         /// <summary>
-        /// Delay Timer
+        /// Play Button Rect
         /// </summary>
-        private float _timer = 0f;
+        private readonly Rect _playButtonRect = new Rect(8, 32, 48, 20);
+
+        /// <summary>
+        /// OnShowFPS Event
+        /// </summary>
+        private static event Action OnShowFPS;
+
+        /// <summary>
+        /// OnHideFPS Event
+        /// </summary>
+        private static event Action OnHideFPS;
 
         #endregion
 
         #region UNITY METHODS
 
-        private void OnEnable()
+        private void Awake()
         {
-            _textStyle.normal.textColor = FpsTextColour;
+            _textStyle = new GUIStyle
+                         {
+                             normal = new GUIStyleState
+                                      {
+                                          textColor = FontColour
+                                      },
+                             fontSize  = FontSize,
+                             fontStyle = FontStyle.Bold,
+                             alignment = TextAnchor.MiddleCenter
+                         };
         }
 
-        private void LateUpdate()
+        private void OnEnable()
         {
-            if (!ShowFPS) return;
-            if (DelayTimer()) return;
-            CalculateFps();
+            _textStyle.normal.textColor = FontColour;
+            _textStyle.fontSize         = FontSize;
+
+            ShowFps();
+
+            OnShowFPS += ShowFps;
+            OnHideFPS += HideFps;
+        }
+
+        private void OnDisable()
+        {
+            HideFps();
+
+            OnShowFPS += ShowFps;
+            OnHideFPS += HideFps;
         }
 
         private void OnGUI()
         {
-            if (!ShowFPS) return;
-
-            SetFpsLabel();
+            if (!MonitorFPS) return;
             UpdateLabelRectXOffset();
             DrawFpsLabel();
+            TimeScaleButtons();
         }
 
         #endregion
 
         #region METHODS
 
-        private bool DelayTimer()
+        private void ShowFps()
         {
-            _timer += Time.deltaTime;
-            if (!(_timer >= FpsRefreshRate)) return true;
-            _timer = 0f;
-            return false;
+            MonitorFPS = true;
+            StopCoroutine(CalculateFps());
+            StartCoroutine(CalculateFps());
         }
 
-        private void CalculateFps()
+        private void HideFps()
         {
-            if (Time.timeScale > 0)
+            MonitorFPS = false;
+            StopCoroutine(CalculateFps());
+        }
+
+        public static void CallShowFps()
+        {
+            OnShowFPS?.Invoke();
+        }
+
+        public static void CallHideFps()
+        {
+            OnHideFPS?.Invoke();
+        }
+
+        private IEnumerator CalculateFps()
+        {
+            while (MonitorFPS)
             {
-                _fpsCounter = 1f / Time.deltaTime;
-            }
-        }
+                if (Time.timeScale > 0)
+                {
+                    _fpsCounter = 1f / Time.deltaTime;
+                }
 
-        private void SetFpsLabel()
-        {
-            _fpsLabel = Time.timeScale > 0 ? Mathf.Round(_fpsCounter).ToString(CultureInfo.InstalledUICulture) : "Paused";
+                yield return null;
+            }
         }
 
         private void UpdateLabelRectXOffset()
         {
-            _playModeRect.x   = Screen.width    - 32;
-            _pausedModeRect.x = _playModeRect.x - 8;
+            _fpsRect.x = Screen.width - _fpsRect.width;
         }
 
         private void DrawFpsLabel()
         {
-            GUI.Label(Time.timeScale > 0 ? _playModeRect : _pausedModeRect, _fpsLabel, _textStyle);
+            _fpsLabel = Time.timeScale > 0 ? Mathf.Round(_fpsCounter).ToString(CultureInfo.InstalledUICulture) : "○";
+            GUI.Label(_fpsRect, _fpsLabel, _textStyle);
+        }
+
+        private void TimeScaleButtons()
+        {
+            if (!ShowButtons) return;
+
+            if (GUI.Button(_pauseButtonRect, "Pause"))
+            {
+                Time.timeScale = 0;
+            }
+
+            if (GUI.Button(_playButtonRect, "Play"))
+            {
+                Time.timeScale = 1;
+            }
         }
 
         #endregion
